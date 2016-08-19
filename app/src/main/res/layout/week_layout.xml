@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:layout_marginTop="20dp"
+	android:background="@color/divider_color"
+	>
+	<TextView 
+	    android:layout_width="fill_parent"
+	    android:layout_height="25dp"
+	    android:background="@color/divider_color"
+	    android:text="       "
+	    />
+	<ListView
+		android:id="@+id/lvWeek"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:listSelector="@android:color/transparent"
+		android:cacheColorHint="@android:color/transparent"
+		android:clipToPadding="false"
+		android:scrollbarStyle="outsideOverlay"
+		android:divider="@null"
+		android:dividerHeight="8dp" 
+		/>
+</LinearLayout>
+

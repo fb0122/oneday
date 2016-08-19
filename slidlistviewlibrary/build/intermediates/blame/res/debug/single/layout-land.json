@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "/Users/fengbo/Downloads/oneday-master/slidlistviewlibrary/build/intermediates/res/merged/debug/layout-land/date_picker_dialog.xml",
+        "source": "/Users/fengbo/Downloads/oneday-master/slidlistviewlibrary/build/intermediates/exploded-aar/oneday-master/datetimepickerlibrary/unspecified/res/layout-land/date_picker_dialog.xml"
+    },
+    {
+        "merged": "/Users/fengbo/Downloads/oneday-master/slidlistviewlibrary/build/intermediates/res/merged/debug/layout-land/time_picker_dialog.xml",
+        "source": "/Users/fengbo/Downloads/oneday-master/slidlistviewlibrary/build/intermediates/exploded-aar/oneday-master/datetimepickerlibrary/unspecified/res/layout-land/time_picker_dialog.xml"
+    }
+]

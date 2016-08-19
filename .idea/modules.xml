@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/datetimepickerlibrary/datetimepickerlibrary.iml" filepath="$PROJECT_DIR$/datetimepickerlibrary/datetimepickerlibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/nineoldandroids/nineoldandroids.iml" filepath="$PROJECT_DIR$/nineoldandroids/nineoldandroids.iml" />
+      <module fileurl="file://$PROJECT_DIR$/oneday-master.iml" filepath="$PROJECT_DIR$/oneday-master.iml" />
+      <module fileurl="file://$PROJECT_DIR$/radialWidget/radialWidget.iml" filepath="$PROJECT_DIR$/radialWidget/radialWidget.iml" />
+      <module fileurl="file://$PROJECT_DIR$/slidlistviewlibrary/slidlistviewlibrary.iml" filepath="$PROJECT_DIR$/slidlistviewlibrary/slidlistviewlibrary.iml" />
+    </modules>
+  </component>
+</project>

@@ -1,0 +1,25 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+     >
+
+    <include layout="@layout/toolbar"/>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="5dp">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:background="@drawable/toolbar_shadow"/>
+    </FrameLayout>
+
+    <com.example.fb0122.oneday.MyViewPager
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@color/textview_background"
+        android:id="@+id/viewpager"
+        />
+
+</LinearLayout>

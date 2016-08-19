@@ -1,0 +1,31 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--
+        Base application theme, dependent on API level. This theme is replaced
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+    -->
+	<style name="BaseAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+	    <item name="colorPrimary">@color/white</item>
+    	<item name="colorPrimaryDark">@color/blue</item>
+    	<item name="colorAccent">@color/white</item>
+    	<item name="android:windowBackground">@color/white</item>
+</style>
+    
+    
+    <!-- <style name="ActionColor" parent="@android:style/Widget.Holo.Light.ActionBar">
+        <item name="android:background">#ffffff</item>
+    </style> -->
+   <!--  
+    <style name="AppBaseTheme" parent="Theme.AppCompat.Light">
+
+        customize the color palette
+        <item name="colorPrimary">@color/blue</item>
+        <item name="colorPrimaryDark">@color/low_blue</item>
+
+    </style>
+     -->
+	
+    
+    
+
+</resources>

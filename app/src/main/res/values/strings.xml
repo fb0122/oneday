@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">OneDayDemo</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="day">本日</string>
+	<string name="month">本周</string>
+	<string name="spRemind_first">不提醒</string>
+    <string name="spTo_first">0:00</string>
+    <string name="spFrom">0:00</string>
+</resources>

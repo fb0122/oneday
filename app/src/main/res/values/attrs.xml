@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <declare-styleable name="TasksCompletedView">
+        <attr name="radius" format="dimension"/>
+        <attr name="strokeWidth" format="dimension"/>
+        <attr name="circleColor" format="color"/>
+        <attr name="ringColor" format="color"/>
+    </declare-styleable>
+    <declare-styleable name="circleprogressbar">
+        <attr name="textFormat" format="string" />
+        <attr name="textVisibility" format="boolean" /> 
+        <attr name="textSize" format="dimension" />           
+        <attr name="mradius" format="dimension" />        
+        <attr name="border" format="dimension" />                 
+        <attr name="normalBorderColor" format="reference|color" />  
+        <attr name="finishedBorderColor" format="reference|color" />     
+        <attr name="textcolor" format="reference|color"/>
+    </declare-styleable>
+    
+    <declare-styleable name = "MySlideView">
+       <attr name = "view_width" format = "dimension"/>
+	   <attr name="view_height" format = "dimension"/>        
+    </declare-styleable>
+</resources>

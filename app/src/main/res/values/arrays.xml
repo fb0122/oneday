@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <string-array name="repece_times">
+        
+        <item >不提醒</item>
+        <item >提前10分钟</item>
+        <item >提前30分钟</item>
+        <item >提前1小时</item>
+        <item >提前2小时</item>
+        
+    </string-array>
+    
+    
+</resources>

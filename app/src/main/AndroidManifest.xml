@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools = "http://schemas.android.com/tools"
+    package="com.example.fb0122.oneday" >
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/onedaylogo1"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/BaseAppTheme"
+        tools:replace = "android:icon"
+        tools:overrideLibrary = "android.support.v4"
+        >
+        <activity
+            android:name=".SplashActivity"
+            >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".MainActivity"
+            android:label="@string/app_name"
+            android:windowSoftInputMode="adjustPan"
+            >
+            <action android:name="NotifyService.Intent"/>
+
+        </activity>
+        <activity android:name=".AtyEditCustom"/>
+        <service android:name="oneday.Alarm.NotifyService">
+            <intent-filter>
+                <action android:name="NotifyService.Intent"/>
+            </intent-filter>
+         </service>
+        <receiver android:name="oneday.Alarm.AlarmReceiver">
+            <intent-filter>
+                <action android:name="NotifyService.Intent"/>
+            </intent-filter>
+        </receiver>
+
+    </application>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.peimission.DISABLE_KEYGUARD"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
+
+
+    </manifest>
