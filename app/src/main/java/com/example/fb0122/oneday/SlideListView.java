@@ -1,25 +1,23 @@
 package com.example.fb0122.oneday;
 
 
+import android.content.ContentValues;
 import android.content.Context;
-import android.graphics.Color;
-import android.text.InputFilter;
-import android.text.InputType;
-import android.text.Spanned;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Scroller;
 import android.widget.TextView;
 
+import com.example.fb0122.oneday.utils.DataSetUtil;
 import com.example.fb0122.oneday.weidget.MyEditText;
+
+import db_oneday.OneDaydb;
 
 /**
  * 侧向滑出菜单的ListView
@@ -99,12 +97,11 @@ public class SlideListView extends ListView {
 
     public static boolean isDelete = false;
     public static int VISIT = 1;
-    private static int VISIABLE;
 
-
+    private boolean isChanged = false;    //是否改变了习惯
     public Context context;
-    private TextView Line,tvSc;
-    public MyEditText changeTextView ;
+    private TextView Line, tvSc;
+    public MyEditText changeTextView;
 
     AtyDay.MyAdapter adapter;
 
@@ -112,6 +109,8 @@ public class SlideListView extends ListView {
 
     private RemoveListener mRemoveListener;
     public RemoveDirection removeDirection;
+    private OneDaydb db;
+    private String time;
 
     public enum RemoveDirection {
         RIGHT, LEFT;
@@ -148,11 +147,13 @@ public class SlideListView extends ListView {
     }
 
     //得到当前滑动item的line
-    public void saddLine(TextView textview, MyEditText changeTextView,TextView tvSc) {
+    public void saddLine(TextView textview, MyEditText changeTextView, TextView tvSc,OneDaydb db,String time) {
         this.Line = textview;
         this.changeTextView = changeTextView;
         this.tvSc = tvSc;
-        if (this.changeTextView.getMyContext() == null){
+        this.db = db;
+        this.time = time;
+        if (this.changeTextView.getMyContext() == null) {
             this.changeTextView.setContext(context);
             this.changeTextView.setTextView(tvSc);
         }
@@ -168,7 +169,10 @@ public class SlideListView extends ListView {
      */
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
-
+        String oldValue = null;
+        if (tvSc != null) {
+            oldValue = tvSc.getText().toString();
+        }
         final int action = ev.getAction();
         int lastX = (int) ev.getX();
         switch (action) {
@@ -199,7 +203,7 @@ public class SlideListView extends ListView {
 
                 // 获取我们点击的item view
                 itemView = getChildAt(slidePosition - getFirstVisiblePosition());
-			/*此处根据设置的滑动模式，自动获取左侧或右侧菜单的长度*/
+            /*此处根据设置的滑动模式，自动获取左侧或右侧菜单的长度*/
                 if (this.mode == MOD_BOTH) {
                     this.leftLength = -itemView.getPaddingLeft();
                     this.rightLength = -itemView.getPaddingRight();
@@ -211,28 +215,27 @@ public class SlideListView extends ListView {
 
                 break;
             case MotionEvent.ACTION_MOVE:
+
                 MotionEvent cancelEvent = MotionEvent.obtain(ev);
                 cancelEvent
                         .setAction(MotionEvent.ACTION_CANCEL
                                 | (ev.getActionIndex() << MotionEvent.ACTION_POINTER_INDEX_SHIFT));
                 onTouchEvent(cancelEvent);
                 int offsetX = downX - lastX;
-			/* (Math.abs(ev.getX() - downX) > mTouchSlop && Math.abs(ev
-				.getY() - downY) < mTouchSlop)
+            /* (Math.abs(ev.getX() - downX) > mTouchSlop && Math.abs(ev
+                .getY() - downY) < mTouchSlop)
 				元语句中有这个判断条件
 			*/
                 if (slidePosition != AdapterView.INVALID_POSITION
                         ) {
 
                     if (offsetX > 0 && (this.mode == MOD_BOTH || this.mode == MOD_RIGHT)) {
-					/*
-					 * 执行listview的item滑动删除的动作 
+                    /*
+                     * 执行listview的item滑动删除的动作
 					 */
                         if (offsetX > rightLength) {
                             isDelete = true;
                         }
-                        changeTextView.setStatus(false);
-//					}
 					/*从右向左滑*/
                         canMove = true;
                     } else if (offsetX < 0 && (this.mode == MOD_BOTH || this.mode == MOD_LEFT)) {
@@ -246,9 +249,9 @@ public class SlideListView extends ListView {
                             changeTextView.setVisibility(GONE);
                             tvSc.setVisibility(VISIBLE);
                             if (changeTextView.getHint() != null) {
-                                if (!changeTextView.getText().toString().equals("")){
+                                if (!changeTextView.getText().toString().equals("")) {
                                     tvSc.setText(changeTextView.getText().toString());
-                                }else {
+                                } else {
                                     tvSc.setText(changeTextView.getHint().toString());
                                 }
                             }
@@ -294,6 +297,11 @@ public class SlideListView extends ListView {
                     return true; // 拖动的时候ListView不滚动
                 }
             case MotionEvent.ACTION_UP:
+                Log.e(TAG,"oldValue = " + oldValue + "---" + tvSc.getText().toString());
+                if (!oldValue.equals(tvSc.getText().toString())) {
+                    ContentValues contentValues = DataSetUtil.updateData(OneDaydb.COLUMN_PLAN, tvSc.getText().toString());
+                    db.updateData(OneDaydb.TABLE_NAME,contentValues,time);
+                }
                 if (canMove) {
                     canMove = false;
 //				scrollDelete();

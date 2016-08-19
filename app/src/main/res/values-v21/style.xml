@@ -4,5 +4,6 @@
         <item name="android:windowBackground">@android:color/white</item>
         <item name="android:colorPrimary">@color/colorPrimary</item>
         <item name="android:colorPrimaryDark">@color/blue</item>
+        <item name="android:colorAccent">@color/divider_color</item>
     </style>
 </resources>

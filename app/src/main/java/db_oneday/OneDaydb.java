@@ -1,5 +1,6 @@
 package db_oneday;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -29,6 +30,7 @@ public class OneDaydb extends SQLiteOpenHelper {
         super(context, "oneday", null, 1);
     }
 
+
     @Override
     public void onCreate(SQLiteDatabase db) {
 
@@ -40,10 +42,14 @@ public class OneDaydb extends SQLiteOpenHelper {
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
 
     }
 
+    public void updateData(String table,ContentValues cv,String time_value){
+        dbr = getWritableDatabase();
+        dbr.update(table,cv,OneDaydb.COLUMN_FROM_TIME +  " = " + time_value,null);
+    }
 
     public Cursor Query() {
         dbr = getReadableDatabase();

@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.os.Looper;
 import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -31,7 +33,7 @@ import db_oneday.OneDaydb;
 import oneday.Alarm.Config;
 
 
-public class AtyDay extends Fragment {
+public class AtyDay extends Fragment implements TextWatcher {
 
     public static String TAG = "AtyDay";
 
@@ -51,6 +53,21 @@ public class AtyDay extends Fragment {
         super();
         this.mContext = context;
         this.map = map;
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        Log.e(TAG,"beforeTextChanged");
+    }
+
+    @Override
+    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        Log.e(TAG,"onTextChanged");
+    }
+
+    @Override
+    public void afterTextChanged(Editable editable) {
+        Log.e(TAG,"editing...");
     }
 
     class MyAdapter extends BaseAdapter {
@@ -95,7 +112,7 @@ public class AtyDay extends Fragment {
             if (position >= firstPosition && position <=  lastPosition) {
                 View view = lvDay.getChildAt(position - lvDay.getFirstVisiblePosition());
                 ViewHolder lineHold = (ViewHolder) view.getTag();
-                lvDay.saddLine(lineHold.addLine,lineHold.scEdit ,lineHold.tvSc);
+                lvDay.saddLine(lineHold.addLine,lineHold.scEdit ,lineHold.tvSc,db,lineHold.tvTime.getText().toString());
             }
             lvDay.postInvalidate();
         }
@@ -114,6 +131,7 @@ public class AtyDay extends Fragment {
                 holder.tvSc = (TextView) convertView.findViewById(R.id.tvSc);
                 holder.scEdit = (MyEditText)convertView.findViewById(R.id.edit_Sc);
                 holder.scEdit.setVisibility(View.GONE);
+                holder.scEdit.addTextChangedListener(AtyDay.this);
                 holder.tvTime = (TextView) convertView.findViewById(R.id.tvTime);
                 holder.tvTo = (TextView) convertView.findViewById(R.id.tvTo);
                 holder.line = (TextView) convertView.findViewById(R.id.line);

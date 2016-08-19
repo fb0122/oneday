@@ -90,6 +90,7 @@
                 tools:text="rrr"
                 android:textColor="@color/black"
                 android:textSize="21dp"
+                style="@null"
                 />
 
             <com.example.fb0122.oneday.weidget.MyEditText
