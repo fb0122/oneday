@@ -57,17 +57,14 @@ public class AtyDay extends Fragment implements TextWatcher {
 
     @Override
     public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        Log.e(TAG,"beforeTextChanged");
     }
 
     @Override
     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        Log.e(TAG,"onTextChanged");
     }
 
     @Override
     public void afterTextChanged(Editable editable) {
-        Log.e(TAG,"editing...");
     }
 
     class MyAdapter extends BaseAdapter {

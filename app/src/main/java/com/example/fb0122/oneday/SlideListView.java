@@ -3,6 +3,7 @@ package com.example.fb0122.oneday;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.graphics.Color;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -177,6 +178,15 @@ public class SlideListView extends ListView {
         int lastX = (int) ev.getX();
         switch (action) {
             case MotionEvent.ACTION_DOWN:
+                if (tvSc != null) {
+                    setFocusable(true);
+                    setFocusableInTouchMode(true);
+                    requestFocus();
+                    tvSc.setVisibility(VISIBLE);
+                    tvSc.setTextColor(Color.BLACK);
+                    changeTextView.setVisibility(GONE);
+                    changeTextView.setStatus(false);
+                }
             /*当前模式不允许滑动，则直接返回，交给ListView自身去处理*/
                 if (this.mode == MOD_FORBID) {
                     return super.onTouchEvent(ev);
@@ -297,7 +307,6 @@ public class SlideListView extends ListView {
                     return true; // 拖动的时候ListView不滚动
                 }
             case MotionEvent.ACTION_UP:
-                Log.e(TAG,"oldValue = " + oldValue + "---" + tvSc.getText().toString());
                 if (!oldValue.equals(tvSc.getText().toString())) {
                     ContentValues contentValues = DataSetUtil.updateData(OneDaydb.COLUMN_PLAN, tvSc.getText().toString());
                     db.updateData(OneDaydb.TABLE_NAME,contentValues,time);

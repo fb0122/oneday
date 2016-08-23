@@ -22,6 +22,8 @@ public class MyEditText extends EditText {
 
     private TextView textView;
 
+    private EditText editText;
+
     public MyEditText(Context context, AttributeSet attrs ) {
         super(context, attrs);
     }
@@ -41,11 +43,7 @@ public class MyEditText extends EditText {
         }else{
             textView.setVisibility(VISIBLE);
             setVisibility(GONE);
-            textView.setText(getText().toString());
             textView.setTextColor(getResources().getColor(R.color.black));
-            setFocusable(editAble);
-            setEnabled(editAble);
-            setFocusableInTouchMode(editAble);
             imm.hideSoftInputFromWindow(getWindowToken(),0);
         }
     }
@@ -60,6 +58,14 @@ public class MyEditText extends EditText {
 
     public void setTextView(TextView textView) {
         this.textView = textView;
+    }
+
+    public EditText getEditText() {
+        return editText;
+    }
+
+    public void setEditText(EditText editText) {
+        this.editText = editText;
     }
 
     @Override
