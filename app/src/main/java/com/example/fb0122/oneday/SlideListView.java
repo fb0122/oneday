@@ -3,16 +3,22 @@ package com.example.fb0122.oneday;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.graphics.Color;
+import android.inputmethodservice.Keyboard;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Scroller;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.fb0122.oneday.utils.DataSetUtil;
 import com.example.fb0122.oneday.weidget.MyEditText;
@@ -28,7 +34,7 @@ import db_oneday.OneDaydb;
  *
  * @author zhangshuo
  */
-public class SlideListView extends ListView {
+public class SlideListView extends ListView implements TextView.OnEditorActionListener{
 
     public static String TAG = "SlideListView";
 
@@ -104,13 +110,40 @@ public class SlideListView extends ListView {
     public MyEditText changeTextView;
 
     AtyDay.MyAdapter adapter;
-
     public int screenWidth;
 
     private RemoveListener mRemoveListener;
+    private RefreshPlan refreshPlanListener;
     public RemoveDirection removeDirection;
     private OneDaydb db;
     private String time;
+    private String editTextContent;         // 习惯Text内的内容,因为 可能随时需要编辑.
+    private String planChange;
+
+    @Override
+    public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+        if (i == EditorInfo.IME_ACTION_DONE){
+            planChange = textView.getHint().toString();
+            InputMethodManager im = (InputMethodManager)textView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            if (im.isActive()){
+                im.hideSoftInputFromWindow(textView.getApplicationWindowToken(),0);
+            }
+            editTextContent = textView.getText().toString();
+            if (editTextContent.equals("")) {
+                editTextContent = textView.getHint().toString();
+            }
+            tvSc.setText(editTextContent);
+            tvSc.setTextColor(Color.BLACK);
+            tvSc.setVisibility(VISIBLE);
+            changeTextView.setVisibility(GONE);
+            ContentValues contentValues = DataSetUtil.updateData(OneDaydb.COLUMN_PLAN, editTextContent);
+            db.updateData(OneDaydb.TABLE_NAME, contentValues, time,planChange);
+            refreshPlanListener.refresh();
+            Toast.makeText(getContext(),textView.getHint().toString(),Toast.LENGTH_SHORT).show();
+        }
+        return false;
+    }
+
 
     public enum RemoveDirection {
         RIGHT, LEFT;
@@ -177,6 +210,19 @@ public class SlideListView extends ListView {
         int lastX = (int) ev.getX();
         switch (action) {
             case MotionEvent.ACTION_DOWN:
+                if (tvSc != null) {
+                    setFocusable(true);
+                    setFocusableInTouchMode(true);
+                    requestFocus();
+                    tvSc.setVisibility(VISIBLE);
+                    tvSc.setTextColor(Color.BLACK);
+                    changeTextView.setVisibility(GONE);
+                    changeTextView.setStatus(false);
+//                    editTextContent = tvSc.getText().toString();
+//                    ContentValues contentValues = DataSetUtil.updateData(OneDaydb.COLUMN_PLAN, editTextContent);
+//                    db.updateData(OneDaydb.TABLE_NAME, contentValues, time,planChange);
+//                    refreshPlanListener.refresh();
+                }
             /*当前模式不允许滑动，则直接返回，交给ListView自身去处理*/
                 if (this.mode == MOD_FORBID) {
                     return super.onTouchEvent(ev);
@@ -266,6 +312,8 @@ public class SlideListView extends ListView {
                             tvSc.setVisibility(GONE);
                             changeTextView.setVisibility(VISIBLE);
                             changeTextView.requestFocus();
+                            changeTextView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+                            changeTextView.setOnEditorActionListener(this);
                             changeTextView.setFocusableInTouchMode(true);
                             changeTextView.setCursorVisible(false);
                             VISIT = View.GONE;
@@ -297,10 +345,8 @@ public class SlideListView extends ListView {
                     return true; // 拖动的时候ListView不滚动
                 }
             case MotionEvent.ACTION_UP:
-                Log.e(TAG,"oldValue = " + oldValue + "---" + tvSc.getText().toString());
                 if (!oldValue.equals(tvSc.getText().toString())) {
-                    ContentValues contentValues = DataSetUtil.updateData(OneDaydb.COLUMN_PLAN, tvSc.getText().toString());
-                    db.updateData(OneDaydb.TABLE_NAME,contentValues,time);
+
                 }
                 if (canMove) {
                     canMove = false;
@@ -429,5 +475,11 @@ public class SlideListView extends ListView {
         public void removeItem(RemoveDirection reDirection, int position, View itemView);
     }
 
+    public interface RefreshPlan{
+        void refresh();
+    }
 
+    public void setRefreshPlanListener(RefreshPlan refreshPlanListener) {
+        this.refreshPlanListener = refreshPlanListener;
+    }
 }

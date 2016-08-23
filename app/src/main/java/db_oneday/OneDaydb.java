@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import android.widget.Toast;
 
 public class OneDaydb extends SQLiteOpenHelper {
 
@@ -46,9 +47,9 @@ public class OneDaydb extends SQLiteOpenHelper {
 
     }
 
-    public void updateData(String table,ContentValues cv,String time_value){
+    public void updateData(String table,ContentValues cv,String time_value,String plan){
         dbr = getWritableDatabase();
-        dbr.update(table,cv,OneDaydb.COLUMN_FROM_TIME +  " = " + time_value,null);
+        dbr.update(table,cv,OneDaydb.COLUMN_PLAN + " =?",new String[]{plan});
     }
 
     public Cursor Query() {
