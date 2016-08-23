@@ -1,6 +1,6 @@
 [
     {
-        "outputFile": "/Users/fengbo/Downloads/oneday-master/slidlistviewlibrary/build/intermediates/res/merged/debug/values-land/values-land.xml",
+        "outputFile": "D:\\lastCode\\OneDay\\slidlistviewlibrary\\build\\intermediates\\res\\merged\\debug\\values-land\\values-land.xml",
         "map": [
             {
                 "to": {
@@ -11,7 +11,7 @@
                     "endOffset": 97
                 },
                 "from": {
-                    "file": "/Users/fengbo/Downloads/oneday-master/slidlistviewlibrary/build/intermediates/exploded-aar/oneday-master/datetimepickerlibrary/unspecified/res/values-land/values-land.xml",
+                    "file": "D:\\lastCode\\OneDay\\slidlistviewlibrary\\build\\intermediates\\exploded-aar\\OneDay\\datetimepickerlibrary\\unspecified\\res\\values-land\\values-land.xml",
                     "position": {
                         "startLine": 2,
                         "startColumn": 4,
@@ -30,7 +30,7 @@
                     "endOffset": 146
                 },
                 "from": {
-                    "file": "/Users/fengbo/Downloads/oneday-master/slidlistviewlibrary/build/intermediates/exploded-aar/oneday-master/datetimepickerlibrary/unspecified/res/values-land/values-land.xml",
+                    "file": "D:\\lastCode\\OneDay\\slidlistviewlibrary\\build\\intermediates\\exploded-aar\\OneDay\\datetimepickerlibrary\\unspecified\\res\\values-land\\values-land.xml",
                     "position": {
                         "startLine": 3,
                         "startColumn": 4,
@@ -49,7 +49,7 @@
                     "endOffset": 201
                 },
                 "from": {
-                    "file": "/Users/fengbo/Downloads/oneday-master/slidlistviewlibrary/build/intermediates/exploded-aar/oneday-master/datetimepickerlibrary/unspecified/res/values-land/values-land.xml",
+                    "file": "D:\\lastCode\\OneDay\\slidlistviewlibrary\\build\\intermediates\\exploded-aar\\OneDay\\datetimepickerlibrary\\unspecified\\res\\values-land\\values-land.xml",
                     "position": {
                         "startLine": 4,
                         "startColumn": 4,
@@ -68,7 +68,7 @@
                     "endOffset": 257
                 },
                 "from": {
-                    "file": "/Users/fengbo/Downloads/oneday-master/slidlistviewlibrary/build/intermediates/exploded-aar/oneday-master/datetimepickerlibrary/unspecified/res/values-land/values-land.xml",
+                    "file": "D:\\lastCode\\OneDay\\slidlistviewlibrary\\build\\intermediates\\exploded-aar\\OneDay\\datetimepickerlibrary\\unspecified\\res\\values-land\\values-land.xml",
                     "position": {
                         "startLine": 5,
                         "startColumn": 4,
@@ -87,7 +87,7 @@
                     "endOffset": 312
                 },
                 "from": {
-                    "file": "/Users/fengbo/Downloads/oneday-master/slidlistviewlibrary/build/intermediates/exploded-aar/oneday-master/datetimepickerlibrary/unspecified/res/values-land/values-land.xml",
+                    "file": "D:\\lastCode\\OneDay\\slidlistviewlibrary\\build\\intermediates\\exploded-aar\\OneDay\\datetimepickerlibrary\\unspecified\\res\\values-land\\values-land.xml",
                     "position": {
                         "startLine": 6,
                         "startColumn": 4,

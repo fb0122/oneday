@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merger version="3"><dataSet config="main"><source path="/Users/fengbo/Downloads/oneday-master/nineoldandroids/src/main/jniLibs"/></dataSet><dataSet config="debug"><source path="/Users/fengbo/Downloads/oneday-master/nineoldandroids/src/debug/jniLibs"/></dataSet></merger>
+<merger version="3"><dataSet config="main"><source path="D:\lastCode\OneDay\nineoldandroids\src\main\jniLibs"/></dataSet><dataSet config="debug"><source path="D:\lastCode\OneDay\nineoldandroids\src\debug\jniLibs"/></dataSet></merger>

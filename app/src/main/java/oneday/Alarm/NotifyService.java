@@ -31,7 +31,7 @@ public class NotifyService extends Service{
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        if(iflag == 0 ? (intent.getAction() != null ) : (intent.getAction().equals("NotifyService.Intent")) ){
+        if(iflag == 0 ? (intent != null ) : (intent.getAction().equals("NotifyService.Intent")) ){
             list = intent.getStringArrayListExtra("time");
             AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
             long tiggerAtTime = SystemClock.elapsedRealtime();
