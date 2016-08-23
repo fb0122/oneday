@@ -1,5 +1,6 @@
 package com.example.fb0122.oneday;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -11,10 +12,13 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
@@ -22,7 +26,9 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.fb0122.oneday.utils.DataSetUtil;
 import com.example.fb0122.oneday.utils.TimeCalendar;
 import com.example.fb0122.oneday.weidget.MyEditText;
 
@@ -33,7 +39,7 @@ import db_oneday.OneDaydb;
 import oneday.Alarm.Config;
 
 
-public class AtyDay extends Fragment implements TextWatcher {
+public class AtyDay extends Fragment implements TextWatcher,SlideListView.RefreshPlan {
 
     public static String TAG = "AtyDay";
 
@@ -65,6 +71,11 @@ public class AtyDay extends Fragment implements TextWatcher {
 
     @Override
     public void afterTextChanged(Editable editable) {
+    }
+
+    @Override
+    public void refresh() {
+        totalRefresh();
     }
 
     class MyAdapter extends BaseAdapter {
@@ -240,7 +251,7 @@ public class AtyDay extends Fragment implements TextWatcher {
 		 */
 
         lvDay.setRemoveListener(removeListener);
-
+        lvDay.setRefreshPlanListener(this);
         lvDay.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -286,18 +297,22 @@ public class AtyDay extends Fragment implements TextWatcher {
             case 0:
                 if (resultCode == Config.CHANGE_DATA) {
                     //动态刷新listview 的方法 notifyDataSetChanged()无法刷新listview
-                    getData();
-                    adapter.notifyDataSetChanged();
-                    lvDay.setAdapter(adapter);
-                    new Thread(new ChangeData()).start();
-                    MainActivity.notiifyList.clear();
-                    Message msg = timeHandler.obtainMessage();
-                    msg.what = Config.ADD_NOTIFY;
-                    timeHandler.sendMessage(msg);
+                    totalRefresh();
 
                 }
                 break;
         }
+    }
+
+    public void totalRefresh(){
+        getData();
+        adapter.notifyDataSetChanged();
+        lvDay.setAdapter(adapter);
+        new Thread(new ChangeData()).start();
+        MainActivity.notiifyList.clear();
+        Message msg = timeHandler.obtainMessage();
+        msg.what = Config.ADD_NOTIFY;
+        timeHandler.sendMessage(msg);
     }
 
     class ChangeData implements Runnable {
