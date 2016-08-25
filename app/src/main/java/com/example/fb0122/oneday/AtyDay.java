@@ -193,6 +193,7 @@ public class AtyDay extends Fragment implements TextWatcher,SlideListView.Refres
         @Override
         public void onItemClick(AdapterView<?> arg0, View arg1, int position,
                                 long arg3) {
+
             addLinePosition = position;
             Intent i = new Intent();
             i.setClass(getActivity(), AtyEditCustom.class);
@@ -236,6 +237,9 @@ public class AtyDay extends Fragment implements TextWatcher,SlideListView.Refres
         View view = inflater.inflate(R.layout.aty_day, null);
         lvDay = (SlideListView) view.findViewById(R.id.lvDay);
         lvDay.initSlideMode(SlideListView.MOD_BOTH, getActivity());
+        //为listview添加头部分割线,必须要添加headerview才会显示
+        View view_header = new View(getContext());
+        lvDay.addHeaderView(view_header,null,true);
         lvDay.setHeaderDividersEnabled(true);
         btnAdd = (ImageButton) view.findViewById(R.id.btnAdd);
         DisplayMetrics dm = new DisplayMetrics();

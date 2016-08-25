@@ -1,5 +1,6 @@
 [
     {
+<<<<<<< HEAD
         "merged": "D:\\lastCode\\OneDay\\slidlistviewlibrary\\build\\intermediates\\res\\merged\\release\\layout\\date_picker_view_animator.xml",
         "source": "D:\\lastCode\\OneDay\\slidlistviewlibrary\\build\\intermediates\\exploded-aar\\OneDay\\datetimepickerlibrary\\unspecified\\res\\layout\\date_picker_view_animator.xml"
     },
@@ -10,25 +11,37 @@
     {
         "merged": "D:\\lastCode\\OneDay\\slidlistviewlibrary\\build\\intermediates\\res\\merged\\release\\layout\\year_label_text_view.xml",
         "source": "D:\\lastCode\\OneDay\\slidlistviewlibrary\\build\\intermediates\\exploded-aar\\OneDay\\datetimepickerlibrary\\unspecified\\res\\layout\\year_label_text_view.xml"
+=======
+        "merged": "/Users/fengbo/Downloads/oneday-master/slidlistviewlibrary/build/intermediates/res/merged/release/layout/year_label_text_view.xml",
+        "source": "/Users/fengbo/Downloads/oneday-master/slidlistviewlibrary/build/intermediates/exploded-aar/oneday-master/datetimepickerlibrary/unspecified/res/layout/year_label_text_view.xml"
     },
     {
-        "merged": "D:\\lastCode\\OneDay\\slidlistviewlibrary\\build\\intermediates\\res\\merged\\release\\layout\\date_picker_dialog.xml",
-        "source": "D:\\lastCode\\OneDay\\slidlistviewlibrary\\build\\intermediates\\exploded-aar\\OneDay\\datetimepickerlibrary\\unspecified\\res\\layout\\date_picker_dialog.xml"
+        "merged": "/Users/fengbo/Downloads/oneday-master/slidlistviewlibrary/build/intermediates/res/merged/release/layout/date_picker_view_animator.xml",
+        "source": "/Users/fengbo/Downloads/oneday-master/slidlistviewlibrary/build/intermediates/exploded-aar/oneday-master/datetimepickerlibrary/unspecified/res/layout/date_picker_view_animator.xml"
     },
     {
-        "merged": "D:\\lastCode\\OneDay\\slidlistviewlibrary\\build\\intermediates\\res\\merged\\release\\layout\\date_picker_header_view.xml",
-        "source": "D:\\lastCode\\OneDay\\slidlistviewlibrary\\build\\intermediates\\exploded-aar\\OneDay\\datetimepickerlibrary\\unspecified\\res\\layout\\date_picker_header_view.xml"
+        "merged": "/Users/fengbo/Downloads/oneday-master/slidlistviewlibrary/build/intermediates/res/merged/release/layout/date_picker_selected_date.xml",
+        "source": "/Users/fengbo/Downloads/oneday-master/slidlistviewlibrary/build/intermediates/exploded-aar/oneday-master/datetimepickerlibrary/unspecified/res/layout/date_picker_selected_date.xml"
+>>>>>>> dd7a0a00f2de430f8881fb09464d76c697d8418c
     },
     {
-        "merged": "D:\\lastCode\\OneDay\\slidlistviewlibrary\\build\\intermediates\\res\\merged\\release\\layout\\time_header_label.xml",
-        "source": "D:\\lastCode\\OneDay\\slidlistviewlibrary\\build\\intermediates\\exploded-aar\\OneDay\\datetimepickerlibrary\\unspecified\\res\\layout\\time_header_label.xml"
+        "merged": "/Users/fengbo/Downloads/oneday-master/slidlistviewlibrary/build/intermediates/res/merged/release/layout/date_picker_header_view.xml",
+        "source": "/Users/fengbo/Downloads/oneday-master/slidlistviewlibrary/build/intermediates/exploded-aar/oneday-master/datetimepickerlibrary/unspecified/res/layout/date_picker_header_view.xml"
     },
     {
-        "merged": "D:\\lastCode\\OneDay\\slidlistviewlibrary\\build\\intermediates\\res\\merged\\release\\layout\\time_picker_dialog.xml",
-        "source": "D:\\lastCode\\OneDay\\slidlistviewlibrary\\build\\intermediates\\exploded-aar\\OneDay\\datetimepickerlibrary\\unspecified\\res\\layout\\time_picker_dialog.xml"
+        "merged": "/Users/fengbo/Downloads/oneday-master/slidlistviewlibrary/build/intermediates/res/merged/release/layout/time_header_label.xml",
+        "source": "/Users/fengbo/Downloads/oneday-master/slidlistviewlibrary/build/intermediates/exploded-aar/oneday-master/datetimepickerlibrary/unspecified/res/layout/time_header_label.xml"
     },
     {
-        "merged": "D:\\lastCode\\OneDay\\slidlistviewlibrary\\build\\intermediates\\res\\merged\\release\\layout\\date_picker_done_button.xml",
-        "source": "D:\\lastCode\\OneDay\\slidlistviewlibrary\\build\\intermediates\\exploded-aar\\OneDay\\datetimepickerlibrary\\unspecified\\res\\layout\\date_picker_done_button.xml"
+        "merged": "/Users/fengbo/Downloads/oneday-master/slidlistviewlibrary/build/intermediates/res/merged/release/layout/date_picker_dialog.xml",
+        "source": "/Users/fengbo/Downloads/oneday-master/slidlistviewlibrary/build/intermediates/exploded-aar/oneday-master/datetimepickerlibrary/unspecified/res/layout/date_picker_dialog.xml"
+    },
+    {
+        "merged": "/Users/fengbo/Downloads/oneday-master/slidlistviewlibrary/build/intermediates/res/merged/release/layout/date_picker_done_button.xml",
+        "source": "/Users/fengbo/Downloads/oneday-master/slidlistviewlibrary/build/intermediates/exploded-aar/oneday-master/datetimepickerlibrary/unspecified/res/layout/date_picker_done_button.xml"
+    },
+    {
+        "merged": "/Users/fengbo/Downloads/oneday-master/slidlistviewlibrary/build/intermediates/res/merged/release/layout/time_picker_dialog.xml",
+        "source": "/Users/fengbo/Downloads/oneday-master/slidlistviewlibrary/build/intermediates/exploded-aar/oneday-master/datetimepickerlibrary/unspecified/res/layout/time_picker_dialog.xml"
     }
 ]

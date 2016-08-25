@@ -48,7 +48,13 @@
     <option name="id" value="Android" />
   </component>
 <<<<<<< HEAD
+  <component name="SvnConfiguration">
+    <configuration>$USER_HOME$/.subversion</configuration>
+  </component>
 =======
+<<<<<<< HEAD
+=======
+>>>>>>> 47df562030cbb9bc44fa0ee55e70d7a5fb729796
   <component name="masterDetails">
     <states>
       <state key="ScopeChooserConfigurable.UI">

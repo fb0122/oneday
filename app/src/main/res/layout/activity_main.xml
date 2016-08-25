@@ -2,6 +2,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/day_background"
      >
 
     <include layout="@layout/toolbar"/>
@@ -18,8 +19,8 @@
     <com.example.fb0122.oneday.MyViewPager
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:background="@color/textview_background"
         android:id="@+id/viewpager"
+        android:layout_marginTop="4dp"
         />
 
 </LinearLayout>

@@ -202,15 +202,11 @@ public class SlideListView extends ListView implements TextView.OnEditorActionLi
      */
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
-        String oldValue = null;
-        if (tvSc != null) {
-            oldValue = tvSc.getText().toString();
-        }
         final int action = ev.getAction();
         int lastX = (int) ev.getX();
         switch (action) {
             case MotionEvent.ACTION_DOWN:
-                if (tvSc != null) {
+                if (tvSc != null && canMove) {
                     setFocusable(true);
                     setFocusableInTouchMode(true);
                     requestFocus();
@@ -247,7 +243,7 @@ public class SlideListView extends ListView implements TextView.OnEditorActionLi
                     return super.onTouchEvent(ev);
                 }
 
-                // 获取我们点击的item view
+                // 获取点击的item view
                 itemView = getChildAt(slidePosition - getFirstVisiblePosition());
             /*此处根据设置的滑动模式，自动获取左侧或右侧菜单的长度*/
                 if (this.mode == MOD_BOTH) {
@@ -345,19 +341,16 @@ public class SlideListView extends ListView implements TextView.OnEditorActionLi
                     return true; // 拖动的时候ListView不滚动
                 }
             case MotionEvent.ACTION_UP:
-                if (!oldValue.equals(tvSc.getText().toString())) {
-
-                }
                 if (canMove) {
                     canMove = false;
 //				scrollDelete();
                     scrollByDistanceX();
                 }
                 if (VISIT == View.GONE) {
-                    AtyDay.map.put(slidePosition, "undo");
+                    AtyDay.map.put(slidePosition - 1 , "undo");
                     AtyDay.listdata.add(AtyDay.map);
                 } else {
-                    AtyDay.map.put(slidePosition, "do");
+                    AtyDay.map.put(slidePosition - 1, "do");
                     AtyDay.listdata.add(AtyDay.map);
                 }
 

@@ -20,12 +20,17 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.fb0122.oneday.utils.DimenTranslate;
+import com.example.fb0122.oneday.utils.TimeCalendar;
+
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 
 import circleprogressbar.TasksCompletedView;
@@ -58,6 +63,7 @@ public class AtyFinish extends Fragment implements View.OnTouchListener {
     static HashSet hashSet;
     ChangeHandler changeHandler = new ChangeHandler(Looper.myLooper());
     public static int flag = 0;
+    private int laterDay = 0;
 
     GestureDetector detector = new GestureDetector(getActivity(), new GestureDetector.OnGestureListener() {
         @Override
@@ -150,11 +156,10 @@ public class AtyFinish extends Fragment implements View.OnTouchListener {
         listview.setItemAnimator(new DefaultItemAnimator());
         listview.setHasFixedSize(true);
         listview.setOnTouchListener(this);
-
-        weekData = getCursor();
+        ArrayList<String> listdata = getCursor();
         //去除list中重复元素， 使用hashset
-
-        adapter = refreshWeekView(getActivity(), weekData, listview);
+        Log.d(TAG, weekData + "");
+        adapter = refreshWeekView(getActivity(), listdata, listview);
         listview.setAdapter(adapter);
         return view;
     }
@@ -190,6 +195,9 @@ public class AtyFinish extends Fragment implements View.OnTouchListener {
         }
     }
 
+    /**
+     * 对周页面卡片布局的排序,按星期从小到大排列
+     */
 
     class cursorAdapter extends RecyclerView.Adapter<cursorAdapter.ViewHolder> implements DataRefresh {
 
@@ -221,14 +229,18 @@ public class AtyFinish extends Fragment implements View.OnTouchListener {
             public ViewHolder(View itemView) {
                 super(itemView);
                 tvWeek = (TextView) itemView.findViewById(R.id.tvWeek);
+                tvDate = (TextView) itemView.findViewById(R.id.tvDate);
+                tvPercent = (TextView) itemView.findViewById(R.id.tvPercent);
+                rlWeek = (LinearLayout) itemView.findViewById(R.id.rlWeek);
                 lnCard = (RelativeLayout) itemView.findViewById(R.id.ll1);
-                rlWeek = (LinearLayout)itemView.findViewById(R.id.rlWeek);
+                moreImageView = (ImageView) itemView.findViewById(R.id.week_card_more);
                 // TODO Auto-generated constructor stub
             }
 
-            TextView tvWeek;
+            TextView tvWeek, tvDate, tvPercent;
             LinearLayout rlWeek;
             RelativeLayout lnCard;
+            ImageView moreImageView;
 
         }
 
@@ -244,6 +256,7 @@ public class AtyFinish extends Fragment implements View.OnTouchListener {
 
         @Override
         public int getItemCount() {                //第二步执行
+
             // TODO Auto-generated method stub
             //如果删除之后就会少一个item，而读取的时候会按顺序读取星期。
             if (flag == 1 || flag == 2) {
@@ -253,22 +266,17 @@ public class AtyFinish extends Fragment implements View.OnTouchListener {
             }
         }
 
-        @Override
-        public void setHasStableIds(boolean hasStableIds) {
-            super.setHasStableIds(hasStableIds);
-        }
-
-
         //position 参数来自 getAdapterPosition
         @Override
-        public void onBindViewHolder(ViewHolder right, int position) {                    //第五步执行
-            Log.e(TAG, "onBindViewHolder");
+        public void onBindViewHolder(ViewHolder right, int position) {      //第五步执行
             db = new OneDaydb(getActivity(), "oneday");
+            laterDay += 1;
 
             /*
              * 统计界面每天的完成度在这里设置，可能需要新建一个表存放每天完成度统计然后从表内取出数据。该表可能需要两个字段，分别是week
 			 * 和percent，根据星期取出每天的完成统计情况
 			 */
+//            Log.e(TAG,"flag = " + flag);
             //  根据flag判断删除数据之后的item读取position
             if (flag == 2) {
                 position = 0;
@@ -287,6 +295,7 @@ public class AtyFinish extends Fragment implements View.OnTouchListener {
             s = dbreader.rawQuery(" select * from oneday where week=" + "'" + week + "'", null);
 
             if (s.getCount() == 0) {
+//			Log.e(TAG,"list remove: " + list.remove(position));
                 list.remove(position);
                 isFresh = false;
                 startHandler(position);
@@ -300,19 +309,51 @@ public class AtyFinish extends Fragment implements View.OnTouchListener {
                 if (flag == 2) {
                     flag = 1;
                 }
-                right.tvWeek.setText(week);
-                for (s.moveToFirst(); !s.isAfterLast(); s.moveToNext()) {
-                    RelativeLayout rl = new RelativeLayout(context);
+                RelativeLayout rl = new RelativeLayout(context);
+                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                params.setMargins(DimenTranslate.dp2px(context, 9), 0, DimenTranslate.dp2px(context, 9), 0);
+
+                rl.setLayoutParams(params);
+                if (week.equals(TimeCalendar.getTodayWeek())) {
+                    right.tvWeek.setText(week);
+                    right.tvDate.setText(TimeCalendar.getLaterDate(0) + " /今天");
+                    right.tvPercent.setText("100%");
+                    for (s.moveToFirst(); !s.isAfterLast(); s.moveToNext()) {
+                        rl.removeAllViews();
+                        TextView tv = new TextView(context);
+                        TextView tv1 = new TextView(context);
+                        tv.setText(s.getString(c.getColumnIndex(OneDaydb.COLUMN_PLAN)));
+                        tv1.setText(s.getString(c.getColumnIndex(OneDaydb.COLUMN_FROM_TIME)) + "-" + s.getString(c.getColumnIndex(OneDaydb.COLUMN_TO_TIME)));
+                        RelativeLayout.LayoutParams textViewParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                        RelativeLayout.LayoutParams textViewParams1 = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                        textViewParams1.leftMargin = DimenTranslate.dp2px(context, 9);
+                        textViewParams.rightMargin = DimenTranslate.dp2px(context, 9);
+                        textViewParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+                        tv.setLayoutParams(textViewParams1);
+                        tv1.setGravity(Gravity.END);
+                        tv1.setLayoutParams(textViewParams);
+                        rl.addView(tv);
+                        rl.addView(tv1);
+                    }
+                } else {
+                    right.moreImageView.setVisibility(View.GONE);
+                    right.tvWeek.setText(week);
+                    right.tvWeek.setTextColor(getResources().getColor(R.color.shadow));
+                    right.tvDate.setText(TimeCalendar.getLaterDate(laterDay) + " /未到");
+                    right.tvDate.setTextColor(getResources().getColor(R.color.shadow));
+                    right.tvPercent.setText("0%");
+                    right.tvPercent.setTextColor(getResources().getColor(R.color.shadow));
                     TextView tv = new TextView(context);
-                    TextView tv1 = new TextView(context);
-                    tv.setText(s.getString(c.getColumnIndex(OneDaydb.COLUMN_PLAN)));
-                    tv1.setText(s.getString(c.getColumnIndex(OneDaydb.COLUMN_FROM_TIME)) + "-" + s.getString(c.getColumnIndex(OneDaydb.COLUMN_TO_TIME)));
-                    tv1.setGravity(Gravity.END);
+                    tv.setText("有" + s.getCount() + "个计划任务在列表中");
+                    tv.setTextColor(getResources().getColor(R.color.shadow));
+                    RelativeLayout.LayoutParams textViewParams1 = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    textViewParams1.leftMargin = DimenTranslate.dp2px(context, 18);
+                    tv.setLayoutParams(textViewParams1);
                     rl.addView(tv);
-                    rl.addView(tv1);
-                    right.rlWeek.addView(rl);
                 }
+                right.rlWeek.addView(rl);
             }
+
         }
 
         @Override
@@ -336,11 +377,27 @@ public class AtyFinish extends Fragment implements View.OnTouchListener {
         hashSet = new HashSet(weekData);
         weekData.clear();
         weekData.addAll(hashSet);
+        Collections.sort(weekData, new Comparator<String>() {
+            @Override
+            public int compare(String s, String t1) {
+                return TimeCalendar.getWeekMap().get(s) - TimeCalendar.getWeekMap().get(t1);
+            }
+        });
+        weekData = sortWeekCard(weekData);
         return weekData;
     }
 
+    private ArrayList<String> sortWeekCard(ArrayList<String> list) {
+        int index = TimeCalendar.getWeekMap().get(TimeCalendar.getTodayWeek());
+        ArrayList<String> sortedList = new ArrayList<>();
+        if (list.size() > 0) {
+            sortedList.addAll(list.subList(index - 1, list.size()));
+            sortedList.addAll(list.subList(0, index - 1));
+        }
+        return sortedList;
+    }
+
     public cursorAdapter refreshWeekView(Context context, ArrayList<String> listdata, RecyclerView listview) {
-        Log.e(TAG, "refreshWeekView()");
         cursorAdapter cAdapter = new cursorAdapter(context, listdata);
         cAdapter.notifyDataSetChanged();
         return cAdapter;
@@ -350,16 +407,13 @@ public class AtyFinish extends Fragment implements View.OnTouchListener {
     public void onStop() {
         super.onStop();
         flag = 0;
-        Log.e(TAG, "onStop()");
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        Log.e(TAG, "onResume()  getCursor()");
         //以这种方式刷新完成界面数据。。。。效率不是很高   后期需要重新考虑方法。
         weekData = getCursor();
-        Log.e(TAG, "onResume() weekData: " + weekData);
     }
 
     @Override
@@ -397,6 +451,4 @@ class ChangeHandler extends android.os.Handler {
         super.handleMessage(msg);
     }
 }
-
-
 
