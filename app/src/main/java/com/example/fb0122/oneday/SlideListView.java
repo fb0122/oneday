@@ -202,15 +202,11 @@ public class SlideListView extends ListView implements TextView.OnEditorActionLi
      */
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
-        String oldValue = null;
-        if (tvSc != null) {
-            oldValue = tvSc.getText().toString();
-        }
         final int action = ev.getAction();
         int lastX = (int) ev.getX();
         switch (action) {
             case MotionEvent.ACTION_DOWN:
-                if (tvSc != null) {
+                if (tvSc != null && canMove) {
                     setFocusable(true);
                     setFocusableInTouchMode(true);
                     requestFocus();
@@ -301,7 +297,7 @@ public class SlideListView extends ListView implements TextView.OnEditorActionLi
                                     tvSc.setText(changeTextView.getHint().toString());
                                 }
                             }
-                            tvSc.setTextColor(getResources().getColor(R.color.shaow));
+                            tvSc.setTextColor(getResources().getColor(R.color.shadow));
                             VISIT = View.VISIBLE;
                             canMove = true;
 
@@ -345,19 +341,16 @@ public class SlideListView extends ListView implements TextView.OnEditorActionLi
                     return true; // 拖动的时候ListView不滚动
                 }
             case MotionEvent.ACTION_UP:
-                if (!oldValue.equals(tvSc.getText().toString())) {
-
-                }
                 if (canMove) {
                     canMove = false;
 //				scrollDelete();
                     scrollByDistanceX();
                 }
                 if (VISIT == View.GONE) {
-                    AtyDay.map.put(slidePosition, "undo");
+                    AtyDay.map.put(slidePosition - 1 , "undo");
                     AtyDay.listdata.add(AtyDay.map);
                 } else {
-                    AtyDay.map.put(slidePosition, "do");
+                    AtyDay.map.put(slidePosition - 1, "do");
                     AtyDay.listdata.add(AtyDay.map);
                 }
 
