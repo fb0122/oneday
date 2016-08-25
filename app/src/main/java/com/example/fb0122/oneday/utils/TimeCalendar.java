@@ -33,10 +33,7 @@ public class TimeCalendar {
         return week_str[getToday() - 2];
     }
 
-<<<<<<< HEAD
-    public static int getDateToday(){
-        return getCanlendar().get(Calendar.DAY_OF_YEAR);
-=======
+
     public static String getSpecialWeek(int day){
         return week_str[day % 7];
     }
@@ -76,7 +73,6 @@ public class TimeCalendar {
         weekMap.put("周日",7);
 
         return weekMap;
->>>>>>> dd7a0a00f2de430f8881fb09464d76c697d8418c
     }
 
 }

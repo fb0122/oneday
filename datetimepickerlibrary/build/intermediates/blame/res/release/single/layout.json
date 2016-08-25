@@ -4,20 +4,12 @@
         "source": "D:\\lastCode\\OneDay\\datetimepickerlibrary\\src\\main\\res\\layout\\date_picker_dialog.xml"
     },
     {
-        "merged": "D:\\Users\\fengbo\\Downloads\\oneday-master\\datetimepickerlibrary\\build\\intermediates\\res\\merged\\release\\layout\\date_picker_header_view.xml",
-        "source": "D:\\Users\\fengbo\\Downloads\\oneday-master\\datetimepickerlibrary\\src\\main\\res\\layout\\date_picker_header_view.xml"
-    },
-    {
         "merged": "D:\\lastCode\\OneDay\\datetimepickerlibrary\\build\\intermediates\\res\\merged\\release\\layout\\time_picker_dialog.xml",
         "source": "D:\\lastCode\\OneDay\\datetimepickerlibrary\\src\\main\\res\\layout\\time_picker_dialog.xml"
     },
     {
         "merged": "D:\\lastCode\\OneDay\\datetimepickerlibrary\\build\\intermediates\\res\\merged\\release\\layout\\year_label_text_view.xml",
         "source": "D:\\lastCode\\OneDay\\datetimepickerlibrary\\src\\main\\res\\layout\\year_label_text_view.xml"
-    },
-    {
-        "merged": "D:\\Users\\fengbo\\Downloads\\oneday-master\\datetimepickerlibrary\\build\\intermediates\\res\\merged\\release\\layout\\date_picker_dialog.xml",
-        "source": "D:\\Users\\fengbo\\Downloads\\oneday-master\\datetimepickerlibrary\\src\\main\\res\\layout\\date_picker_dialog.xml"
     },
     {
         "merged": "D:\\lastCode\\OneDay\\datetimepickerlibrary\\build\\intermediates\\res\\merged\\release\\layout\\date_picker_done_button.xml",
@@ -32,35 +24,11 @@
         "source": "D:\\lastCode\\OneDay\\datetimepickerlibrary\\src\\main\\res\\layout\\date_picker_selected_date.xml"
     },
     {
-        "merged": "D:\\Users\\fengbo\\Downloads\\oneday-master\\datetimepickerlibrary\\build\\intermediates\\res\\merged\\release\\layout\\date_picker_view_animator.xml",
-        "source": "D:\\Users\\fengbo\\Downloads\\oneday-master\\datetimepickerlibrary\\src\\main\\res\\layout\\date_picker_view_animator.xml"
-    },
-    {
-        "merged": "D:\\Users\\fengbo\\Downloads\\oneday-master\\datetimepickerlibrary\\build\\intermediates\\res\\merged\\release\\layout\\time_picker_dialog.xml",
-        "source": "D:\\Users\\fengbo\\Downloads\\oneday-master\\datetimepickerlibrary\\src\\main\\res\\layout\\time_picker_dialog.xml"
-    },
-    {
-        "merged": "D:\\Users\\fengbo\\Downloads\\oneday-master\\datetimepickerlibrary\\build\\intermediates\\res\\merged\\release\\layout\\year_label_text_view.xml",
-        "source": "D:\\Users\\fengbo\\Downloads\\oneday-master\\datetimepickerlibrary\\src\\main\\res\\layout\\year_label_text_view.xml"
-    },
-    {
-        "merged": "D:\\Users\\fengbo\\Downloads\\oneday-master\\datetimepickerlibrary\\build\\intermediates\\res\\merged\\release\\layout\\time_header_label.xml",
-        "source": "D:\\Users\\fengbo\\Downloads\\oneday-master\\datetimepickerlibrary\\src\\main\\res\\layout\\time_header_label.xml"
-    },
-    {
         "merged": "D:\\lastCode\\OneDay\\datetimepickerlibrary\\build\\intermediates\\res\\merged\\release\\layout\\date_picker_header_view.xml",
         "source": "D:\\lastCode\\OneDay\\datetimepickerlibrary\\src\\main\\res\\layout\\date_picker_header_view.xml"
     },
     {
-        "merged": "D:\\Users\\fengbo\\Downloads\\oneday-master\\datetimepickerlibrary\\build\\intermediates\\res\\merged\\release\\layout\\date_picker_done_button.xml",
-        "source": "D:\\Users\\fengbo\\Downloads\\oneday-master\\datetimepickerlibrary\\src\\main\\res\\layout\\date_picker_done_button.xml"
-    },
-    {
         "merged": "D:\\lastCode\\OneDay\\datetimepickerlibrary\\build\\intermediates\\res\\merged\\release\\layout\\time_header_label.xml",
         "source": "D:\\lastCode\\OneDay\\datetimepickerlibrary\\src\\main\\res\\layout\\time_header_label.xml"
-    },
-    {
-        "merged": "D:\\Users\\fengbo\\Downloads\\oneday-master\\datetimepickerlibrary\\build\\intermediates\\res\\merged\\release\\layout\\date_picker_selected_date.xml",
-        "source": "D:\\Users\\fengbo\\Downloads\\oneday-master\\datetimepickerlibrary\\src\\main\\res\\layout\\date_picker_selected_date.xml"
     }
 ]

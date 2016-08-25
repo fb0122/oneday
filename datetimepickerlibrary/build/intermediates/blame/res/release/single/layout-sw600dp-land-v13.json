@@ -1,9 +1,5 @@
 [
     {
-        "merged": "D:\\Users\\fengbo\\Downloads\\oneday-master\\datetimepickerlibrary\\build\\intermediates\\res\\merged\\release\\layout-sw600dp-land-v13\\date_picker_dialog.xml",
-        "source": "D:\\Users\\fengbo\\Downloads\\oneday-master\\datetimepickerlibrary\\src\\main\\res\\layout-sw600dp-land\\date_picker_dialog.xml"
-    },
-    {
         "merged": "D:\\lastCode\\OneDay\\datetimepickerlibrary\\build\\intermediates\\res\\merged\\release\\layout-sw600dp-land-v13\\date_picker_dialog.xml",
         "source": "D:\\lastCode\\OneDay\\datetimepickerlibrary\\src\\main\\res\\layout-sw600dp-land\\date_picker_dialog.xml"
     }

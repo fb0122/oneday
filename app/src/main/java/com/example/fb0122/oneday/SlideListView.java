@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.fb0122.oneday.utils.DataSetUtil;
+import com.example.fb0122.oneday.utils.PreferenceUtils;
 import com.example.fb0122.oneday.weidget.MyEditText;
 
 import db_oneday.OneDaydb;
@@ -347,11 +348,9 @@ public class SlideListView extends ListView implements TextView.OnEditorActionLi
                     scrollByDistanceX();
                 }
                 if (VISIT == View.GONE) {
-                    AtyDay.map.put(slidePosition - 1 , "undo");
-                    AtyDay.listdata.add(AtyDay.map);
+                    PreferenceUtils.putBoolean(context,String.valueOf(slidePosition),false);
                 } else {
-                    AtyDay.map.put(slidePosition - 1, "do");
-                    AtyDay.listdata.add(AtyDay.map);
+                    PreferenceUtils.putBoolean(context,String.valueOf(slidePosition),true);
                 }
 
                 break;
@@ -451,7 +450,7 @@ public class SlideListView extends ListView implements TextView.OnEditorActionLi
                 }
                 itemView.scrollTo(0, 0);
                 isDelete = false;              //在这里设置isDelete为false,防止下次只要向左滑动就删除item
-                mRemoveListener.removeItem(RemoveDirection.LEFT, slidePosition, itemView);
+                mRemoveListener.removeItem(RemoveDirection.LEFT, slidePosition - 1, itemView);      //slidePosition - 1 是因为listview加了headerView
                 postInvalidate();
             }
         }
@@ -465,7 +464,7 @@ public class SlideListView extends ListView implements TextView.OnEditorActionLi
     }
 
     public interface RemoveListener {
-        public void removeItem(RemoveDirection reDirection, int position, View itemView);
+        void removeItem(RemoveDirection reDirection, int position, View itemView);
     }
 
     public interface RefreshPlan{

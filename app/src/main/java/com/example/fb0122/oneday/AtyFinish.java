@@ -195,9 +195,7 @@ public class AtyFinish extends Fragment implements View.OnTouchListener {
         }
     }
 
-    /**
-     * 对周页面卡片布局的排序,按星期从小到大排列
-     */
+
 
     class cursorAdapter extends RecyclerView.Adapter<cursorAdapter.ViewHolder> implements DataRefresh {
 
@@ -309,17 +307,16 @@ public class AtyFinish extends Fragment implements View.OnTouchListener {
                 if (flag == 2) {
                     flag = 1;
                 }
-                RelativeLayout rl = new RelativeLayout(context);
-                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                params.setMargins(DimenTranslate.dp2px(context, 9), 0, DimenTranslate.dp2px(context, 9), 0);
 
-                rl.setLayoutParams(params);
                 if (week.equals(TimeCalendar.getTodayWeek())) {
                     right.tvWeek.setText(week);
                     right.tvDate.setText(TimeCalendar.getLaterDate(0) + " /今天");
                     right.tvPercent.setText("100%");
                     for (s.moveToFirst(); !s.isAfterLast(); s.moveToNext()) {
-                        rl.removeAllViews();
+                        RelativeLayout rl = new RelativeLayout(context);
+                        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                        params.setMargins(DimenTranslate.dp2px(context, 9), 0, DimenTranslate.dp2px(context, 9), 0);
+                        rl.setLayoutParams(params);
                         TextView tv = new TextView(context);
                         TextView tv1 = new TextView(context);
                         tv.setText(s.getString(c.getColumnIndex(OneDaydb.COLUMN_PLAN)));
@@ -334,8 +331,13 @@ public class AtyFinish extends Fragment implements View.OnTouchListener {
                         tv1.setLayoutParams(textViewParams);
                         rl.addView(tv);
                         rl.addView(tv1);
+                        right.rlWeek.addView(rl);
                     }
                 } else {
+                    RelativeLayout rl = new RelativeLayout(context);
+                    RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    params.setMargins(DimenTranslate.dp2px(context, 9), 0, DimenTranslate.dp2px(context, 9), 0);
+                    rl.setLayoutParams(params);
                     right.moreImageView.setVisibility(View.GONE);
                     right.tvWeek.setText(week);
                     right.tvWeek.setTextColor(getResources().getColor(R.color.shadow));
@@ -350,8 +352,9 @@ public class AtyFinish extends Fragment implements View.OnTouchListener {
                     textViewParams1.leftMargin = DimenTranslate.dp2px(context, 18);
                     tv.setLayoutParams(textViewParams1);
                     rl.addView(tv);
+                    right.rlWeek.addView(rl);
                 }
-                right.rlWeek.addView(rl);
+
             }
 
         }
@@ -387,6 +390,9 @@ public class AtyFinish extends Fragment implements View.OnTouchListener {
         return weekData;
     }
 
+    /**
+     * 对周页面卡片布局的排序,按星期从小到大排列
+     */
     private ArrayList<String> sortWeekCard(ArrayList<String> list) {
         int index = TimeCalendar.getWeekMap().get(TimeCalendar.getTodayWeek());
         ArrayList<String> sortedList = new ArrayList<>();
