@@ -32,6 +32,9 @@ import com.example.fb0122.oneday.utils.TimeCalendar;
 
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 
 import circleprogressbar.TasksCompletedView;
@@ -157,11 +160,10 @@ public class AtyFinish extends Fragment implements View.OnTouchListener {
         listview.setItemAnimator(new DefaultItemAnimator());
         listview.setHasFixedSize(true);
         listview.setOnTouchListener(this);
-
-        weekData = getCursor();
+        ArrayList<String> listdata = getCursor();
         //去除list中重复元素， 使用hashset
-
-        adapter = refreshWeekView(getActivity(), weekData, listview);
+        Log.d(TAG,weekData + "");
+        adapter = refreshWeekView(getActivity(), listdata, listview);
         listview.setAdapter(adapter);
         return view;
     }
@@ -196,6 +198,10 @@ public class AtyFinish extends Fragment implements View.OnTouchListener {
             return true;
         }
     }
+
+    /**
+       对周页面卡片布局的排序,按星期从小到大排列
+     */
 
     class cursorAdapter extends RecyclerView.Adapter<cursorAdapter.ViewHolder> implements DataRefresh {
 
@@ -254,27 +260,19 @@ public class AtyFinish extends Fragment implements View.OnTouchListener {
 
         @Override
         public int getItemCount() {                //第二步执行
-//            Log.e(TAG,"getItemCount()");
+
             // TODO Auto-generated method stub
             //如果删除之后就会少一个item，而读取的时候会按顺序读取星期。
             if (flag == 1 || flag == 2) {
-//                Log.e(TAG,"getItemCount() + 1 = " + (list.size() + 1));
                 return list.size() + 1;
             } else {
-//                Log.e(TAG,"getItemCount() = " + list.size());
                 return list.size();
             }
         }
 
-        @Override
-        public void setHasStableIds(boolean hasStableIds) {
-            super.setHasStableIds(hasStableIds);
-        }
-
-
         //position 参数来自 getAdapterPosition
         @Override
-        public void onBindViewHolder(ViewHolder right, int position) {                    //第五步执行
+        public void onBindViewHolder(ViewHolder right, int position) {      //第五步执行
             db = new OneDaydb(getActivity(), "oneday");
             laterDay += 1;
 
@@ -315,16 +313,17 @@ public class AtyFinish extends Fragment implements View.OnTouchListener {
                 if (flag == 2) {
                     flag = 1;
                 }
+                RelativeLayout rl = new RelativeLayout(context);
+                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                params.setMargins(DimenTranslate.dp2px(context, 9), 0, DimenTranslate.dp2px(context, 9), 0);
+
+                rl.setLayoutParams(params);
                 if (week.equals(TimeCalendar.getTodayWeek())) {
                     right.tvWeek.setText(week);
                     right.tvDate.setText(TimeCalendar.getLaterDate(0) + " /今天");
                     right.tvPercent.setText("100%");
                     for (s.moveToFirst(); !s.isAfterLast(); s.moveToNext()) {
-                        RelativeLayout rl = new RelativeLayout(context);
-                        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                        params.setMargins(DimenTranslate.dp2px(context, 9), 0, DimenTranslate.dp2px(context, 9), 0);
-
-                        rl.setLayoutParams(params);
+                        rl.removeAllViews();
                         TextView tv = new TextView(context);
                         TextView tv1 = new TextView(context);
                         tv.setText(s.getString(c.getColumnIndex(OneDaydb.COLUMN_PLAN)));
@@ -339,7 +338,6 @@ public class AtyFinish extends Fragment implements View.OnTouchListener {
                         tv1.setLayoutParams(textViewParams);
                         rl.addView(tv);
                         rl.addView(tv1);
-                        right.rlWeek.addView(rl);
                     }
                 }else{
                     right.moreImageView.setVisibility(View.GONE);
@@ -355,8 +353,9 @@ public class AtyFinish extends Fragment implements View.OnTouchListener {
                     RelativeLayout.LayoutParams textViewParams1 = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                     textViewParams1.leftMargin = DimenTranslate.dp2px(context, 18);
                     tv.setLayoutParams(textViewParams1);
-                    right.rlWeek.addView(tv);
+                    rl.addView(tv);
                 }
+                    right.rlWeek.addView(rl);
             }
 
         }
@@ -382,7 +381,24 @@ public class AtyFinish extends Fragment implements View.OnTouchListener {
         hashSet = new HashSet(weekData);
         weekData.clear();
         weekData.addAll(hashSet);
+        Collections.sort(weekData, new Comparator<String>() {
+            @Override
+            public int compare(String s, String t1) {
+                return TimeCalendar.getWeekMap().get(s) - TimeCalendar.getWeekMap().get(t1);
+            }
+        });
+        weekData = sortWeekCard(weekData);
         return weekData;
+    }
+
+    private ArrayList<String> sortWeekCard(ArrayList<String> list){
+        int index = TimeCalendar.getWeekMap().get(TimeCalendar.getTodayWeek());
+        ArrayList<String> sortedList = new ArrayList<>();
+        if(list.size() > 0) {
+            sortedList.addAll(list.subList(index - 1, list.size()));
+            sortedList.addAll(list.subList(0, index - 1));
+        }
+        return sortedList;
     }
 
     public cursorAdapter refreshWeekView(Context context, ArrayList<String> listdata, RecyclerView listview) {
@@ -407,9 +423,6 @@ public class AtyFinish extends Fragment implements View.OnTouchListener {
     @Override
     public void onDestroy() {
         super.onDestroy();
-//		s.close();
-//		c.close();
-//		ss.close();
     }
 
 }

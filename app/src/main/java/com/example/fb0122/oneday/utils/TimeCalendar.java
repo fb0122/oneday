@@ -5,6 +5,7 @@ import android.util.Log;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 
 /**
  * Created by fengbo on 16/8/18.
@@ -15,7 +16,7 @@ import java.util.Date;
 public class TimeCalendar {
 
     public static String[] week_str = new String[]{"周一","周二","周三","周四","周五","周六","周日"};
-
+    private static HashMap<String,Integer> weekMap = new HashMap<>();
 
     public static Calendar getCanlendar(){
         return Calendar.getInstance();
@@ -33,7 +34,7 @@ public class TimeCalendar {
     }
 
     public static String getSpecialWeek(int day){
-        return week_str[getToday() - day];
+        return week_str[day % 7];
     }
 
     public static String getTodayDate(){
@@ -61,5 +62,16 @@ public class TimeCalendar {
         return date_str.substring(5,date_str.length());
     }
 
+    public static HashMap<String,Integer> getWeekMap(){
+        weekMap.put("周一",1);
+        weekMap.put("周二",2);
+        weekMap.put("周三",3);
+        weekMap.put("周四",4);
+        weekMap.put("周五",5);
+        weekMap.put("周六",6);
+        weekMap.put("周日",7);
+
+        return weekMap;
+    }
 
 }
