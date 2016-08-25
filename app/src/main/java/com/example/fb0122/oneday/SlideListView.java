@@ -247,7 +247,7 @@ public class SlideListView extends ListView implements TextView.OnEditorActionLi
                     return super.onTouchEvent(ev);
                 }
 
-                // 获取我们点击的item view
+                // 获取点击的item view
                 itemView = getChildAt(slidePosition - getFirstVisiblePosition());
             /*此处根据设置的滑动模式，自动获取左侧或右侧菜单的长度*/
                 if (this.mode == MOD_BOTH) {
