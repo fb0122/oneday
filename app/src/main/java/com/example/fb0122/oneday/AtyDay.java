@@ -157,7 +157,7 @@ public class AtyDay extends Fragment implements TextWatcher,SlideListView.Refres
                 holder.addLine.setVisibility(View.GONE);
             } else if (map.size() > 0 && map.containsKey(position) && map.get(position).equals("do")) {
                 holder.addLine.setVisibility(View.VISIBLE);
-                holder.tvSc.setTextColor(getResources().getColor(R.color.shaow));
+                holder.tvSc.setTextColor(getResources().getColor(R.color.shadow));
             } else {
                 holder.addLine.setVisibility(View.GONE);
             }

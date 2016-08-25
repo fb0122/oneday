@@ -301,7 +301,7 @@ public class SlideListView extends ListView implements TextView.OnEditorActionLi
                                     tvSc.setText(changeTextView.getHint().toString());
                                 }
                             }
-                            tvSc.setTextColor(getResources().getColor(R.color.shaow));
+                            tvSc.setTextColor(getResources().getColor(R.color.shadow));
                             VISIT = View.VISIBLE;
                             canMove = true;
 

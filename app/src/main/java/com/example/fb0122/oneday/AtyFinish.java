@@ -12,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.GestureDetector;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -21,6 +22,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -188,29 +190,12 @@ public class AtyFinish extends Fragment implements View.OnTouchListener {
         }
     }
 
-    class ProgressRunable implements Runnable {
-
-        @Override
-        public void run() {
-            while (mCurrentProgress < mTotalProgress - 20) {
-                mCurrentProgress += 1;
-                circleprogressbar.setProgress(mCurrentProgress);
-                try {
-                    Thread.sleep(100);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-    }
 
     class cursorAdapter extends RecyclerView.Adapter<cursorAdapter.ViewHolder> implements DataRefresh {
 
         private Context context;
         private ArrayList<String> list = new ArrayList<>();
         LayoutInflater layoutinflate;
-        TwoCircleProgressbar twocircleprogworessbar;
         public DataRefresh dataRefresh;
         private boolean isRefresh;
 
@@ -235,17 +220,15 @@ public class AtyFinish extends Fragment implements View.OnTouchListener {
         class ViewHolder extends RecyclerView.ViewHolder {                    //第四步执行
             public ViewHolder(View itemView) {
                 super(itemView);
-                twocircleprogworessbar = (TwoCircleProgressbar) itemView.findViewById(R.id.twocircleProgressbar);
-//                tvA = (TextView) itemView.findViewById(R.id.tvA);
                 tvWeek = (TextView) itemView.findViewById(R.id.tvWeek);
-                rlWeek = (LinearLayout) itemView.findViewById(R.id.rlWeek);
-                lnCard = (LinearLayout) itemView.findViewById(R.id.ll1);
+                lnCard = (RelativeLayout) itemView.findViewById(R.id.ll1);
+                rlWeek = (LinearLayout)itemView.findViewById(R.id.rlWeek);
                 // TODO Auto-generated constructor stub
             }
 
-            TextView tvA, tvWeek;
-            ListView listview;
-            LinearLayout rlWeek, lnCard;
+            TextView tvWeek;
+            LinearLayout rlWeek;
+            RelativeLayout lnCard;
 
         }
 
@@ -261,14 +244,11 @@ public class AtyFinish extends Fragment implements View.OnTouchListener {
 
         @Override
         public int getItemCount() {                //第二步执行
-//            Log.e(TAG,"getItemCount()");
             // TODO Auto-generated method stub
             //如果删除之后就会少一个item，而读取的时候会按顺序读取星期。
             if (flag == 1 || flag == 2) {
-//                Log.e(TAG,"getItemCount() + 1 = " + (list.size() + 1));
                 return list.size() + 1;
             } else {
-//                Log.e(TAG,"getItemCount() = " + list.size());
                 return list.size();
             }
         }
@@ -283,16 +263,12 @@ public class AtyFinish extends Fragment implements View.OnTouchListener {
         @Override
         public void onBindViewHolder(ViewHolder right, int position) {                    //第五步执行
             Log.e(TAG, "onBindViewHolder");
-//            Log.e(TAG,"original position is: " + position);
             db = new OneDaydb(getActivity(), "oneday");
 
             /*
              * 统计界面每天的完成度在这里设置，可能需要新建一个表存放每天完成度统计然后从表内取出数据。该表可能需要两个字段，分别是week
 			 * 和percent，根据星期取出每天的完成统计情况
 			 */
-            twocircleprogworessbar.setPercent(progress);
-            new Thread(new ProgressRunable()).start();
-//            Log.e(TAG,"flag = " + flag);
             //  根据flag判断删除数据之后的item读取position
             if (flag == 2) {
                 position = 0;
@@ -311,7 +287,6 @@ public class AtyFinish extends Fragment implements View.OnTouchListener {
             s = dbreader.rawQuery(" select * from oneday where week=" + "'" + week + "'", null);
 
             if (s.getCount() == 0) {
-//			Log.e(TAG,"list remove: " + list.remove(position));
                 list.remove(position);
                 isFresh = false;
                 startHandler(position);
@@ -327,10 +302,15 @@ public class AtyFinish extends Fragment implements View.OnTouchListener {
                 }
                 right.tvWeek.setText(week);
                 for (s.moveToFirst(); !s.isAfterLast(); s.moveToNext()) {
+                    RelativeLayout rl = new RelativeLayout(context);
                     TextView tv = new TextView(context);
-
-                    tv.setText(s.getString(c.getColumnIndex(OneDaydb.COLUMN_PLAN)) + "       " + s.getString(c.getColumnIndex(OneDaydb.COLUMN_FROM_TIME)) + "-" + s.getString(c.getColumnIndex(OneDaydb.COLUMN_TO_TIME)));
-                    right.rlWeek.addView(tv);
+                    TextView tv1 = new TextView(context);
+                    tv.setText(s.getString(c.getColumnIndex(OneDaydb.COLUMN_PLAN)));
+                    tv1.setText(s.getString(c.getColumnIndex(OneDaydb.COLUMN_FROM_TIME)) + "-" + s.getString(c.getColumnIndex(OneDaydb.COLUMN_TO_TIME)));
+                    tv1.setGravity(Gravity.END);
+                    rl.addView(tv);
+                    rl.addView(tv1);
+                    right.rlWeek.addView(rl);
                 }
             }
         }
@@ -356,7 +336,6 @@ public class AtyFinish extends Fragment implements View.OnTouchListener {
         hashSet = new HashSet(weekData);
         weekData.clear();
         weekData.addAll(hashSet);
-//		adapter.notifyDataSetChanged();
         return weekData;
     }
 
@@ -386,9 +365,6 @@ public class AtyFinish extends Fragment implements View.OnTouchListener {
     @Override
     public void onDestroy() {
         super.onDestroy();
-//		s.close();
-//		c.close();
-//		ss.close();
     }
 
 }

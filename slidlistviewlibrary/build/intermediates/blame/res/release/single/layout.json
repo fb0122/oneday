@@ -1,11 +1,11 @@
 [
     {
-        "merged": "D:\\lastCode\\OneDay\\slidlistviewlibrary\\build\\intermediates\\res\\merged\\release\\layout\\date_picker_selected_date.xml",
-        "source": "D:\\lastCode\\OneDay\\slidlistviewlibrary\\build\\intermediates\\exploded-aar\\OneDay\\datetimepickerlibrary\\unspecified\\res\\layout\\date_picker_selected_date.xml"
-    },
-    {
         "merged": "D:\\lastCode\\OneDay\\slidlistviewlibrary\\build\\intermediates\\res\\merged\\release\\layout\\date_picker_view_animator.xml",
         "source": "D:\\lastCode\\OneDay\\slidlistviewlibrary\\build\\intermediates\\exploded-aar\\OneDay\\datetimepickerlibrary\\unspecified\\res\\layout\\date_picker_view_animator.xml"
+    },
+    {
+        "merged": "D:\\lastCode\\OneDay\\slidlistviewlibrary\\build\\intermediates\\res\\merged\\release\\layout\\date_picker_selected_date.xml",
+        "source": "D:\\lastCode\\OneDay\\slidlistviewlibrary\\build\\intermediates\\exploded-aar\\OneDay\\datetimepickerlibrary\\unspecified\\res\\layout\\date_picker_selected_date.xml"
     },
     {
         "merged": "D:\\lastCode\\OneDay\\slidlistviewlibrary\\build\\intermediates\\res\\merged\\release\\layout\\year_label_text_view.xml",

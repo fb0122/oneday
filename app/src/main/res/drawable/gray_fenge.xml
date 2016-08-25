@@ -4,13 +4,13 @@
    <!--   给textview只添加下边框的方法 -->
     <item>
         <shape>
-            <solid android:color="@color/shaow" />
+            <solid android:color="@color/shadow" />
         </shape>
     </item>
     <!-- This is the line -->
     <item android:bottom="2.5dp">
         <shape>
-            <solid android:color="@color/shaow" />
+            <solid android:color="@color/shadow" />
         </shape>
     </item>
 

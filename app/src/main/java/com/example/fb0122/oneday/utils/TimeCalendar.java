@@ -30,4 +30,8 @@ public class TimeCalendar {
         return week_str[getToday() - 2];
     }
 
+    public static int getDateToday(){
+        return getCanlendar().get(Calendar.DAY_OF_YEAR);
+    }
+
 }
