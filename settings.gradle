@@ -1,1 +1,1 @@
-include ':app', ':datetimepickerlibrary', ':nineoldandroids', ':radialWidget', ':slidlistviewlibrary'
+include ':app'

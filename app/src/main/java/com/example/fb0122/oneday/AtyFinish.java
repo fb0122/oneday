@@ -386,7 +386,7 @@ public class AtyFinish extends Fragment implements View.OnTouchListener {
                 return TimeCalendar.getWeekMap().get(s) - TimeCalendar.getWeekMap().get(t1);
             }
         });
-        weekData = sortWeekCard(weekData);
+//        weekData = sortWeekCard(weekData);
         return weekData;
     }
 

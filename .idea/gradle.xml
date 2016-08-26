@@ -9,20 +9,12 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/datetimepickerlibrary" />
-            <option value="$PROJECT_DIR$/nineoldandroids" />
-            <option value="$PROJECT_DIR$/radialWidget" />
-            <option value="$PROJECT_DIR$/slidlistviewlibrary" />
           </set>
         </option>
         <option name="myModules">
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/datetimepickerlibrary" />
-            <option value="$PROJECT_DIR$/nineoldandroids" />
-            <option value="$PROJECT_DIR$/radialWidget" />
-            <option value="$PROJECT_DIR$/slidlistviewlibrary" />
           </set>
         </option>
       </GradleProjectSettings>
