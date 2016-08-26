@@ -33,6 +33,7 @@ public class TimeCalendar {
         return week_str[getToday() - 2];
     }
 
+
     public static String getSpecialWeek(int day){
         return week_str[day % 7];
     }

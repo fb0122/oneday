@@ -1,6 +1,6 @@
 [
     {
-        "outputFile": "/Users/fengbo/Downloads/oneday-master/datetimepickerlibrary/build/intermediates/res/merged/release/values-nb/values-nb.xml",
+        "outputFile": "D:\\lastCode\\OneDay\\datetimepickerlibrary\\build\\intermediates\\res\\merged\\release\\values-nb\\values-nb.xml",
         "map": [
             {
                 "to": {
@@ -11,13 +11,13 @@
                     "endOffset": 206
                 },
                 "from": {
-                    "file": "/Users/fengbo/Downloads/oneday-master/datetimepickerlibrary/src/main/res/values-nb/strings.xml",
+                    "file": "D:\\lastCode\\OneDay\\datetimepickerlibrary\\src\\main\\res\\values-nb\\strings.xml",
                     "position": {
                         "startLine": 24,
                         "startColumn": 4,
-                        "startOffset": 1285,
+                        "startOffset": 1309,
                         "endColumn": 105,
-                        "endOffset": 1386
+                        "endOffset": 1410
                     }
                 }
             },
@@ -30,13 +30,13 @@
                     "endOffset": 316
                 },
                 "from": {
-                    "file": "/Users/fengbo/Downloads/oneday-master/datetimepickerlibrary/src/main/res/values-nb/strings.xml",
+                    "file": "D:\\lastCode\\OneDay\\datetimepickerlibrary\\src\\main\\res\\values-nb\\strings.xml",
                     "position": {
                         "startLine": 29,
                         "startColumn": 4,
-                        "startOffset": 1771,
+                        "startOffset": 1800,
                         "endColumn": 113,
-                        "endOffset": 1880
+                        "endOffset": 1909
                     }
                 }
             },
@@ -49,13 +49,13 @@
                     "endOffset": 392
                 },
                 "from": {
-                    "file": "/Users/fengbo/Downloads/oneday-master/datetimepickerlibrary/src/main/res/values-nb/strings.xml",
+                    "file": "D:\\lastCode\\OneDay\\datetimepickerlibrary\\src\\main\\res\\values-nb\\strings.xml",
                     "position": {
                         "startLine": 19,
                         "startColumn": 4,
-                        "startOffset": 809,
+                        "startOffset": 828,
                         "endColumn": 75,
-                        "endOffset": 880
+                        "endOffset": 899
                     }
                 }
             },
@@ -68,13 +68,13 @@
                     "endOffset": 505
                 },
                 "from": {
-                    "file": "/Users/fengbo/Downloads/oneday-master/datetimepickerlibrary/src/main/res/values-nb/strings.xml",
+                    "file": "D:\\lastCode\\OneDay\\datetimepickerlibrary\\src\\main\\res\\values-nb\\strings.xml",
                     "position": {
                         "startLine": 20,
                         "startColumn": 4,
-                        "startOffset": 885,
+                        "startOffset": 905,
                         "endColumn": 112,
-                        "endOffset": 993
+                        "endOffset": 1013
                     }
                 }
             },
@@ -87,13 +87,13 @@
                     "endOffset": 619
                 },
                 "from": {
-                    "file": "/Users/fengbo/Downloads/oneday-master/datetimepickerlibrary/src/main/res/values-nb/strings.xml",
+                    "file": "D:\\lastCode\\OneDay\\datetimepickerlibrary\\src\\main\\res\\values-nb\\strings.xml",
                     "position": {
                         "startLine": 28,
                         "startColumn": 4,
-                        "startOffset": 1653,
+                        "startOffset": 1681,
                         "endColumn": 117,
-                        "endOffset": 1766
+                        "endOffset": 1794
                     }
                 }
             },
@@ -106,13 +106,13 @@
                     "endOffset": 737
                 },
                 "from": {
-                    "file": "/Users/fengbo/Downloads/oneday-master/datetimepickerlibrary/src/main/res/values-nb/strings.xml",
+                    "file": "D:\\lastCode\\OneDay\\datetimepickerlibrary\\src\\main\\res\\values-nb\\strings.xml",
                     "position": {
                         "startLine": 21,
                         "startColumn": 4,
-                        "startOffset": 998,
+                        "startOffset": 1019,
                         "endColumn": 117,
-                        "endOffset": 1111
+                        "endOffset": 1132
                     }
                 }
             },
@@ -125,13 +125,13 @@
                     "endOffset": 828
                 },
                 "from": {
-                    "file": "/Users/fengbo/Downloads/oneday-master/datetimepickerlibrary/src/main/res/values-nb/strings.xml",
+                    "file": "D:\\lastCode\\OneDay\\datetimepickerlibrary\\src\\main\\res\\values-nb\\strings.xml",
                     "position": {
                         "startLine": 26,
                         "startColumn": 4,
-                        "startOffset": 1482,
+                        "startOffset": 1508,
                         "endColumn": 90,
-                        "endOffset": 1568
+                        "endOffset": 1594
                     }
                 }
             },
@@ -144,13 +144,13 @@
                     "endOffset": 910
                 },
                 "from": {
-                    "file": "/Users/fengbo/Downloads/oneday-master/datetimepickerlibrary/src/main/res/values-nb/strings.xml",
+                    "file": "D:\\lastCode\\OneDay\\datetimepickerlibrary\\src\\main\\res\\values-nb\\strings.xml",
                     "position": {
                         "startLine": 22,
                         "startColumn": 4,
-                        "startOffset": 1116,
+                        "startOffset": 1138,
                         "endColumn": 81,
-                        "endOffset": 1193
+                        "endOffset": 1215
                     }
                 }
             },
@@ -163,13 +163,13 @@
                     "endOffset": 997
                 },
                 "from": {
-                    "file": "/Users/fengbo/Downloads/oneday-master/datetimepickerlibrary/src/main/res/values-nb/strings.xml",
+                    "file": "D:\\lastCode\\OneDay\\datetimepickerlibrary\\src\\main\\res\\values-nb\\strings.xml",
                     "position": {
                         "startLine": 23,
                         "startColumn": 4,
-                        "startOffset": 1198,
+                        "startOffset": 1221,
                         "endColumn": 86,
-                        "endOffset": 1280
+                        "endOffset": 1303
                     }
                 }
             },
@@ -182,13 +182,13 @@
                     "endOffset": 1077
                 },
                 "from": {
-                    "file": "/Users/fengbo/Downloads/oneday-master/datetimepickerlibrary/src/main/res/values-nb/strings.xml",
+                    "file": "D:\\lastCode\\OneDay\\datetimepickerlibrary\\src\\main\\res\\values-nb\\strings.xml",
                     "position": {
                         "startLine": 27,
                         "startColumn": 4,
-                        "startOffset": 1573,
+                        "startOffset": 1600,
                         "endColumn": 79,
-                        "endOffset": 1648
+                        "endOffset": 1675
                     }
                 }
             },
@@ -201,13 +201,13 @@
                     "endOffset": 1168
                 },
                 "from": {
-                    "file": "/Users/fengbo/Downloads/oneday-master/datetimepickerlibrary/src/main/res/values-nb/strings.xml",
+                    "file": "D:\\lastCode\\OneDay\\datetimepickerlibrary\\src\\main\\res\\values-nb\\strings.xml",
                     "position": {
                         "startLine": 25,
                         "startColumn": 4,
-                        "startOffset": 1391,
+                        "startOffset": 1416,
                         "endColumn": 90,
-                        "endOffset": 1477
+                        "endOffset": 1502
                     }
                 }
             }

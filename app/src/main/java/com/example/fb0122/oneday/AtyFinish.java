@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.os.Looper;
 import android.os.Message;
 import android.support.v4.app.Fragment;
-import android.support.v4.util.TimeUtils;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -23,16 +22,13 @@ import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.fb0122.oneday.utils.DimenTranslate;
 import com.example.fb0122.oneday.utils.TimeCalendar;
 
-import java.sql.Time;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -162,7 +158,7 @@ public class AtyFinish extends Fragment implements View.OnTouchListener {
         listview.setOnTouchListener(this);
         ArrayList<String> listdata = getCursor();
         //去除list中重复元素， 使用hashset
-        Log.d(TAG,weekData + "");
+        Log.d(TAG, weekData + "");
         adapter = refreshWeekView(getActivity(), listdata, listview);
         listview.setAdapter(adapter);
         return view;
@@ -199,9 +195,7 @@ public class AtyFinish extends Fragment implements View.OnTouchListener {
         }
     }
 
-    /**
-       对周页面卡片布局的排序,按星期从小到大排列
-     */
+
 
     class cursorAdapter extends RecyclerView.Adapter<cursorAdapter.ViewHolder> implements DataRefresh {
 
@@ -233,15 +227,15 @@ public class AtyFinish extends Fragment implements View.OnTouchListener {
             public ViewHolder(View itemView) {
                 super(itemView);
                 tvWeek = (TextView) itemView.findViewById(R.id.tvWeek);
-                tvDate = (TextView)itemView.findViewById(R.id.tvDate);
+                tvDate = (TextView) itemView.findViewById(R.id.tvDate);
                 tvPercent = (TextView) itemView.findViewById(R.id.tvPercent);
                 rlWeek = (LinearLayout) itemView.findViewById(R.id.rlWeek);
                 lnCard = (RelativeLayout) itemView.findViewById(R.id.ll1);
-                moreImageView = (ImageView)itemView.findViewById(R.id.week_card_more);
+                moreImageView = (ImageView) itemView.findViewById(R.id.week_card_more);
                 // TODO Auto-generated constructor stub
             }
 
-            TextView tvWeek,tvDate,tvPercent;
+            TextView tvWeek, tvDate, tvPercent;
             LinearLayout rlWeek;
             RelativeLayout lnCard;
             ImageView moreImageView;
@@ -313,17 +307,16 @@ public class AtyFinish extends Fragment implements View.OnTouchListener {
                 if (flag == 2) {
                     flag = 1;
                 }
-                RelativeLayout rl = new RelativeLayout(context);
-                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                params.setMargins(DimenTranslate.dp2px(context, 9), 0, DimenTranslate.dp2px(context, 9), 0);
 
-                rl.setLayoutParams(params);
                 if (week.equals(TimeCalendar.getTodayWeek())) {
                     right.tvWeek.setText(week);
                     right.tvDate.setText(TimeCalendar.getLaterDate(0) + " /今天");
                     right.tvPercent.setText("100%");
                     for (s.moveToFirst(); !s.isAfterLast(); s.moveToNext()) {
-                        rl.removeAllViews();
+                        RelativeLayout rl = new RelativeLayout(context);
+                        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                        params.setMargins(DimenTranslate.dp2px(context, 9), 0, DimenTranslate.dp2px(context, 9), 0);
+                        rl.setLayoutParams(params);
                         TextView tv = new TextView(context);
                         TextView tv1 = new TextView(context);
                         tv.setText(s.getString(c.getColumnIndex(OneDaydb.COLUMN_PLAN)));
@@ -338,8 +331,13 @@ public class AtyFinish extends Fragment implements View.OnTouchListener {
                         tv1.setLayoutParams(textViewParams);
                         rl.addView(tv);
                         rl.addView(tv1);
+                        right.rlWeek.addView(rl);
                     }
-                }else{
+                } else {
+                    RelativeLayout rl = new RelativeLayout(context);
+                    RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    params.setMargins(DimenTranslate.dp2px(context, 9), 0, DimenTranslate.dp2px(context, 9), 0);
+                    rl.setLayoutParams(params);
                     right.moreImageView.setVisibility(View.GONE);
                     right.tvWeek.setText(week);
                     right.tvWeek.setTextColor(getResources().getColor(R.color.shadow));
@@ -354,8 +352,9 @@ public class AtyFinish extends Fragment implements View.OnTouchListener {
                     textViewParams1.leftMargin = DimenTranslate.dp2px(context, 18);
                     tv.setLayoutParams(textViewParams1);
                     rl.addView(tv);
-                }
                     right.rlWeek.addView(rl);
+                }
+
             }
 
         }
@@ -391,10 +390,13 @@ public class AtyFinish extends Fragment implements View.OnTouchListener {
         return weekData;
     }
 
-    private ArrayList<String> sortWeekCard(ArrayList<String> list){
+    /**
+     * 对周页面卡片布局的排序,按星期从小到大排列
+     */
+    private ArrayList<String> sortWeekCard(ArrayList<String> list) {
         int index = TimeCalendar.getWeekMap().get(TimeCalendar.getTodayWeek());
         ArrayList<String> sortedList = new ArrayList<>();
-        if(list.size() > 0) {
+        if (list.size() > 0) {
             sortedList.addAll(list.subList(index - 1, list.size()));
             sortedList.addAll(list.subList(0, index - 1));
         }
@@ -455,6 +457,4 @@ class ChangeHandler extends android.os.Handler {
         super.handleMessage(msg);
     }
 }
-
-
 

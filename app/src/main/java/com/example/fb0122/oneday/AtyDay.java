@@ -29,6 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.fb0122.oneday.utils.DataSetUtil;
+import com.example.fb0122.oneday.utils.PreferenceUtils;
 import com.example.fb0122.oneday.utils.TimeCalendar;
 import com.example.fb0122.oneday.weidget.MyEditText;
 
@@ -59,6 +60,10 @@ public class AtyDay extends Fragment implements TextWatcher,SlideListView.Refres
         super();
         this.mContext = context;
         this.map = map;
+    }
+
+    public AtyDay(){
+
     }
 
     @Override
@@ -153,13 +158,12 @@ public class AtyDay extends Fragment implements TextWatcher,SlideListView.Refres
             } else {
                 holder = (ViewHolder) convertView.getTag();   //当convertView第一次使用时，我们需要创建它。当第二次使用时，就可以使用getTag()直接使用
             }
-            if (map.size() > 0 && map.containsKey(position) && map.get(position).equals("undo")) {
-                holder.addLine.setVisibility(View.GONE);
-            } else if (map.size() > 0 && map.containsKey(position) && map.get(position).equals("do")) {
+            if (PreferenceUtils.getBoolean(String.valueOf(position + 1),getContext())){
                 holder.addLine.setVisibility(View.VISIBLE);
                 holder.tvSc.setTextColor(getResources().getColor(R.color.shadow));
-            } else {
+            }else {
                 holder.addLine.setVisibility(View.GONE);
+                holder.tvSc.setTextColor(getResources().getColor(R.color.black));
             }
             c.moveToPosition(position);
 
