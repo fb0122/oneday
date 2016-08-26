@@ -124,7 +124,7 @@ public class SlideListView extends ListView implements TextView.OnEditorActionLi
     @Override
     public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
         if (i == EditorInfo.IME_ACTION_DONE){
-            planChange = textView.getHint().toString();
+            planChange = textView.getText().toString();
             InputMethodManager im = (InputMethodManager)textView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
             if (im.isActive()){
                 im.hideSoftInputFromWindow(textView.getApplicationWindowToken(),0);
@@ -140,7 +140,6 @@ public class SlideListView extends ListView implements TextView.OnEditorActionLi
             ContentValues contentValues = DataSetUtil.updateData(OneDaydb.COLUMN_PLAN, editTextContent);
             db.updateData(OneDaydb.TABLE_NAME, contentValues, time,planChange);
             refreshPlanListener.refresh();
-            Toast.makeText(getContext(),textView.getHint().toString(),Toast.LENGTH_SHORT).show();
         }
         return false;
     }
@@ -207,18 +206,18 @@ public class SlideListView extends ListView implements TextView.OnEditorActionLi
         int lastX = (int) ev.getX();
         switch (action) {
             case MotionEvent.ACTION_DOWN:
-                if (tvSc != null && canMove) {
+                if (changeTextView != null && canMove) {
                     setFocusable(true);
                     setFocusableInTouchMode(true);
                     requestFocus();
                     tvSc.setVisibility(VISIBLE);
                     tvSc.setTextColor(Color.BLACK);
                     changeTextView.setVisibility(GONE);
-                    changeTextView.setStatus(false);
-//                    editTextContent = tvSc.getText().toString();
-//                    ContentValues contentValues = DataSetUtil.updateData(OneDaydb.COLUMN_PLAN, editTextContent);
-//                    db.updateData(OneDaydb.TABLE_NAME, contentValues, time,planChange);
-//                    refreshPlanListener.refresh();
+                    editTextContent = tvSc.getText().toString();
+//                    changeTextView.setStatus(false);
+                    ContentValues contentValues = DataSetUtil.updateData(OneDaydb.COLUMN_PLAN, editTextContent);
+                    db.updateData(OneDaydb.TABLE_NAME, contentValues, time,planChange);
+                    refreshPlanListener.refresh();
                 }
             /*当前模式不允许滑动，则直接返回，交给ListView自身去处理*/
                 if (this.mode == MOD_FORBID) {
@@ -304,7 +303,7 @@ public class SlideListView extends ListView implements TextView.OnEditorActionLi
 
                         } else if ((offsetX < -(0.75 * leftLength)) && (offsetX > -(leftLength))) {
                             changeTextView.setTextColor(getResources().getColor(R.color.black));
-                            changeTextView.setHint(tvSc.getText().toString());
+                            changeTextView.setText(tvSc.getText().toString());
                             Line.setVisibility(GONE);
                             tvSc.setVisibility(GONE);
                             changeTextView.setVisibility(VISIBLE);

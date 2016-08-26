@@ -41,9 +41,9 @@ public class MyEditText extends EditText {
             imm.toggleSoftInput(0,InputMethodManager.HIDE_NOT_ALWAYS);
             imm.showSoftInput(this,0);
         }else{
-            textView.setVisibility(VISIBLE);
-            setVisibility(GONE);
-            textView.setTextColor(getResources().getColor(R.color.black));
+//            textView.setVisibility(VISIBLE);
+//            setVisibility(GONE);
+//            textView.setTextColor(getResources().getColor(R.color.black));
             imm.hideSoftInputFromWindow(getWindowToken(),0);
         }
     }

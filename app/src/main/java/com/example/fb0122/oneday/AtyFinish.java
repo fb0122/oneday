@@ -272,8 +272,6 @@ public class AtyFinish extends Fragment implements View.OnTouchListener {
         @Override
         public void onBindViewHolder(ViewHolder right, int position) {      //第五步执行
             db = new OneDaydb(getActivity(), "oneday");
-            Log.d(TAG,"----4----" + weekData);
-
             /*
              * 统计界面每天的完成度在这里设置，可能需要新建一个表存放每天完成度统计然后从表内取出数据。该表可能需要两个字段，分别是week
 			 * 和percent，根据星期取出每天的完成统计情况
@@ -294,7 +292,6 @@ public class AtyFinish extends Fragment implements View.OnTouchListener {
             //只能通过检查item是否重复去除冗余
             String week = weekData.get(position);
             s = dbreader.rawQuery(" select * from oneday where week=" + "'" + week + "'", null);
-
             if (s.getCount() == 0) {
                 weekData.remove(position);
                 isFresh = false;
@@ -314,6 +311,8 @@ public class AtyFinish extends Fragment implements View.OnTouchListener {
                     right.tvWeek.setText(week);
                     right.tvDate.setText(TimeCalendar.getLaterDate(0) + " /今天");
                     right.tvPercent.setText("100%");
+                    right.tvDate.setTextColor(getResources().getColor(R.color.blue));
+                    right.tvPercent.setTextColor(getResources().getColor(R.color.blue));
                     for (s.moveToFirst(); !s.isAfterLast(); s.moveToNext()) {
                         RelativeLayout rl = new RelativeLayout(context);
                         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -343,7 +342,7 @@ public class AtyFinish extends Fragment implements View.OnTouchListener {
                     right.moreImageView.setVisibility(View.GONE);
                     right.tvWeek.setText(week);
                     right.tvWeek.setTextColor(getResources().getColor(R.color.shadow));
-                    right.tvDate.setText(TimeCalendar.getLaterDate(laterDay) + " /未到");
+                    right.tvDate.setText(TimeCalendar.getLaterDate(position) + " /未到");
                     right.tvDate.setTextColor(getResources().getColor(R.color.shadow));
                     right.tvPercent.setText("0%");
                     right.tvPercent.setTextColor(getResources().getColor(R.color.shadow));
