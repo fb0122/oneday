@@ -15,6 +15,7 @@
             android:dividerHeight="1dp"
             android:divider="@color/shadow"
             android:headerDividersEnabled="true"
+            android:layout_marginTop="19dp"
             android:scrollbars="none" />
 
      <ImageButton

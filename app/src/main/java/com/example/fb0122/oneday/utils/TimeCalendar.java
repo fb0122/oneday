@@ -17,6 +17,7 @@ public class TimeCalendar {
 
     public static String[] week_str = new String[]{"周一","周二","周三","周四","周五","周六","周日"};
     private static HashMap<String,Integer> weekMap = new HashMap<>();
+    private static HashMap<Integer,String> weekMap1 = new HashMap<>();
 
     public static Calendar getCanlendar(){
         return Calendar.getInstance();
@@ -71,8 +72,18 @@ public class TimeCalendar {
         weekMap.put("周五",5);
         weekMap.put("周六",6);
         weekMap.put("周日",7);
-
         return weekMap;
+    }
+
+    public static HashMap<Integer, String> getWeekInMap(){
+        weekMap1.put(1,"周一");
+        weekMap1.put(2,"周二");
+        weekMap1.put(3,"周三");
+        weekMap1.put(4,"周四");
+        weekMap1.put(5,"周五");
+        weekMap1.put(6,"周六");
+        weekMap1.put(7,"周日");
+        return weekMap1;
     }
 
 }

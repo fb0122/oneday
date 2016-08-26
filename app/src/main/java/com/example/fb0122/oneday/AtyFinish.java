@@ -23,14 +23,18 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.example.fb0122.oneday.utils.DimenTranslate;
 import com.example.fb0122.oneday.utils.TimeCalendar;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 
 import circleprogressbar.TasksCompletedView;
@@ -106,16 +110,15 @@ public class AtyFinish extends Fragment implements View.OnTouchListener {
 
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-//			Log.e(TAG, "onFling");
             FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) downlist.getLayoutParams();
             params.setMargins(0, 0, 0, 0);
             downlist.setLayoutParams(params);
 
             FrameLayout.LayoutParams params1 = (FrameLayout.LayoutParams) finish.getLayoutParams();
-            params.setMargins(0, 0, 0, 0);
+            params1.setMargins(0, 0, 0, 0);
             finish.setLayoutParams(params1);
 
-            if (e2.getRawY() - e1.getRawY() > (0.3 * mScreenHeight) && (Boolean) downlist.getTag()) {
+            if (e2.getRawY() - e1.getRawY() > (0.3 * mScreenHeight) && (Boolean) downlist.getTag() && e1.getRawY() < 0.4 * mScreenHeight) {
                 finish.setAlpha(1.0f);
                 downlist.setVisibility(View.GONE);
                 downlist.setAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.scoredetail_out));
@@ -151,15 +154,15 @@ public class AtyFinish extends Fragment implements View.OnTouchListener {
 
         finish = (LinearLayout) view.findViewById(R.id.finish);
         finish.setOnTouchListener(this);
+        LinearLayout dragLayout = (LinearLayout)view.findViewById(R.id.dragLayout);
+        dragLayout.setOnTouchListener(this);
         listview = (RecyclerView) view.findViewById(R.id.lvWeek);
         listview.setLayoutManager(new LinearLayoutManager(getContext()));
         listview.setItemAnimator(new DefaultItemAnimator());
         listview.setHasFixedSize(true);
-        listview.setOnTouchListener(this);
-        ArrayList<String> listdata = getCursor();
         //去除list中重复元素， 使用hashset
-        Log.d(TAG, weekData + "");
-        adapter = refreshWeekView(getActivity(), listdata, listview);
+        weekData = getCursor();
+        adapter = refreshWeekView(getActivity(), weekData, listview);
         listview.setAdapter(adapter);
         return view;
     }
@@ -180,7 +183,7 @@ public class AtyFinish extends Fragment implements View.OnTouchListener {
                     downlist.setAlpha(1.0f);
                     params.setMargins(0, 0, 0, 0);
                     downlist.setLayoutParams(params);
-                } else {
+                } else if (!(Boolean)downlist.getTag()){
                     downlist.setVisibility(View.GONE);
                     FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) finish.getLayoutParams();
                     params.setMargins(0, 0, 0, 0);
@@ -208,6 +211,7 @@ public class AtyFinish extends Fragment implements View.OnTouchListener {
         public cursorAdapter(Context context, ArrayList<String> list) {       //启动时执行
             this.context = context;
             this.list = list;
+            Log.d(TAG,"---3---" + list);
             layoutinflate = LayoutInflater.from(context);
             this.setDataRefresh(this);
         }
@@ -258,9 +262,9 @@ public class AtyFinish extends Fragment implements View.OnTouchListener {
             // TODO Auto-generated method stub
             //如果删除之后就会少一个item，而读取的时候会按顺序读取星期。
             if (flag == 1 || flag == 2) {
-                return list.size() + 1;
+                return weekData.size() + 1;
             } else {
-                return list.size();
+                return weekData.size();
             }
         }
 
@@ -268,7 +272,7 @@ public class AtyFinish extends Fragment implements View.OnTouchListener {
         @Override
         public void onBindViewHolder(ViewHolder right, int position) {      //第五步执行
             db = new OneDaydb(getActivity(), "oneday");
-            laterDay += 1;
+            Log.d(TAG,"----4----" + weekData);
 
             /*
              * 统计界面每天的完成度在这里设置，可能需要新建一个表存放每天完成度统计然后从表内取出数据。该表可能需要两个字段，分别是week
@@ -281,20 +285,18 @@ public class AtyFinish extends Fragment implements View.OnTouchListener {
             } else if (flag == 1) {
                 position = position - 1;
             }
-            if (position < 0 || position == list.size()) {
+            if (position < 0 || position == weekData.size()) {
                 return;
             }
 
             right.rlWeek.removeAllViews();
-
             //需要去除数据库冗余问题，以及当计划重复时，在统计界面只显示某一天的问题。
             //只能通过检查item是否重复去除冗余
-            String week = list.get(position);
+            String week = weekData.get(position);
             s = dbreader.rawQuery(" select * from oneday where week=" + "'" + week + "'", null);
 
             if (s.getCount() == 0) {
-//			Log.e(TAG,"list remove: " + list.remove(position));
-                list.remove(position);
+                weekData.remove(position);
                 isFresh = false;
                 startHandler(position);
                 isFresh = true;
@@ -349,10 +351,11 @@ public class AtyFinish extends Fragment implements View.OnTouchListener {
                     tv.setText("有" + s.getCount() + "个计划任务在列表中");
                     tv.setTextColor(getResources().getColor(R.color.shadow));
                     RelativeLayout.LayoutParams textViewParams1 = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                    textViewParams1.leftMargin = DimenTranslate.dp2px(context, 18);
+                    textViewParams1.leftMargin = DimenTranslate.dp2px(context, 9);
                     tv.setLayoutParams(textViewParams1);
                     rl.addView(tv);
                     right.rlWeek.addView(rl);
+                    laterDay += 1;
                 }
 
             }
@@ -380,13 +383,8 @@ public class AtyFinish extends Fragment implements View.OnTouchListener {
         hashSet = new HashSet(weekData);
         weekData.clear();
         weekData.addAll(hashSet);
-        Collections.sort(weekData, new Comparator<String>() {
-            @Override
-            public int compare(String s, String t1) {
-                return TimeCalendar.getWeekMap().get(s) - TimeCalendar.getWeekMap().get(t1);
-            }
-        });
-//        weekData = sortWeekCard(weekData);
+
+        weekData = sortWeekCard(weekData);
         return weekData;
     }
 
@@ -394,13 +392,50 @@ public class AtyFinish extends Fragment implements View.OnTouchListener {
      * 对周页面卡片布局的排序,按星期从小到大排列
      */
     private ArrayList<String> sortWeekCard(ArrayList<String> list) {
-        int index = TimeCalendar.getWeekMap().get(TimeCalendar.getTodayWeek());
-        ArrayList<String> sortedList = new ArrayList<>();
-        if (list.size() > 0) {
-            sortedList.addAll(list.subList(index - 1, list.size()));
-            sortedList.addAll(list.subList(0, index - 1));
+        ArrayList<String> sorted_list = new ArrayList<>();
+        ArrayList<Integer> list1 = new ArrayList<>();
+        String week = TimeCalendar.getTodayWeek();
+        if (list.contains(week)){
+            sorted_list.add(week);
+            list.remove(week);
+            list1.add(TimeCalendar.getWeekMap().get(week));
+            for (String s : list){
+                list1.add(TimeCalendar.getWeekMap().get(s));
+            }
+            return compareWeek(list1);
+        }else {
+            return list;
         }
-        return sortedList;
+    }
+
+    private ArrayList<String> compareWeek(ArrayList<Integer> com_list){
+        HashMap<Integer,Integer> hashMap = new HashMap<>();
+        ArrayList<String> sorted_list = new ArrayList<>();
+        ArrayList<Integer> list1 = new ArrayList<>();
+        ArrayList<Integer> list2 = new ArrayList<>();
+        int mutil = 0;
+        int first = com_list.get(0);
+        hashMap.put(0,first);
+        for (int m : com_list){
+            mutil = m - first;
+            if (m - first > 0) {
+                list1.add(mutil);
+            }else if (m - first < 0){
+                list2.add(Math.abs(mutil));
+            }
+        }
+        HashMap<Integer,String>  map = TimeCalendar.getWeekInMap();
+        Collections.sort(list1);
+        Collections.sort(list2);
+
+        sorted_list.add(map.get(first));
+        for (int i : list1){
+            sorted_list.add(map.get(first + i));
+        }
+        for (int j : list2){
+            sorted_list.add(map.get(j));
+        }
+        return sorted_list;
     }
 
     public cursorAdapter refreshWeekView(Context context, ArrayList<String> listdata, RecyclerView listview) {
@@ -419,7 +454,9 @@ public class AtyFinish extends Fragment implements View.OnTouchListener {
     public void onResume() {
         super.onResume();
         //以这种方式刷新完成界面数据。。。。效率不是很高   后期需要重新考虑方法。
+        laterDay = 0;
         weekData = getCursor();
+        adapter.notifyDataSetChanged();
     }
 
     @Override
