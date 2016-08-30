@@ -1,30 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_vertical"
-    >
+    android:orientation="horizontal">
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/logo"
-        android:layout_marginLeft="20dp"
-        />
+
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/notifyTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="title"
-        />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:background="@drawable/logo" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/text_notify_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="19:30 - 20:40"
+                android:textSize="9dp"
+                android:textColor="@android:color/tab_indicator_text"
+                />
+
+            <TextView
+                android:id="@+id/text_notify_custom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="运动健身"
+                android:textSize="12dp"
+                android:layout_marginBottom="2dp"
+                android:textColor="@android:color/tab_indicator_text"
+                />
 
 
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>

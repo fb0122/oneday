@@ -17,6 +17,8 @@ import com.example.fb0122.oneday.utils.TimeCalendar;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import db_oneday.OneDaydb;
+
 /**
  * Created by fb0122 on 2016/5/4.
  */
@@ -26,10 +28,10 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     NotificationCompat.Builder builder;
     Context mContext;
-    NotificationManager manager;
     int notifyId = 10;
     String nowTime;
     private static Bundle bundle = new Bundle();
+    private static OneDaydb oneDaydb;
 
     private static String week;
     private static String hour;
@@ -73,7 +75,7 @@ public class AlarmReceiver extends BroadcastReceiver {
             }
             for (int i = 0;i<timeList.size();i++){
                 if (nowTime.equals(timeList.get(i))){
-                    createNotify();
+                    createNotify(nowTime);
                 }
             }
             intent.setClass(mContext,NotifyService.class);
@@ -83,10 +85,13 @@ public class AlarmReceiver extends BroadcastReceiver {
         }
     }
     //通知栏
-    public  void createNotify(){
-        manager = (NotificationManager)mContext.getSystemService(Context.NOTIFICATION_SERVICE);
+    public  void createNotify(String fromTime){
+        oneDaydb = new OneDaydb(mContext,OneDaydb.TABLE_NAME);
+        NotificationManager manager = (NotificationManager)mContext.getSystemService(Context.NOTIFICATION_SERVICE);
         RemoteViews views = new RemoteViews(mContext.getPackageName(), R.layout.notifycation);
-        views.setTextViewText(R.id.notifyTitle,"testNotify");
+        String[] str = oneDaydb.getNotifyInfo(fromTime);
+        views.setTextViewText(R.id.text_notify_time,fromTime + " - " + str[0]);
+        views.setTextViewText(R.id.text_notify_custom,str[1]);
         builder = new NotificationCompat.Builder(mContext);
         builder .setContent(views)
                 .setWhen(System.currentTimeMillis())

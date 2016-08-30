@@ -74,5 +74,17 @@ public class OneDaydb extends SQLiteOpenHelper {
         }
     }
 
+    public String[] getNotifyInfo(String fromTime){
+        dbr = getReadableDatabase();
+        String time = "";
+        String custom = "";
+        Cursor c = dbr.rawQuery(" select * from " + OneDaydb.TABLE_NAME + " where " + OneDaydb.COLUMN_FROM_TIME + " = "
+                + "'" + fromTime + "'",null);
+        if (c.moveToFirst()) {
+            time = c.getString(c.getColumnIndex(OneDaydb.COLUMN_TO_TIME));
+            custom = c.getString(c.getColumnIndex(OneDaydb.COLUMN_PLAN));
+        }
+        return new String[]{time,custom};
+    }
 
 }

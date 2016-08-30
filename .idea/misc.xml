@@ -27,6 +27,22 @@
       </value>
     </option>
   </component>
+  <component name="ProjectInspectionProfilesVisibleTreeState">
+    <entry key="Project Default">
+      <profile-state>
+        <expanded-state>
+          <State>
+            <id />
+          </State>
+        </expanded-state>
+        <selected-state>
+          <State>
+            <id>Android</id>
+          </State>
+        </selected-state>
+      </profile-state>
+    </entry>
+  </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
     <OptionsSetting value="true" id="Remove" />
@@ -37,24 +53,15 @@
     <ConfirmationsSetting value="0" id="Add" />
     <ConfirmationsSetting value="0" id="Remove" />
   </component>
-<<<<<<< HEAD
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_7" default="true" assert-keyword="true" jdk-15="true" project-jdk-name="1.7" project-jdk-type="JavaSDK">
-=======
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_7" default="true" assert-keyword="true" jdk-15="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
->>>>>>> 0e1c5f190c425111821aefdb2c13d64681169bb5
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
     <option name="id" value="Android" />
   </component>
-<<<<<<< HEAD
   <component name="SvnConfiguration">
     <configuration>$USER_HOME$/.subversion</configuration>
   </component>
-=======
-<<<<<<< HEAD
-=======
->>>>>>> 47df562030cbb9bc44fa0ee55e70d7a5fb729796
   <component name="masterDetails">
     <states>
       <state key="ScopeChooserConfigurable.UI">
@@ -70,5 +77,4 @@
       </state>
     </states>
   </component>
->>>>>>> 0e1c5f190c425111821aefdb2c13d64681169bb5
 </project>

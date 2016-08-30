@@ -125,7 +125,7 @@ public class AtyDay extends Fragment implements TextWatcher,SlideListView.Refres
             if (position >= firstPosition && position <=  lastPosition) {
                 View view = lvDay.getChildAt(position - lvDay.getFirstVisiblePosition());
                 ViewHolder lineHold = (ViewHolder) view.getTag();
-                lvDay.saddLine(lineHold.addLine,lineHold.scEdit ,lineHold.tvSc,db,lineHold.tvTime.getText().toString());
+                lvDay.saddLine(lineHold.addLine,lineHold.scEdit ,lineHold.tvSc,db,lineHold.tvTime.getText().toString(),lineHold.shadowEdit);
             }
             lvDay.postInvalidate();
         }
@@ -151,8 +151,8 @@ public class AtyDay extends Fragment implements TextWatcher,SlideListView.Refres
                 holder.other1 = (RelativeLayout) convertView.findViewById(R.id.other1);
                 holder.other2 = (RelativeLayout) convertView.findViewById(R.id.other2);
                 holder.delete1 = (RelativeLayout) convertView.findViewById(R.id.delete1);
-                holder.delete2 = (RelativeLayout) convertView.findViewById(R.id.delete2);
                 holder.addLine = (TextView) convertView.findViewById(R.id.Line);
+                holder.shadowEdit = (ViewGroup) convertView.findViewById(R.id.frame_shadow);
                 convertView.setTag(holder);
 
             } else {
@@ -188,6 +188,7 @@ public class AtyDay extends Fragment implements TextWatcher,SlideListView.Refres
             private MyEditText scEdit;
             private TextView addLine;
             public RelativeLayout ll_intent;
+            private ViewGroup shadowEdit;
         }
 
     }
