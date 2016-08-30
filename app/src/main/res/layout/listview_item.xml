@@ -7,7 +7,7 @@
     android:background="@drawable/listview_item_click"
     android:descendantFocusability="beforeDescendants"
     android:paddingLeft="-120dp"
-    android:paddingRight="-60dp">
+    android:paddingRight="-80dp">
 
 
     <LinearLayout
@@ -50,38 +50,20 @@
         </RelativeLayout>
     </LinearLayout>
 
-    <FrameLayout
-        android:id="@+id/frame_shadow"
-        android:layout_width="wrap_content"
-        android:layout_height="75dp"
-        android:layout_centerVertical="true"
-        >
-
         <RelativeLayout
             android:id="@+id/ll_intent"
             android:layout_width="fill_parent"
-            android:layout_height="60dp"
+            android:layout_height="75dp"
             android:layout_marginLeft="90dp"
-            android:alpha="1"
-            android:background="@color/day_background"
-            android:layout_gravity="center_vertical"
+            android:layout_centerVertical="true"
             >
-
-            <TextView
-                android:id="@+id/Line"
-                android:layout_width="100dp"
-                android:layout_height="3dp"
-                android:layout_marginLeft="60dp"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/gray_fenge"
-                android:visibility="gone" />
-
 
             <RelativeLayout
                 android:id="@+id/ll_content"
                 android:layout_width="wrap_content"
                 android:layout_height="80dp"
                 android:layout_centerVertical="true"
+                android:gravity="center_vertical"
                 android:layout_marginLeft="60dp">
 
                 <FrameLayout
@@ -90,11 +72,23 @@
                     android:layout_height="wrap_content">
 
                     <TextView
+                        android:id="@+id/Line"
+                        android:layout_width="100dp"
+                        android:layout_height="3dp"
+                        android:background="@drawable/gray_fenge"
+                        android:visibility="visible"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginTop="2dp"
+                        />
+
+
+                    <TextView
                         android:id="@+id/tvSc"
                         style="@null"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/black"
+                        android:layout_gravity="center_vertical"
                         android:textSize="21dp"
                         tools:text="rrr" />
 
@@ -107,6 +101,7 @@
                         android:singleLine="true"
                         android:textColor="@color/black"
                         android:textCursorDrawable="@color/blue"
+                        android:layout_gravity="center_vertical"
                         android:textSize="21dp" />
 
                 </FrameLayout>
@@ -146,13 +141,13 @@
 
             <LinearLayout
                 android:id="@+id/llayout_right"
-                android:layout_width="60dp"
+                android:layout_width="80dp"
                 android:layout_height="match_parent"
                 android:layout_alignParentRight="true">
 
                 <RelativeLayout
                     android:id="@+id/other2"
-                    android:layout_width="60dp"
+                    android:layout_width="80dp"
                     android:layout_height="match_parent"
                     android:background="@color/slide_right_red"
                     android:clickable="true">
@@ -169,5 +164,4 @@
             </LinearLayout>
         </RelativeLayout>
 
-    </FrameLayout>
 </RelativeLayout>

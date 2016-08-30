@@ -26,7 +26,6 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     private static final String TAG = "AlarmReceiver";
 
-    NotificationCompat.Builder builder;
     Context mContext;
     int notifyId = 10;
     String nowTime;
@@ -65,7 +64,7 @@ public class AlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         this.mContext = context;
-        if (intent.getAction().equals("NotifyService.Intent") && intent != null ) {
+        if (intent != null && intent.getAction().equals("NotifyService.Intent")) {
             timeList = intent.getStringArrayListExtra("data");
             getTime();
             if (Integer.parseInt(getMinute()) < 10){
@@ -84,15 +83,16 @@ public class AlarmReceiver extends BroadcastReceiver {
             mContext.startService(intent);
         }
     }
+
     //通知栏
     public  void createNotify(String fromTime){
-        oneDaydb = new OneDaydb(mContext,OneDaydb.TABLE_NAME);
+        oneDaydb = new OneDaydb(mContext,OneDaydb.TABLE_NAME);              //获取习惯与时间段数据,并显示在notifytion中
         NotificationManager manager = (NotificationManager)mContext.getSystemService(Context.NOTIFICATION_SERVICE);
         RemoteViews views = new RemoteViews(mContext.getPackageName(), R.layout.notifycation);
         String[] str = oneDaydb.getNotifyInfo(fromTime);
         views.setTextViewText(R.id.text_notify_time,fromTime + " - " + str[0]);
         views.setTextViewText(R.id.text_notify_custom,str[1]);
-        builder = new NotificationCompat.Builder(mContext);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(mContext);
         builder .setContent(views)
                 .setWhen(System.currentTimeMillis())
                 .setTicker("oneday tips")

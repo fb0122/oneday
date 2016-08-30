@@ -18,6 +18,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.ExpandableListView;
 import android.widget.ListView;
 import android.widget.Scroller;
 import android.widget.TextView;
@@ -38,7 +39,7 @@ import db_oneday.OneDaydb;
  *
  * @author zhangshuo
  */
-public class SlideListView extends ListView implements TextView.OnEditorActionListener{
+public class SlideListView extends ExpandableListView implements TextView.OnEditorActionListener{
 
     public static String TAG = "SlideListView";
 
@@ -133,19 +134,19 @@ public class SlideListView extends ListView implements TextView.OnEditorActionLi
             if (im.isActive()){
                 im.hideSoftInputFromWindow(textView.getApplicationWindowToken(),0);
             }
-            editTextContent = textView.getText().toString();
+            editTextContent = changeTextView.getText().toString();
             if (editTextContent.equals("")) {
-                editTextContent = textView.getHint().toString();
+                editTextContent = textView.getText().toString();
             }else {
                 editTextContent = changeTextView.getText().toString();
             }
+            tvSc.setVisibility(VISIBLE);
             tvSc.setText(editTextContent);
             tvSc.setTextColor(Color.BLACK);
-            tvSc.setVisibility(VISIBLE);
             changeTextView.setVisibility(GONE);
-            shadowEdit.setBackgroundColor(getResources().getColor(R.color.day_background));
+//            shadowEdit.setBackgroundColor(getResources().getColor(R.color.day_background));
             ContentValues contentValues = DataSetUtil.updateData(OneDaydb.COLUMN_PLAN, editTextContent);
-            db.updateData(OneDaydb.TABLE_NAME, contentValues, time,planChange);
+            db.updateData(OneDaydb.TABLE_NAME, contentValues, time,editTextContent);
             refreshPlanListener.refresh();
         }
         return false;
@@ -187,13 +188,12 @@ public class SlideListView extends ListView implements TextView.OnEditorActionLi
     }
 
     //得到当前滑动item的line
-    public void saddLine(TextView textview, MyEditText changeTextView, TextView tvSc,OneDaydb db,String time,ViewGroup shadowEdit) {
+    public void saddLine(TextView textview, MyEditText changeTextView, TextView tvSc,OneDaydb db,String time) {
         this.Line = textview;
         this.changeTextView = changeTextView;
         this.tvSc = tvSc;
         this.db = db;
         this.time = time;
-        this.shadowEdit = shadowEdit;
         if (this.changeTextView.getMyContext() == null) {
             this.changeTextView.setContext(context);
             this.changeTextView.setTextView(tvSc);
@@ -220,7 +220,6 @@ public class SlideListView extends ListView implements TextView.OnEditorActionLi
                     tvSc.setVisibility(VISIBLE);
                     tvSc.setTextColor(Color.BLACK);
                     changeTextView.setVisibility(GONE);
-                    shadowEdit.setBackground(getResources().getDrawable(R.drawable.edit_shadow));
                     editTextContent = tvSc.getText().toString();
 //                    changeTextView.setStatus(false);
                     ContentValues contentValues = DataSetUtil.updateData(OneDaydb.COLUMN_PLAN, editTextContent);
@@ -297,7 +296,6 @@ public class SlideListView extends ListView implements TextView.OnEditorActionLi
                         if (offsetX > -(0.75 * leftLength)) {
                             Line.setVisibility(View.VISIBLE);
                             changeTextView.setVisibility(GONE);
-                            shadowEdit.setBackgroundColor(getResources().getColor(R.color.day_background));
                             tvSc.setVisibility(VISIBLE);
                             if (changeTextView.getHint() != null) {
                                 if (!changeTextView.getText().toString().equals("")) {
@@ -321,7 +319,6 @@ public class SlideListView extends ListView implements TextView.OnEditorActionLi
                             changeTextView.setOnEditorActionListener(this);
                             changeTextView.setFocusableInTouchMode(true);
                             changeTextView.setCursorVisible(false);
-                            shadowEdit.setBackground(getResources().getDrawable(R.drawable.edit_shadow));
                             VISIT = View.GONE;
                             canMove = true;
                         }

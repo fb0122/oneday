@@ -1,6 +1,5 @@
 package com.example.fb0122.oneday;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -10,25 +9,24 @@ import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.transition.Slide;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.BaseAdapter;
-import android.widget.EditText;
+import android.widget.BaseExpandableListAdapter;
+import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.fb0122.oneday.utils.DataSetUtil;
 import com.example.fb0122.oneday.utils.PreferenceUtils;
 import com.example.fb0122.oneday.utils.TimeCalendar;
 import com.example.fb0122.oneday.weidget.MyEditText;
@@ -83,7 +81,7 @@ public class AtyDay extends Fragment implements TextWatcher,SlideListView.Refres
         totalRefresh();
     }
 
-    class MyAdapter extends BaseAdapter {
+    class MyAdapter extends BaseExpandableListAdapter {
 
         private Context mContext;
         private Cursor c;
@@ -91,22 +89,6 @@ public class AtyDay extends Fragment implements TextWatcher,SlideListView.Refres
         public MyAdapter(Context context, Cursor c) {
             this.mContext = context;
             this.c = c;
-        }
-
-        @Override
-        public int getCount() {
-            return c.getCount();
-        }
-
-
-        @Override
-        public Object getItem(int position) {
-            return position;
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
         }
 
         public void removeItem(int position) {
@@ -117,27 +99,71 @@ public class AtyDay extends Fragment implements TextWatcher,SlideListView.Refres
         }
 
 
-        //
         //通过position取得当前滑动的item的view
         public void getLinePosition(int position) {
             int firstPosition = lvDay.getFirstVisiblePosition();
             int  lastPosition = lvDay.getLastVisiblePosition();
             if (position >= firstPosition && position <=  lastPosition) {
                 View view = lvDay.getChildAt(position - lvDay.getFirstVisiblePosition());
-                ViewHolder lineHold = (ViewHolder) view.getTag();
-                lvDay.saddLine(lineHold.addLine,lineHold.scEdit ,lineHold.tvSc,db,lineHold.tvTime.getText().toString(),lineHold.shadowEdit);
+                if (view.getTag() instanceof ViewHolder) {
+                    ViewHolder lineHold = (ViewHolder) view.getTag();
+                    lvDay.saddLine(lineHold.addLine,lineHold.scEdit ,lineHold.tvSc,db,lineHold.tvTime.getText().toString());
+                }
             }
             lvDay.postInvalidate();
         }
 
 
+//
+
         @Override
-        public View getView(int position, View convertView,
-                            ViewGroup parent) {
+        public int getGroupCount() {
+            return c.getCount();
+        }
+
+        @Override
+        public int getChildrenCount(int i) {
+            return 1;
+        }
+
+        @Override
+        public Object getGroup(int groupPosition) {
+            return groupPosition;
+        }
+
+        @Override
+        public Object getChild(int groupPosition, int childPosition) {
+            return childPosition;
+        }
+
+        @Override
+        public long getGroupId(int groupPosition) {
+            return groupPosition;
+        }
+
+        @Override
+        public long getChildId(int groupPosition, int childPosition) {
+            return childPosition;
+        }
+
+        @Override
+        public boolean hasStableIds() {
+            return true;
+        }
+
+        @Override
+        public View getGroupView(int groupPosition, boolean b, View convertView, ViewGroup parent) {
             final ViewHolder holder;
 
             if (convertView == null) {
                 convertView = LayoutInflater.from(mContext).inflate(R.layout.listview_item, parent, false);
+                convertView.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View view, MotionEvent motionEvent) {
+                        lvDay.initSlideMode(SlideListView.MOD_BOTH,mContext);
+                        return false;
+                    }
+                });
                 holder = new ViewHolder();
                 holder.hSView = (RelativeLayout) convertView.findViewById(R.id.hsv);
                 holder.ll_intent = (RelativeLayout) convertView.findViewById(R.id.ll_intent);
@@ -152,20 +178,19 @@ public class AtyDay extends Fragment implements TextWatcher,SlideListView.Refres
                 holder.other2 = (RelativeLayout) convertView.findViewById(R.id.other2);
                 holder.delete1 = (RelativeLayout) convertView.findViewById(R.id.delete1);
                 holder.addLine = (TextView) convertView.findViewById(R.id.Line);
-                holder.shadowEdit = (ViewGroup) convertView.findViewById(R.id.frame_shadow);
                 convertView.setTag(holder);
 
             } else {
                 holder = (ViewHolder) convertView.getTag();   //当convertView第一次使用时，我们需要创建它。当第二次使用时，就可以使用getTag()直接使用
             }
-            if (PreferenceUtils.getBoolean(String.valueOf(position + 1),getContext())){
+            if (PreferenceUtils.getBoolean(String.valueOf(groupPosition + 1),getContext())){
                 holder.addLine.setVisibility(View.VISIBLE);
                 holder.tvSc.setTextColor(getResources().getColor(R.color.shadow));
             }else {
                 holder.addLine.setVisibility(View.GONE);
                 holder.tvSc.setTextColor(getResources().getColor(R.color.black));
             }
-            c.moveToPosition(position);
+            c.moveToPosition(groupPosition);
 
             holder.tvSc.setText(c.getString(1));
             holder.tvTime.setText(c.getString(2));
@@ -174,11 +199,46 @@ public class AtyDay extends Fragment implements TextWatcher,SlideListView.Refres
             return convertView;
         }
 
+        @Override
+        public View getChildView(int groupPosition, int childPosition, boolean b, View convertView, ViewGroup viewGroup) {
+            ChildViewHolder childHolder;
+            if (convertView == null){
+                convertView = LayoutInflater.from(mContext).inflate(R.layout.expand_layout,null);
+                convertView.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View view, MotionEvent motionEvent) {
+                        lvDay.initSlideMode(SlideListView.MOD_FORBID,mContext);
+                        return true;
+                    }
+                });
+                childHolder = new ChildViewHolder();
+                childHolder.expandPlanText = (TextView)convertView.findViewById(R.id.text_expand_plan);
+                childHolder.expandRelativeLayout = (RelativeLayout)convertView.findViewById(R.id.relative_expand);
+                childHolder.week_select = (RelativeLayout)convertView.findViewById(R.id.week_select);
+                childHolder.fromTimeExpandText = (TextView)convertView.findViewById(R.id.text_expand_from_time);
+                childHolder.toTimeExpandText = (TextView)convertView.findViewById(R.id.text_expand_to_time);
+                childHolder.reminderExpandImg = (ImageView)convertView.findViewById(R.id.img_expand_reminder);
+                childHolder.tipsSpinner = (Spinner)convertView.findViewById(R.id.spinner_expand_tips);
+                childHolder.cancelExpandBtn = (Button) convertView.findViewById(R.id.btn_expand_cancel);
+                childHolder.sureExpandBtn = (Button)convertView.findViewById(R.id.btn_expand_sure);
+                convertView.setTag(childHolder);
+            }else {
+                childHolder = (ChildViewHolder)convertView.getTag();
+            }
+
+            childHolder.expandPlanText.setText(c.getString(1));
+            return convertView;
+        }
+
+        @Override
+        public boolean isChildSelectable(int i, int i1) {
+            return false;
+        }
+
         //这里使用到了ViewHolder 的复用
         public class ViewHolder {
 
             public ViewHolder() {
-
             }
 
             public RelativeLayout hSView, other1, other2, delete1, delete2;
@@ -189,6 +249,16 @@ public class AtyDay extends Fragment implements TextWatcher,SlideListView.Refres
             private TextView addLine;
             public RelativeLayout ll_intent;
             private ViewGroup shadowEdit;
+
+        }
+
+        class ChildViewHolder{
+            public TextView expandPlanText;
+            public RelativeLayout expandRelativeLayout,week_select;
+            public TextView fromTimeExpandText,toTimeExpandText;
+            public ImageView reminderExpandImg;
+            public Spinner tipsSpinner;
+            public Button cancelExpandBtn,sureExpandBtn;
         }
 
     }

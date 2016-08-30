@@ -12,7 +12,7 @@
         	android:bottom="3dp"
         >  
         <shape android:shape="rectangle">  
-            <gradient android:startColor="@color/white" android:endColor="@color/white"  
+            <gradient android:startColor="@color/day_background" android:endColor="@color/day_background"
                 android:angle="270" />  
             <padding android:left="5dp" android:top="7dp" android:right="5dp"  
                 android:bottom="7dp" />  
