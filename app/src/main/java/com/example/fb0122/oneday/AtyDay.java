@@ -107,7 +107,7 @@ public class AtyDay extends Fragment implements TextWatcher,SlideListView.Refres
                 View view = lvDay.getChildAt(position - lvDay.getFirstVisiblePosition());
                 if (view.getTag() instanceof ViewHolder) {
                     ViewHolder lineHold = (ViewHolder) view.getTag();
-                    lvDay.saddLine(lineHold.addLine,lineHold.scEdit ,lineHold.tvSc,db,lineHold.tvTime.getText().toString());
+                    lvDay.saddLine(lineHold.addLine,lineHold.scEdit ,lineHold.tvSc,db,lineHold.tvSc.getText().toString());
                 }
             }
             lvDay.postInvalidate();

@@ -124,12 +124,12 @@ public class SlideListView extends ExpandableListView implements TextView.OnEdit
     private String time;
     private String editTextContent;         // 习惯Text内的内容,因为 可能随时需要编辑.
     private String planChange;
-    private ViewGroup shadowEdit;
 
     @Override
     public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+            planChange = changeTextView.getText().toString();
         if (i == EditorInfo.IME_ACTION_DONE){
-            planChange = textView.getText().toString();
+            Log.d(TAG,"---1---" + planChange);
             InputMethodManager im = (InputMethodManager)textView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
             if (im.isActive()){
                 im.hideSoftInputFromWindow(textView.getApplicationWindowToken(),0);
@@ -146,7 +146,7 @@ public class SlideListView extends ExpandableListView implements TextView.OnEdit
             changeTextView.setVisibility(GONE);
 //            shadowEdit.setBackgroundColor(getResources().getColor(R.color.day_background));
             ContentValues contentValues = DataSetUtil.updateData(OneDaydb.COLUMN_PLAN, editTextContent);
-            db.updateData(OneDaydb.TABLE_NAME, contentValues, time,editTextContent);
+            db.updateData(OneDaydb.TABLE_NAME, contentValues, "", time);
             refreshPlanListener.refresh();
         }
         return false;
