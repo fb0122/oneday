@@ -15,7 +15,7 @@ import java.util.HashMap;
  */
 public class TimeCalendar {
 
-    public static String[] week_str = new String[]{"周一","周二","周三","周四","周五","周六","周日"};
+    public static String[] week_str = new String[]{"周日","周一","周二","周三","周四","周五","周六"};
     private static HashMap<String,Integer> weekMap = new HashMap<>();
     private static HashMap<Integer,String> weekMap1 = new HashMap<>();
 
@@ -31,7 +31,7 @@ public class TimeCalendar {
     }
 
     public static String getTodayWeek(){
-        return week_str[getToday() - 2];
+        return week_str[getToday() - 1];
     }
 
 
