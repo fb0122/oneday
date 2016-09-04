@@ -1,0 +1,216 @@
+[
+    {
+        "outputFile": "D:\\lastCode\\OneDay\\datetimepickerlibrary\\build\\intermediates\\res\\merged\\debug\\values-fi\\values-fi.xml",
+        "map": [
+            {
+                "to": {
+                    "startLine": 2,
+                    "startColumn": 4,
+                    "startOffset": 105,
+                    "endColumn": 108,
+                    "endOffset": 209
+                },
+                "from": {
+                    "file": "D:\\lastCode\\OneDay\\datetimepickerlibrary\\src\\main\\res\\values-fi\\strings.xml",
+                    "position": {
+                        "startLine": 24,
+                        "startColumn": 4,
+                        "startOffset": 1328,
+                        "endColumn": 108,
+                        "endOffset": 1432
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 3,
+                    "startColumn": 4,
+                    "startOffset": 214,
+                    "endColumn": 110,
+                    "endOffset": 320
+                },
+                "from": {
+                    "file": "D:\\lastCode\\OneDay\\datetimepickerlibrary\\src\\main\\res\\values-fi\\strings.xml",
+                    "position": {
+                        "startLine": 29,
+                        "startColumn": 4,
+                        "startOffset": 1837,
+                        "endColumn": 114,
+                        "endOffset": 1947
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 4,
+                    "startColumn": 4,
+                    "startOffset": 325,
+                    "endColumn": 75,
+                    "endOffset": 396
+                },
+                "from": {
+                    "file": "D:\\lastCode\\OneDay\\datetimepickerlibrary\\src\\main\\res\\values-fi\\strings.xml",
+                    "position": {
+                        "startLine": 19,
+                        "startColumn": 4,
+                        "startOffset": 828,
+                        "endColumn": 75,
+                        "endOffset": 899
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 5,
+                    "startColumn": 4,
+                    "startOffset": 401,
+                    "endColumn": 118,
+                    "endOffset": 515
+                },
+                "from": {
+                    "file": "D:\\lastCode\\OneDay\\datetimepickerlibrary\\src\\main\\res\\values-fi\\strings.xml",
+                    "position": {
+                        "startLine": 20,
+                        "startColumn": 4,
+                        "startOffset": 905,
+                        "endColumn": 118,
+                        "endOffset": 1019
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 6,
+                    "startColumn": 4,
+                    "startOffset": 520,
+                    "endColumn": 115,
+                    "endOffset": 631
+                },
+                "from": {
+                    "file": "D:\\lastCode\\OneDay\\datetimepickerlibrary\\src\\main\\res\\values-fi\\strings.xml",
+                    "position": {
+                        "startLine": 28,
+                        "startColumn": 4,
+                        "startOffset": 1716,
+                        "endColumn": 119,
+                        "endOffset": 1831
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 7,
+                    "startColumn": 4,
+                    "startOffset": 636,
+                    "endColumn": 123,
+                    "endOffset": 755
+                },
+                "from": {
+                    "file": "D:\\lastCode\\OneDay\\datetimepickerlibrary\\src\\main\\res\\values-fi\\strings.xml",
+                    "position": {
+                        "startLine": 21,
+                        "startColumn": 4,
+                        "startOffset": 1025,
+                        "endColumn": 123,
+                        "endOffset": 1144
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 8,
+                    "startColumn": 4,
+                    "startOffset": 760,
+                    "endColumn": 94,
+                    "endOffset": 850
+                },
+                "from": {
+                    "file": "D:\\lastCode\\OneDay\\datetimepickerlibrary\\src\\main\\res\\values-fi\\strings.xml",
+                    "position": {
+                        "startLine": 26,
+                        "startColumn": 4,
+                        "startOffset": 1535,
+                        "endColumn": 94,
+                        "endOffset": 1625
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 9,
+                    "startColumn": 4,
+                    "startOffset": 855,
+                    "endColumn": 85,
+                    "endOffset": 936
+                },
+                "from": {
+                    "file": "D:\\lastCode\\OneDay\\datetimepickerlibrary\\src\\main\\res\\values-fi\\strings.xml",
+                    "position": {
+                        "startLine": 22,
+                        "startColumn": 4,
+                        "startOffset": 1150,
+                        "endColumn": 85,
+                        "endOffset": 1231
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 10,
+                    "startColumn": 4,
+                    "startOffset": 941,
+                    "endColumn": 89,
+                    "endOffset": 1026
+                },
+                "from": {
+                    "file": "D:\\lastCode\\OneDay\\datetimepickerlibrary\\src\\main\\res\\values-fi\\strings.xml",
+                    "position": {
+                        "startLine": 23,
+                        "startColumn": 4,
+                        "startOffset": 1237,
+                        "endColumn": 89,
+                        "endOffset": 1322
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 11,
+                    "startColumn": 4,
+                    "startOffset": 1031,
+                    "endColumn": 83,
+                    "endOffset": 1110
+                },
+                "from": {
+                    "file": "D:\\lastCode\\OneDay\\datetimepickerlibrary\\src\\main\\res\\values-fi\\strings.xml",
+                    "position": {
+                        "startLine": 27,
+                        "startColumn": 4,
+                        "startOffset": 1631,
+                        "endColumn": 83,
+                        "endOffset": 1710
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 12,
+                    "startColumn": 4,
+                    "startOffset": 1115,
+                    "endColumn": 95,
+                    "endOffset": 1206
+                },
+                "from": {
+                    "file": "D:\\lastCode\\OneDay\\datetimepickerlibrary\\src\\main\\res\\values-fi\\strings.xml",
+                    "position": {
+                        "startLine": 25,
+                        "startColumn": 4,
+                        "startOffset": 1438,
+                        "endColumn": 95,
+                        "endOffset": 1529
+                    }
+                }
+            }
+        ]
+    }
+]

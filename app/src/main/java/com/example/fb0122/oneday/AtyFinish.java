@@ -493,4 +493,3 @@ class ChangeHandler extends android.os.Handler {
         super.handleMessage(msg);
     }
 }
-

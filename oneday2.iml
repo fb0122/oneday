@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<<<<<<< b43303d5b6857e9fdb5fe4122ee3f90c2c9e9cf9:oneday2.iml
 <module external.linked.project.id="oneday2" external.linked.project.path="$MODULE_DIR$" external.root.project.path="$MODULE_DIR$" external.system.id="GRADLE" external.system.module.group="" external.system.module.version="unspecified" type="JAVA_MODULE" version="4">
+=======
+<module external.linked.project.id=":radialWidget" external.linked.project.path="$MODULE_DIR$" external.root.project.path="$MODULE_DIR$/.." external.system.id="GRADLE" external.system.module.group="OneDay" external.system.module.version="unspecified" type="JAVA_MODULE" version="4">
+>>>>>>> pull:radialWidget/radialWidget.iml
   <component name="FacetManager">
     <facet type="java-gradle" name="Java-Gradle">
       <configuration>

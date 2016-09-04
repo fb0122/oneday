@@ -1,0 +1,14 @@
+[
+    {
+        "merged": "D:\\lastCode\\OneDay\\datetimepickerlibrary\\build\\intermediates\\res\\merged\\debug\\color\\done_text_color.xml",
+        "source": "D:\\lastCode\\OneDay\\datetimepickerlibrary\\src\\main\\res\\color\\done_text_color.xml"
+    },
+    {
+        "merged": "D:\\lastCode\\OneDay\\datetimepickerlibrary\\build\\intermediates\\res\\merged\\debug\\color\\date_picker_selector.xml",
+        "source": "D:\\lastCode\\OneDay\\datetimepickerlibrary\\src\\main\\res\\color\\date_picker_selector.xml"
+    },
+    {
+        "merged": "D:\\lastCode\\OneDay\\datetimepickerlibrary\\build\\intermediates\\res\\merged\\debug\\color\\date_picker_year_selector.xml",
+        "source": "D:\\lastCode\\OneDay\\datetimepickerlibrary\\src\\main\\res\\color\\date_picker_year_selector.xml"
+    }
+]
