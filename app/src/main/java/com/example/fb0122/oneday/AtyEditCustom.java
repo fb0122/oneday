@@ -7,7 +7,11 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -16,6 +20,7 @@ import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -263,15 +268,16 @@ public class AtyEditCustom extends AppCompatActivity implements TimePickerDialog
     @Override
     public void onClick(View view) {
         TextView tv = (TextView) view;
-        if (view.getBackgroundTintList().getDefaultColor() == getResources().getColor(R.color.blue)) {
-            view.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.divider_color)));
-            view.setBackground(getResources().getDrawable(R.drawable.week_click));
+        if (tv.getTag()!= null && (int)tv.getTag() == 0) {
+            tv.setBackground(getResources().getDrawable(R.drawable.week_click));
             saveWeek.remove(tv.getText().toString());
+            tv.setTag(1);
         } else {
-            view.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.blue)));
-            view.setBackgroundDrawable(getResources().getDrawable(R.drawable.double_click));
+            tv.setBackground(getResources().getDrawable(R.drawable.double_click));
             saveWeek.add(tv.getText().toString());
+            tv.setTag(0);
         }
 
     }
+
 }

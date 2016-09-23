@@ -7,9 +7,6 @@ import android.os.Bundle;
 import android.os.Looper;
 import android.os.Message;
 import android.support.v4.app.Fragment;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.transition.Slide;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,6 +18,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -31,14 +29,13 @@ import com.example.fb0122.oneday.utils.PreferenceUtils;
 import com.example.fb0122.oneday.utils.TimeCalendar;
 import com.example.fb0122.oneday.weidget.MyEditText;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import db_oneday.OneDaydb;
 import oneday.Alarm.Config;
 
 
-public class AtyDay extends Fragment implements TextWatcher,SlideListView.RefreshPlan {
+public class AtyDay extends Fragment implements SlideListView.RefreshPlan {
 
     public static String TAG = "AtyDay";
 
@@ -52,7 +49,6 @@ public class AtyDay extends Fragment implements TextWatcher,SlideListView.Refres
     public static HashMap<Integer, Object> map = new HashMap<>();
     ChangeHandler handler = new ChangeHandler(Looper.myLooper());
     TimeHandler timeHandler = new TimeHandler(Looper.myLooper());
-    public static ArrayList<HashMap<Integer,Object>> listdata = new ArrayList<>() ;
 
     public AtyDay(Context context, HashMap<Integer, Object> map) {
         super();
@@ -64,17 +60,6 @@ public class AtyDay extends Fragment implements TextWatcher,SlideListView.Refres
 
     }
 
-    @Override
-    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-    }
-
-    @Override
-    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-    }
-
-    @Override
-    public void afterTextChanged(Editable editable) {
-    }
 
     @Override
     public void refresh() {
@@ -156,7 +141,7 @@ public class AtyDay extends Fragment implements TextWatcher,SlideListView.Refres
             final ViewHolder holder;
 
             if (convertView == null) {
-                convertView = LayoutInflater.from(mContext).inflate(R.layout.listview_item, parent, false);
+                convertView = LayoutInflater.from(mContext).inflate(R.layout.listview_item, parent,false);
                 convertView.setOnTouchListener(new View.OnTouchListener() {
                     @Override
                     public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -168,9 +153,8 @@ public class AtyDay extends Fragment implements TextWatcher,SlideListView.Refres
                 holder.hSView = (RelativeLayout) convertView.findViewById(R.id.hsv);
                 holder.ll_intent = (RelativeLayout) convertView.findViewById(R.id.ll_intent);
                 holder.tvSc = (TextView) convertView.findViewById(R.id.tvSc);
-                holder.scEdit = (MyEditText)convertView.findViewById(R.id.edit_Sc);
+                holder.scEdit = (EditText)convertView.findViewById(R.id.edit_Sc);
                 holder.scEdit.setVisibility(View.GONE);
-                holder.scEdit.addTextChangedListener(AtyDay.this);
                 holder.tvTime = (TextView) convertView.findViewById(R.id.tvTime);
                 holder.tvTo = (TextView) convertView.findViewById(R.id.tvTo);
                 holder.line = (TextView) convertView.findViewById(R.id.line);
@@ -241,11 +225,11 @@ public class AtyDay extends Fragment implements TextWatcher,SlideListView.Refres
             public ViewHolder() {
             }
 
-            public RelativeLayout hSView, other1, other2, delete1, delete2;
+            public RelativeLayout hSView, other1, other2, delete1;
             public View content;
             public TextView tvTime, line, tvTo;
             public TextView tvSc ;
-            private MyEditText scEdit;
+            private EditText scEdit;
             private TextView addLine;
             public RelativeLayout ll_intent;
             private ViewGroup shadowEdit;

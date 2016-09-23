@@ -4,7 +4,6 @@
     android:id="@+id/hsv"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/listview_item_click"
     android:descendantFocusability="beforeDescendants"
     android:paddingLeft="-120dp"
     android:paddingRight="-80dp">
@@ -75,7 +74,7 @@
                         android:id="@+id/Line"
                         android:layout_width="100dp"
                         android:layout_height="3dp"
-                        android:background="@drawable/gray_fenge"
+                        android:background="@drawable/week_item_line"
                         android:visibility="visible"
                         android:layout_gravity="center_vertical"
                         android:layout_marginTop="2dp"
@@ -92,7 +91,7 @@
                         android:textSize="21dp"
                         tools:text="rrr" />
 
-                    <com.example.fb0122.oneday.weidget.MyEditText
+                    <EditText
                         android:id="@+id/edit_Sc"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

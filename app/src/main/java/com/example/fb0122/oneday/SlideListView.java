@@ -3,26 +3,21 @@ package com.example.fb0122.oneday;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.inputmethodservice.Keyboard;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.util.LruCache;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ExpandableListView;
-import android.widget.ListView;
 import android.widget.Scroller;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.fb0122.oneday.utils.DataSetUtil;
 import com.example.fb0122.oneday.utils.PreferenceUtils;
@@ -112,7 +107,7 @@ public class SlideListView extends ExpandableListView implements TextView.OnEdit
     private boolean isChanged = false;    //是否改变了习惯
     public Context context;
     private TextView Line, tvSc;
-    public MyEditText changeTextView;
+    public EditText changeTextView;
 
     AtyDay.MyAdapter adapter;
     public int screenWidth;
@@ -188,16 +183,12 @@ public class SlideListView extends ExpandableListView implements TextView.OnEdit
     }
 
     //得到当前滑动item的line
-    public void saddLine(TextView textview, MyEditText changeTextView, TextView tvSc,OneDaydb db,String time) {
+    public void saddLine(TextView textview, EditText changeTextView, TextView tvSc, OneDaydb db, String time) {
         this.Line = textview;
         this.changeTextView = changeTextView;
         this.tvSc = tvSc;
         this.db = db;
         this.time = time;
-        if (this.changeTextView.getMyContext() == null) {
-            this.changeTextView.setContext(context);
-            this.changeTextView.setTextView(tvSc);
-        }
     }
 
     //得到adapter

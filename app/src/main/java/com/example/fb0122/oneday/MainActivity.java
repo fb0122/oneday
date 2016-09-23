@@ -69,7 +69,6 @@ public class MainActivity extends AppCompatActivity {
 		screenWidth = outMetrics.widthPixels;
 		toolbar = (Toolbar)findViewById(R.id.toolbar);
 		toolbar.setTitle("");
-		toolbar.setElevation(5.0f);
 		setSupportActionBar(toolbar);
 		listdata = day.map;
 		day = new AtyDay(this,listdata);

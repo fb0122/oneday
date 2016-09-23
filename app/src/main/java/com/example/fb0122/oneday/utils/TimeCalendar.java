@@ -26,7 +26,6 @@ public class TimeCalendar {
     }
 
     public static int getToday(){
-        Log.d("Time","day " + getCanlendar().get(Calendar.DAY_OF_WEEK));
         return getCanlendar().get(Calendar.DAY_OF_WEEK);
     }
 

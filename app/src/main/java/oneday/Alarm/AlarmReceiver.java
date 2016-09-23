@@ -74,6 +74,7 @@ public class AlarmReceiver extends BroadcastReceiver {
             }
             for (int i = 0;i<timeList.size();i++){
                 if (nowTime.equals(timeList.get(i))){
+                    Log.d(TAG,"当前有" + "个待办事项");
                     createNotify(nowTime);
                 }
             }

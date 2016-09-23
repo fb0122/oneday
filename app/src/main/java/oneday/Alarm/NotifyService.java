@@ -21,7 +21,8 @@ public class NotifyService extends Service{
 
     ArrayList<String> list = new ArrayList<>();
     String action = "NotifyService.Intent";
-    private static int iflag = 0;
+    private static int iFlag = 0;
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -31,10 +32,10 @@ public class NotifyService extends Service{
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        if(iflag == 0 ? (intent != null ) : (intent.getAction().equals("NotifyService.Intent")) ){
+        if(iFlag == 0 ? (intent != null ) : (intent.getAction().equals("NotifyService.Intent")) ){
             list = intent.getStringArrayListExtra("time");
             AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
-            long tiggerAtTime = SystemClock.elapsedRealtime();
+            long tigGerAtTime = SystemClock.elapsedRealtime();
 
             Intent i = new Intent(getApplicationContext(),AlarmReceiver.class);
             Bundle bundle = new Bundle();
@@ -42,9 +43,9 @@ public class NotifyService extends Service{
             i.putExtras(bundle);
             i.setAction(action);
             PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(),0,i,PendingIntent.FLAG_UPDATE_CURRENT);
-            alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,tiggerAtTime,pendingIntent);
+            alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,tigGerAtTime,pendingIntent);
 
-            iflag += 1;
+            iFlag += 1;
         }
         return super.onStartCommand(intent, flags, startId);
     }
