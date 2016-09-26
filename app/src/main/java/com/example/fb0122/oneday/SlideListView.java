@@ -3,6 +3,7 @@ package com.example.fb0122.oneday;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -107,7 +108,7 @@ public class SlideListView extends ExpandableListView implements TextView.OnEdit
     private boolean isChanged = false;    //是否改变了习惯
     public Context context;
     private TextView Line, tvSc;
-    public EditText changeTextView;
+    private EditText changeTextView;
 
     AtyDay.MyAdapter adapter;
     public int screenWidth;
@@ -119,30 +120,16 @@ public class SlideListView extends ExpandableListView implements TextView.OnEdit
     private String time;
     private String editTextContent;         // 习惯Text内的内容,因为 可能随时需要编辑.
     private String planChange;
+    private InputMethodManager im;
 
     @Override
     public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
             planChange = changeTextView.getText().toString();
         if (i == EditorInfo.IME_ACTION_DONE){
-            Log.d(TAG,"---1---" + planChange);
-            InputMethodManager im = (InputMethodManager)textView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-            if (im.isActive()){
-                im.hideSoftInputFromWindow(textView.getApplicationWindowToken(),0);
+            isDisplaykeyBoard();
+            if (changeTextView != null) {
+                hideEditTextView();
             }
-            editTextContent = changeTextView.getText().toString();
-            if (editTextContent.equals("")) {
-                editTextContent = textView.getText().toString();
-            }else {
-                editTextContent = changeTextView.getText().toString();
-            }
-            tvSc.setVisibility(VISIBLE);
-            tvSc.setText(editTextContent);
-            tvSc.setTextColor(Color.BLACK);
-            changeTextView.setVisibility(GONE);
-//            shadowEdit.setBackgroundColor(getResources().getColor(R.color.day_background));
-            ContentValues contentValues = DataSetUtil.updateData(OneDaydb.COLUMN_PLAN, editTextContent);
-            db.updateData(OneDaydb.TABLE_NAME, contentValues, "", time);
-            refreshPlanListener.refresh();
         }
         return false;
     }
@@ -197,6 +184,39 @@ public class SlideListView extends ExpandableListView implements TextView.OnEdit
     }
 
     /**
+        点击空白处隐藏软键盘
+     */
+    public void isDisplaykeyBoard(){
+        if (im == null){
+            im = (InputMethodManager)changeTextView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        }
+        if (im.isActive() && changeTextView != null){
+            im.hideSoftInputFromWindow(changeTextView.getApplicationWindowToken(),0);
+        }else{
+            im.showSoftInput(changeTextView,0);
+        }
+    }
+
+    /**
+        隐藏编辑状态
+     */
+    public void hideEditTextView(){
+        editTextContent = changeTextView.getText().toString();
+        if (editTextContent.equals("")) {
+            editTextContent = changeTextView.getText().toString();
+        }else {
+            editTextContent = changeTextView.getText().toString();
+        }
+        tvSc.setVisibility(VISIBLE);
+        tvSc.setText(editTextContent);
+        tvSc.setTextColor(Color.BLACK);
+        changeTextView.setVisibility(GONE);
+        ContentValues contentValues = DataSetUtil.updateData(OneDaydb.COLUMN_PLAN, editTextContent);
+        db.updateData(OneDaydb.TABLE_NAME, contentValues, "", time);
+        refreshPlanListener.refresh();
+    }
+
+    /**
      * 处理我们拖动ListView item的逻辑
      */
     @Override
@@ -205,17 +225,9 @@ public class SlideListView extends ExpandableListView implements TextView.OnEdit
         int lastX = (int) ev.getX();
         switch (action) {
             case MotionEvent.ACTION_DOWN:
-                if (changeTextView != null && canMove) {
-                    setFocusable(false);
-                    setFocusableInTouchMode(false);
-                    tvSc.setVisibility(VISIBLE);
-                    tvSc.setTextColor(Color.BLACK);
-                    changeTextView.setVisibility(GONE);
-                    editTextContent = tvSc.getText().toString();
-//                    changeTextView.setStatus(false);
-                    ContentValues contentValues = DataSetUtil.updateData(OneDaydb.COLUMN_PLAN, editTextContent);
-                    db.updateData(OneDaydb.TABLE_NAME, contentValues, time,planChange);
-                    refreshPlanListener.refresh();
+                if (changeTextView!= null && changeTextView.getVisibility() == VISIBLE) {
+                    isDisplaykeyBoard();
+                    hideEditTextView();
                 }
             /*当前模式不允许滑动，则直接返回，交给ListView自身去处理*/
                 if (this.mode == MOD_FORBID) {
@@ -306,6 +318,7 @@ public class SlideListView extends ExpandableListView implements TextView.OnEdit
                             tvSc.setVisibility(GONE);
                             changeTextView.setVisibility(VISIBLE);
                             changeTextView.requestFocus();
+                            isDisplaykeyBoard();
                             changeTextView.setImeOptions(EditorInfo.IME_ACTION_DONE);
                             changeTextView.setOnEditorActionListener(this);
                             changeTextView.setFocusableInTouchMode(true);
@@ -381,6 +394,10 @@ public class SlideListView extends ExpandableListView implements TextView.OnEdit
 
     }
 
+    @Override
+    protected void dispatchDraw(Canvas canvas) {
+        super.dispatchDraw(canvas);
+    }
 
     @Override
     public void removeView(View child) {

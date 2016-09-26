@@ -32,10 +32,14 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/layoutDay"
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
-                android:layout_marginLeft="20.5dp"
-                android:orientation="vertical">
+                android:layout_marginLeft="10.5dp"
+                android:orientation="vertical"
+                android:paddingRight="10dp"
+                android:paddingLeft="10dp"
+                >
 
                 <LinearLayout
                     android:layout_width="fill_parent"
@@ -45,14 +49,14 @@
                     android:gravity="bottom">
 
                     <ImageView
-                        android:id="@+id/imgDay"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="2.5dp"
                         android:background="@drawable/day"
-                        android:clickable="true"
                         android:gravity="center_vertical"
-                        android:onClick="pageBack"/>
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        />
                 </LinearLayout>
 
                 <LinearLayout
@@ -72,10 +76,13 @@
 
 
             <LinearLayout
+                android:id="@+id/layoutWeek"
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
-                android:layout_marginLeft="20.5dp"
-                android:orientation="vertical">
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:orientation="vertical"
+                >
 
                 <LinearLayout
                     android:layout_width="fill_parent"
@@ -85,14 +92,12 @@
                     android:gravity="bottom">
 
                     <ImageView
-                        android:id="@+id/imgweek"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="2.5dp"
                         android:background="@drawable/week"
-                        android:clickable="true"
                         android:gravity="center_vertical"
-                        android:onClick="pageSwitch" />
+                        />
                 </LinearLayout>
 
                 <LinearLayout
@@ -113,8 +118,10 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
-                android:layout_marginLeft="20.5dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                >
 
                 <LinearLayout
                     android:layout_width="fill_parent"

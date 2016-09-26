@@ -20,8 +20,10 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
 	public static String TAG = "MainActivity";
 
 	private List<Fragment> list = new ArrayList<Fragment>();
-	public  MyViewPager viewpager;
+	public MyViewPager viewpager;
 	private FragmentAdapter fg;
 	private static  int selectedpage = 0;
 	private boolean scrollble = true;
@@ -52,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
 	HashMap<Integer,Object> listdata = new HashMap<>();
 	public static ArrayList<String> notiifyList = new ArrayList<String>();
 	static Context mContext;
+	private LinearLayout dayLayout,weekLayout;
 
 	@TargetApi(Build.VERSION_CODES.LOLLIPOP)
 	@SuppressWarnings("deprecation")
@@ -80,6 +83,31 @@ public class MainActivity extends AppCompatActivity {
 		tv1 = (ImageView)findViewById(R.id.tv1);
 		tv2 = (ImageView)findViewById(R.id.tv2);
 		tv3 = (ImageView)findViewById(R.id.tv3);
+		dayLayout = (LinearLayout)findViewById(R.id.layoutDay);
+		weekLayout = (LinearLayout)findViewById(R.id.layoutWeek);
+
+		dayLayout.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				if (selectedpage == 1) {
+					viewpager.setCurrentItem(0, true);
+//				overridePendingTransition(R.anim.zoom_out, R.anim.zoom_in);
+					tv1.setVisibility(View.VISIBLE);
+					tv2.setVisibility(View.GONE);
+				}
+			}
+		});
+
+		weekLayout.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+					if (selectedpage == 0) {
+						viewpager.setCurrentItem(1, true);
+						tv1.setVisibility(View.GONE);
+						tv2.setVisibility(View.VISIBLE);
+					}
+				}
+		});
 
 		fg = new FragmentAdapter(getSupportFragmentManager());
 		viewpager.setAdapter(fg);
@@ -154,38 +182,35 @@ public class MainActivity extends AppCompatActivity {
 		
 	}
 	
-	public void pageBack(View v){
-		
-		if(v.getId() == R.id.imgDay){
+	public  void pageBack(View v){
+		if (v.getId() == R.id.layoutDay) {
 			if (selectedpage == 1) {
-				viewpager.setCurrentItem(0,true);
-				overridePendingTransition(R.anim.zoom_out, R.anim.zoom_in);
+				viewpager.setCurrentItem(0, true);
+//				overridePendingTransition(R.anim.zoom_out, R.anim.zoom_in);
 				tv1.setVisibility(View.VISIBLE);
 				tv2.setVisibility(View.GONE);
-		}
+			}
 		}
 	}
 	
 	
-	public void pageSwitch(View v){
-		if (v.getId() == R.id.imgweek) {
+	public  void pageSwitch(View v){
+		if (v.getId() == R.id.layoutWeek) {
 			if (selectedpage == 0) {
-				viewpager.setCurrentItem(1,true);
+				viewpager.setCurrentItem(1, true);
 				tv1.setVisibility(View.GONE);
 				tv2.setVisibility(View.VISIBLE);
 			}
 		}
 	}
-
-
 }
 
  class TimeHandler extends Handler{
 
-	OneDaydb db = new OneDaydb(MainActivity.mContext,OneDaydb.TABLE_NAME) ;
+	private OneDaydb db = new OneDaydb(MainActivity.mContext,OneDaydb.TABLE_NAME) ;
 	Cursor c;
-	SQLiteDatabase dbreader;
-	String time;
+	private SQLiteDatabase dbreader;
+	private String time;
 
 	public TimeHandler(Looper looper){
 		super(looper);
@@ -206,8 +231,7 @@ public class MainActivity extends AppCompatActivity {
 					}while (c.moveToNext());
 				}
 				Intent i = new Intent(MainActivity.mContext, NotifyService.class);
-				i.setAction("NotifyService.Intent" +
-						"");
+				i.setAction("NotifyService.Intent" + "");
 				Bundle bundle = new Bundle();
 				bundle.putStringArrayList("time",MainActivity.notiifyList);
 				i.putExtras(bundle);
