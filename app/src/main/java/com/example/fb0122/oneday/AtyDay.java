@@ -211,6 +211,8 @@ public class AtyDay extends Fragment implements SlideListView.RefreshPlan {
             }
 
             childHolder.expandPlanText.setText(c.getString(1));
+            childHolder.fromTimeExpandText.setText(c.getString(2));
+            childHolder.toTimeExpandText.setText(c.getString(3));
             return convertView;
         }
 

@@ -11,6 +11,7 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.RemoteViews;
 
+import com.example.fb0122.oneday.MainActivity;
 import com.example.fb0122.oneday.R;
 import com.example.fb0122.oneday.utils.TimeCalendar;
 
@@ -74,7 +75,6 @@ public class AlarmReceiver extends BroadcastReceiver {
             }
             for (int i = 0;i<timeList.size();i++){
                 if (nowTime.equals(timeList.get(i))){
-                    Log.d(TAG,"当前有" + "个待办事项");
                     createNotify(nowTime);
                 }
             }
@@ -108,7 +108,8 @@ public class AlarmReceiver extends BroadcastReceiver {
     }
 
     public  PendingIntent getDefaultIntent(int flag){
-        PendingIntent pendingIntent = PendingIntent.getActivity(mContext,1,new Intent(),flag);
+        Intent intent = new Intent(mContext, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(mContext,1,intent,flag);
         return  pendingIntent;
     }
 

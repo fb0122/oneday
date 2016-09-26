@@ -184,7 +184,7 @@ public class SlideListView extends ExpandableListView implements TextView.OnEdit
     }
 
     /**
-        点击空白处隐藏软键盘
+     点击空白处隐藏软键盘
      */
     public void isDisplaykeyBoard(){
         if (im == null){
@@ -198,7 +198,7 @@ public class SlideListView extends ExpandableListView implements TextView.OnEdit
     }
 
     /**
-        隐藏编辑状态
+     隐藏编辑状态
      */
     public void hideEditTextView(){
         editTextContent = changeTextView.getText().toString();
