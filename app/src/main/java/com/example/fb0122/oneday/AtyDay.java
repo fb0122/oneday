@@ -8,7 +8,6 @@ import android.os.Looper;
 import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -25,9 +24,7 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.example.fb0122.oneday.utils.PreferenceUtils;
 import com.example.fb0122.oneday.utils.TimeCalendar;
-import com.example.fb0122.oneday.weidget.MyEditText;
 
 import java.util.HashMap;
 
@@ -35,7 +32,7 @@ import db_oneday.OneDaydb;
 import oneday.Alarm.Config;
 
 
-public class AtyDay extends Fragment implements SlideListView.RefreshPlan {
+public class AtyDay extends Fragment implements SlideListView.RefreshPlanListener {
 
     public static String TAG = "AtyDay";
 
@@ -56,15 +53,27 @@ public class AtyDay extends Fragment implements SlideListView.RefreshPlan {
         this.map = map;
     }
 
-    public AtyDay(){
+    public AtyDay() {
 
     }
-
 
     @Override
-    public void refresh() {
+    public void onRefresh() {
         totalRefresh();
     }
+
+    @Override
+    public void onPlanFinish(int visible, String plan) {
+        switch (visible) {
+            case View.VISIBLE:
+                db.planDone(plan, TimeCalendar.getWeekInYear(), 1);
+                break;
+            case View.GONE:
+                db.planDone(plan, TimeCalendar.getWeekInYear(), 0);
+                break;
+        }
+    }
+
 
     class MyAdapter extends BaseExpandableListAdapter {
 
@@ -87,19 +96,17 @@ public class AtyDay extends Fragment implements SlideListView.RefreshPlan {
         //通过position取得当前滑动的item的view
         public void getLinePosition(int position) {
             int firstPosition = lvDay.getFirstVisiblePosition();
-            int  lastPosition = lvDay.getLastVisiblePosition();
-            if (position >= firstPosition && position <=  lastPosition) {
+            int lastPosition = lvDay.getLastVisiblePosition();
+            if (position >= firstPosition && position <= lastPosition) {
                 View view = lvDay.getChildAt(position - lvDay.getFirstVisiblePosition());
                 if (view.getTag() instanceof ViewHolder) {
                     ViewHolder lineHold = (ViewHolder) view.getTag();
-                    lvDay.saddLine(lineHold.addLine,lineHold.scEdit ,lineHold.tvSc,db,lineHold.tvSc.getText().toString());
+                    lvDay.saddLine(lineHold.addLine, lineHold.scEdit, lineHold.tvSc, db, lineHold.tvSc.getText().toString());
                 }
             }
             lvDay.postInvalidate();
         }
 
-
-//
 
         @Override
         public int getGroupCount() {
@@ -141,11 +148,11 @@ public class AtyDay extends Fragment implements SlideListView.RefreshPlan {
             final ViewHolder holder;
 
             if (convertView == null) {
-                convertView = LayoutInflater.from(mContext).inflate(R.layout.listview_item, parent,false);
+                convertView = LayoutInflater.from(mContext).inflate(R.layout.listview_item, parent, false);
                 convertView.setOnTouchListener(new View.OnTouchListener() {
                     @Override
                     public boolean onTouch(View view, MotionEvent motionEvent) {
-                        lvDay.initSlideMode(SlideListView.MOD_BOTH,mContext);
+                        lvDay.initSlideMode(SlideListView.MOD_BOTH, mContext);
                         return false;
                     }
                 });
@@ -153,7 +160,7 @@ public class AtyDay extends Fragment implements SlideListView.RefreshPlan {
                 holder.hSView = (RelativeLayout) convertView.findViewById(R.id.hsv);
                 holder.ll_intent = (RelativeLayout) convertView.findViewById(R.id.ll_intent);
                 holder.tvSc = (TextView) convertView.findViewById(R.id.tvSc);
-                holder.scEdit = (EditText)convertView.findViewById(R.id.edit_Sc);
+                holder.scEdit = (EditText) convertView.findViewById(R.id.edit_Sc);
                 holder.scEdit.setVisibility(View.GONE);
                 holder.tvTime = (TextView) convertView.findViewById(R.id.tvTime);
                 holder.tvTo = (TextView) convertView.findViewById(R.id.tvTo);
@@ -167,18 +174,19 @@ public class AtyDay extends Fragment implements SlideListView.RefreshPlan {
             } else {
                 holder = (ViewHolder) convertView.getTag();   //当convertView第一次使用时，我们需要创建它。当第二次使用时，就可以使用getTag()直接使用
             }
-            if (PreferenceUtils.getBoolean(String.valueOf(groupPosition + 1),getContext())){
+
+            c.moveToPosition(groupPosition);
+
+            holder.tvSc.setText(c.getString(1));            // 计划名称
+            holder.tvTime.setText(c.getString(2));          //开始时间
+            holder.tvTo.setText(c.getString(3));            //结束时间
+            if (c.getInt(6) == 1) {                         //计划是否被标记为完成
                 holder.addLine.setVisibility(View.VISIBLE);
                 holder.tvSc.setTextColor(getResources().getColor(R.color.shadow));
-            }else {
+            } else {
                 holder.addLine.setVisibility(View.GONE);
                 holder.tvSc.setTextColor(getResources().getColor(R.color.black));
             }
-            c.moveToPosition(groupPosition);
-
-            holder.tvSc.setText(c.getString(1));
-            holder.tvTime.setText(c.getString(2));
-            holder.tvTo.setText(c.getString(3));
 
             return convertView;
         }
@@ -186,28 +194,28 @@ public class AtyDay extends Fragment implements SlideListView.RefreshPlan {
         @Override
         public View getChildView(int groupPosition, int childPosition, boolean b, View convertView, ViewGroup viewGroup) {
             ChildViewHolder childHolder;
-            if (convertView == null){
-                convertView = LayoutInflater.from(mContext).inflate(R.layout.expand_layout,null);
+            if (convertView == null) {
+                convertView = LayoutInflater.from(mContext).inflate(R.layout.expand_layout, null);
                 convertView.setOnTouchListener(new View.OnTouchListener() {
                     @Override
                     public boolean onTouch(View view, MotionEvent motionEvent) {
-                        lvDay.initSlideMode(SlideListView.MOD_FORBID,mContext);
+                        lvDay.initSlideMode(SlideListView.MOD_FORBID, mContext);
                         return true;
                     }
                 });
                 childHolder = new ChildViewHolder();
-                childHolder.expandPlanText = (TextView)convertView.findViewById(R.id.text_expand_plan);
-                childHolder.expandRelativeLayout = (RelativeLayout)convertView.findViewById(R.id.relative_expand);
-                childHolder.week_select = (RelativeLayout)convertView.findViewById(R.id.week_select);
-                childHolder.fromTimeExpandText = (TextView)convertView.findViewById(R.id.text_expand_from_time);
-                childHolder.toTimeExpandText = (TextView)convertView.findViewById(R.id.text_expand_to_time);
-                childHolder.reminderExpandImg = (ImageView)convertView.findViewById(R.id.img_expand_reminder);
-                childHolder.tipsSpinner = (Spinner)convertView.findViewById(R.id.spinner_expand_tips);
+                childHolder.expandPlanText = (TextView) convertView.findViewById(R.id.text_expand_plan);
+                childHolder.expandRelativeLayout = (RelativeLayout) convertView.findViewById(R.id.relative_expand);
+                childHolder.week_select = (RelativeLayout) convertView.findViewById(R.id.week_select);
+                childHolder.fromTimeExpandText = (TextView) convertView.findViewById(R.id.text_expand_from_time);
+                childHolder.toTimeExpandText = (TextView) convertView.findViewById(R.id.text_expand_to_time);
+                childHolder.reminderExpandImg = (ImageView) convertView.findViewById(R.id.img_expand_reminder);
+                childHolder.tipsSpinner = (Spinner) convertView.findViewById(R.id.spinner_expand_tips);
                 childHolder.cancelExpandBtn = (Button) convertView.findViewById(R.id.btn_expand_cancel);
-                childHolder.sureExpandBtn = (Button)convertView.findViewById(R.id.btn_expand_sure);
+                childHolder.sureExpandBtn = (Button) convertView.findViewById(R.id.btn_expand_sure);
                 convertView.setTag(childHolder);
-            }else {
-                childHolder = (ChildViewHolder)convertView.getTag();
+            } else {
+                childHolder = (ChildViewHolder) convertView.getTag();
             }
 
             childHolder.expandPlanText.setText(c.getString(1));
@@ -222,29 +230,28 @@ public class AtyDay extends Fragment implements SlideListView.RefreshPlan {
         }
 
         //这里使用到了ViewHolder 的复用
-        public class ViewHolder {
+        class ViewHolder {
 
-            public ViewHolder() {
+            ViewHolder() {
             }
 
-            public RelativeLayout hSView, other1, other2, delete1;
+            RelativeLayout hSView, other1, other2, delete1;
             public View content;
-            public TextView tvTime, line, tvTo;
-            public TextView tvSc ;
+            TextView tvTime, line, tvTo;
+            TextView tvSc;
             private EditText scEdit;
             private TextView addLine;
-            public RelativeLayout ll_intent;
-            private ViewGroup shadowEdit;
+            RelativeLayout ll_intent;
 
         }
 
-        class ChildViewHolder{
-            public TextView expandPlanText;
-            public RelativeLayout expandRelativeLayout,week_select;
-            public TextView fromTimeExpandText,toTimeExpandText;
-            public ImageView reminderExpandImg;
-            public Spinner tipsSpinner;
-            public Button cancelExpandBtn,sureExpandBtn;
+        class ChildViewHolder {
+            TextView expandPlanText;
+            RelativeLayout expandRelativeLayout, week_select;
+            TextView fromTimeExpandText, toTimeExpandText;
+            ImageView reminderExpandImg;
+            Spinner tipsSpinner;
+            Button cancelExpandBtn, sureExpandBtn;
         }
 
     }
@@ -283,11 +290,8 @@ public class AtyDay extends Fragment implements SlideListView.RefreshPlan {
 
     private void getData() {
         String week = TimeCalendar.getTodayWeek();
-        db = new OneDaydb(getActivity(), "oneday");
         c = db.Query(week);
-
         adapter = new MyAdapter(getActivity(), c);
-        Log.e(TAG, "cursor" + c.getCount());
     }
 
 
@@ -300,10 +304,11 @@ public class AtyDay extends Fragment implements SlideListView.RefreshPlan {
         lvDay.initSlideMode(SlideListView.MOD_BOTH, getActivity());
         //为listview添加头部分割线,必须要添加headerview才会显示
         View view_header = new View(getContext());
-        lvDay.addHeaderView(view_header,null,true);
+        lvDay.addHeaderView(view_header, null, true);
         lvDay.setHeaderDividersEnabled(true);
         btnAdd = (ImageButton) view.findViewById(R.id.btnAdd);
         DisplayMetrics dm = new DisplayMetrics();
+        db = new OneDaydb(getActivity(), "oneday");
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
         getData();
 
@@ -312,7 +317,7 @@ public class AtyDay extends Fragment implements SlideListView.RefreshPlan {
         lvDay.setAdapter(adapter);
         lvDay.setOnItemClickListener(listClick);
         /*
-		 * 调用接口删除数据
+         * 调用接口删除数据
 		 */
 
         lvDay.setRemoveListener(removeListener);
@@ -369,7 +374,7 @@ public class AtyDay extends Fragment implements SlideListView.RefreshPlan {
         }
     }
 
-    public void totalRefresh(){
+    public void totalRefresh() {
         getData();
         adapter.notifyDataSetChanged();
         lvDay.setAdapter(adapter);

@@ -43,6 +43,11 @@ public class TimeCalendar {
         return date;
     }
 
+    public static int getWeekInYear(){
+        int week  = getCanlendar().get(Calendar.WEEK_OF_YEAR);
+        return week;
+    }
+
     private static String dealStr(String str){
         if (str.length() == 1){
             str = "0" + str;

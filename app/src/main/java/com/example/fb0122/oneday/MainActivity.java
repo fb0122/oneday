@@ -20,10 +20,11 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+
+import com.example.fb0122.oneday.utils.TimeCalendar;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -65,7 +66,6 @@ public class MainActivity extends AppCompatActivity {
 		setContentView(R.layout.activity_main);
 
 		mContext = getApplicationContext();
-
 
 		DisplayMetrics outMetrics = new DisplayMetrics();
 		getWindow().getWindowManager().getDefaultDisplay().getMetrics(outMetrics);

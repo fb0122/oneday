@@ -1,29 +1,19 @@
 package com.example.fb0122.oneday;
 
-import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.ContentValues;
-import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.fb0122.oneday.utils.TimeCalendar;
 import com.sleepbot.datetimepicker.time.RadialPickerLayout;
@@ -34,7 +24,6 @@ import java.util.Calendar;
 import java.util.List;
 
 import db_oneday.OneDaydb;
-import db_oneday.ScheduleData;
 import oneday.Alarm.Config;
 
 public class AtyEditCustom extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener, OnClickListener {
@@ -49,18 +38,15 @@ public class AtyEditCustom extends AppCompatActivity implements TimePickerDialog
     final TimePickerDialog timePickerDialog = TimePickerDialog.newInstance(this, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), false, false);
     boolean c;
     private EditText etCustom;
-    private SQLiteDatabase dbwrite;
+    private SQLiteDatabase dbWrite;
     private TextView Sun, Mon, Tue, Wed, Thu, Fri, Sat;
     ContentValues cv = new ContentValues();
-    PendingIntent pending;
     public static int a = 0;
-    public static int clickId;
     public static String title = "oneday";
     public static List<Integer> list = new ArrayList<>();
 
     private OneDaydb db = new OneDaydb(this, "oneday");
     private Calendar alacale = Calendar.getInstance();
-    private AlarmManager alarm;
     private String spinnerTick;
     private ArrayList<String> saveWeek = new ArrayList<>();
 
@@ -93,7 +79,7 @@ public class AtyEditCustom extends AppCompatActivity implements TimePickerDialog
 
         s.setAdapter(spadapter);
 
-        dbwrite = db.getWritableDatabase();
+        dbWrite = db.getWritableDatabase();
 
         etCusTime.setOnClickListener(new OnClickListener() {
 
@@ -142,19 +128,12 @@ public class AtyEditCustom extends AppCompatActivity implements TimePickerDialog
         if (saveWeek.size() > 0) {
             for (int j = 0; j < saveWeek.size(); j++) {
                 Log.e(TAG,"insert");
-                cv.put(OneDaydb.COLUMN_PLAN, etCustom.getText().toString());
-                cv.put(OneDaydb.COLUMN_FROM_TIME, etCusTime.getText().toString());
-                cv.put(OneDaydb.COLUMN_TO_TIME, etCusToTime.getText().toString());
-                cv.put(OneDaydb.COLUMN_WEEK,"周" + saveWeek.get(j));
-                dbwrite.insert(OneDaydb.TABLE_NAME, null, cv);
+                db.insertDta(etCustom.getText().toString(),etCusTime.getText().toString(),
+                        etCusToTime.getText().toString(),"周" + saveWeek.get(j));
             }
         }else {
-            Calendar cl = Calendar.getInstance();
-            cv.put(OneDaydb.COLUMN_PLAN, etCustom.getText().toString());
-            cv.put(OneDaydb.COLUMN_FROM_TIME, etCusTime.getText().toString());
-            cv.put(OneDaydb.COLUMN_TO_TIME, etCusToTime.getText().toString());
-            cv.put(OneDaydb.COLUMN_WEEK, TimeCalendar.getTodayWeek());
-            dbwrite.insert(OneDaydb.TABLE_NAME, null, cv);
+            db.insertDta(etCustom.getText().toString(),etCusTime.getText().toString(),
+                    etCusToTime.getText().toString(),TimeCalendar.getTodayWeek());
         }
             setResult(Config.CHANGE_DATA);
             finish();
@@ -185,8 +164,6 @@ public class AtyEditCustom extends AppCompatActivity implements TimePickerDialog
             alacale.set(Calendar.SECOND, 0);
             alacale.set(Calendar.MILLISECOND, 0);
 
-            doAlarm(alacale);
-
         } else {
             if (minute < 10) {
                 String minute_str = "0" + minute;
@@ -195,17 +172,6 @@ public class AtyEditCustom extends AppCompatActivity implements TimePickerDialog
                 etCusToTime.setText(hourOfDay + ":" + minute + "");
             }
         }
-    }
-
-    public void doAlarm(Calendar alacal) {
-
-        Intent ii = new Intent(AtyEditCustom.this, ReceiverNo.class);
-
-        pending = PendingIntent.getBroadcast(AtyEditCustom.this, 0, ii, 0);
-
-        alarm = (AlarmManager) getSystemService(ALARM_SERVICE);
-        alarm.setRepeating(AlarmManager.RTC_WAKEUP, alacale.getTimeInMillis(), 10 * 1000, pending);
-
     }
 
     /*
@@ -229,42 +195,6 @@ public class AtyEditCustom extends AppCompatActivity implements TimePickerDialog
         }
         return originTime;
     }
-
-    /*
-        计算时间的函数
-     */
-    private int calculatorTime(){
-        return 0;
-    }
-
-    public static String translateWeek(int week){
-        String week_str = null;
-        switch (week){
-            case 1:
-                week_str = "一";
-                break;
-            case 2:
-                week_str = "二";
-                break;
-            case 3:
-                week_str = "三";
-                break;
-            case 4:
-                week_str = "四";
-                break;
-            case 5:
-                week_str = "五";
-                break;
-            case 6:
-                week_str = "六";
-                break;
-            case 7:
-                week_str = "日";
-                break;
-        }
-        return "周" + week_str;
-    }
-
     @Override
     public void onClick(View view) {
         TextView tv = (TextView) view;

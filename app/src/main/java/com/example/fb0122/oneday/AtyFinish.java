@@ -211,7 +211,6 @@ public class AtyFinish extends Fragment implements View.OnTouchListener {
         public cursorAdapter(Context context, ArrayList<String> list) {       //启动时执行
             this.context = context;
             this.list = list;
-            Log.d(TAG,"---3---" + list);
             layoutinflate = LayoutInflater.from(context);
             this.setDataRefresh(this);
         }
@@ -310,7 +309,7 @@ public class AtyFinish extends Fragment implements View.OnTouchListener {
                 if (week.equals(TimeCalendar.getTodayWeek())) {
                     right.tvWeek.setText(week);
                     right.tvDate.setText(TimeCalendar.getLaterDate(0) + " /今天");
-                    right.tvPercent.setText("100%");
+                    right.tvPercent.setText(String.valueOf(db.finishPercent(week)) + "%");
                     right.tvDate.setTextColor(getResources().getColor(R.color.blue));
                     right.tvPercent.setTextColor(getResources().getColor(R.color.blue));
                     for (s.moveToFirst(); !s.isAfterLast(); s.moveToNext()) {
@@ -478,13 +477,11 @@ class ChangeHandler extends android.os.Handler {
     public void handleMessage(Message msg) {
         switch (msg.what) {
             case CHANGE_WEEK_VIEW:
-                Log.e(TAG, "Change data handler" + AtyFinish.adapter);
                 AtyFinish.adapter.notifyDataSetChanged();
                 AtyFinish.listview.postInvalidate();
                 break;
             case DELETE_DATA:
                 //对finish的view进行刷新，即没有内容的卡片会被删除
-                Log.e(TAG, "delete data in handler");
                 //使flag=0，防止完成界面item重复读取
                 AtyFinish.flag = 0;
                 AtyFinish.adapter.notifyItemRemoved(msg.getData().getInt("position"));

@@ -103,7 +103,7 @@ public class SlideListView extends ExpandableListView implements TextView.OnEdit
     private boolean isSlided = false;
 
     public static boolean isDelete = false;
-    public static int VISIT = 1;
+    public static int isLineVisible = GONE;
 
     private boolean isChanged = false;    //是否改变了习惯
     public Context context;
@@ -114,17 +114,16 @@ public class SlideListView extends ExpandableListView implements TextView.OnEdit
     public int screenWidth;
 
     private RemoveListener mRemoveListener;
-    private RefreshPlan refreshPlanListener;
+    private RefreshPlanListener refreshPlanListener;
     public RemoveDirection removeDirection;
     private OneDaydb db;
     private String time;
     private String editTextContent;         // 习惯Text内的内容,因为 可能随时需要编辑.
-    private String planChange;
+    private String oriPlan;
     private InputMethodManager im;
 
     @Override
     public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-            planChange = changeTextView.getText().toString();
         if (i == EditorInfo.IME_ACTION_DONE){
             isDisplaykeyBoard();
             if (changeTextView != null) {
@@ -176,6 +175,12 @@ public class SlideListView extends ExpandableListView implements TextView.OnEdit
         this.tvSc = tvSc;
         this.db = db;
         this.time = time;
+        if (Line != null) {
+            isLineVisible = Line.getVisibility();
+        }
+        if (tvSc != null){
+            oriPlan = tvSc.getText().toString();
+        }
     }
 
     //得到adapter
@@ -213,7 +218,7 @@ public class SlideListView extends ExpandableListView implements TextView.OnEdit
         changeTextView.setVisibility(GONE);
         ContentValues contentValues = DataSetUtil.updateData(OneDaydb.COLUMN_PLAN, editTextContent);
         db.updateData(OneDaydb.TABLE_NAME, contentValues, "", time);
-        refreshPlanListener.refresh();
+        refreshPlanListener.onRefresh();
     }
 
     /**
@@ -308,7 +313,6 @@ public class SlideListView extends ExpandableListView implements TextView.OnEdit
                                 }
                             }
                             tvSc.setTextColor(getResources().getColor(R.color.shadow));
-                            VISIT = View.VISIBLE;
                             canMove = true;
 
                         } else if ((offsetX < -(0.75 * leftLength)) && (offsetX > -(leftLength))) {
@@ -323,7 +327,6 @@ public class SlideListView extends ExpandableListView implements TextView.OnEdit
                             changeTextView.setOnEditorActionListener(this);
                             changeTextView.setFocusableInTouchMode(true);
                             changeTextView.setCursorVisible(false);
-                            VISIT = View.GONE;
                             canMove = true;
                         }
 					/*从左向右滑*/
@@ -354,13 +357,7 @@ public class SlideListView extends ExpandableListView implements TextView.OnEdit
             case MotionEvent.ACTION_UP:
                 if (canMove) {
                     canMove = false;
-//				scrollDelete();
                     scrollByDistanceX();
-                }
-                if (VISIT == View.GONE) {
-                    PreferenceUtils.putBoolean(context,String.valueOf(slidePosition),false);
-                } else {
-                    PreferenceUtils.putBoolean(context,String.valueOf(slidePosition),true);
                 }
 
                 break;
@@ -467,6 +464,9 @@ public class SlideListView extends ExpandableListView implements TextView.OnEdit
                 mRemoveListener.removeItem(RemoveDirection.LEFT, slidePosition - 1, itemView);      //slidePosition - 1 是因为listview加了headerView
                 postInvalidate();
             }
+            if (isLineVisible != Line.getVisibility()){
+                refreshPlanListener.onPlanFinish(Line.getVisibility(),oriPlan);
+            }
         }
     }
 
@@ -481,11 +481,14 @@ public class SlideListView extends ExpandableListView implements TextView.OnEdit
         void removeItem(RemoveDirection reDirection, int position, View itemView);
     }
 
-    public interface RefreshPlan{
-        void refresh();
+    public interface RefreshPlanListener{
+        void onRefresh();
+
+        void onPlanFinish(int visible,String plan);
     }
 
-    public void setRefreshPlanListener(RefreshPlan refreshPlanListener) {
+    public void setRefreshPlanListener(RefreshPlanListener refreshPlanListener) {
         this.refreshPlanListener = refreshPlanListener;
     }
+
 }
