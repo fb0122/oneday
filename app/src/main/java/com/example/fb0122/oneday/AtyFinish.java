@@ -10,7 +10,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -23,17 +22,13 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.example.fb0122.oneday.utils.DimenTranslate;
 import com.example.fb0122.oneday.utils.TimeCalendar;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -154,7 +149,7 @@ public class AtyFinish extends Fragment implements View.OnTouchListener {
 
         finish = (LinearLayout) view.findViewById(R.id.finish);
         finish.setOnTouchListener(this);
-        LinearLayout dragLayout = (LinearLayout)view.findViewById(R.id.dragLayout);
+        LinearLayout dragLayout = (LinearLayout) view.findViewById(R.id.dragLayout);
         dragLayout.setOnTouchListener(this);
         listview = (RecyclerView) view.findViewById(R.id.lvWeek);
         listview.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -183,7 +178,7 @@ public class AtyFinish extends Fragment implements View.OnTouchListener {
                     downlist.setAlpha(1.0f);
                     params.setMargins(0, 0, 0, 0);
                     downlist.setLayoutParams(params);
-                } else if (!(Boolean)downlist.getTag()){
+                } else if (!(Boolean) downlist.getTag()) {
                     downlist.setVisibility(View.GONE);
                     FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) finish.getLayoutParams();
                     params.setMargins(0, 0, 0, 0);
@@ -197,7 +192,6 @@ public class AtyFinish extends Fragment implements View.OnTouchListener {
             return true;
         }
     }
-
 
 
     class cursorAdapter extends RecyclerView.Adapter<cursorAdapter.ViewHolder> implements DataRefresh {
@@ -341,7 +335,12 @@ public class AtyFinish extends Fragment implements View.OnTouchListener {
                     right.moreImageView.setVisibility(View.GONE);
                     right.tvWeek.setText(week);
                     right.tvWeek.setTextColor(getResources().getColor(R.color.shadow));
-                    right.tvDate.setText(TimeCalendar.getLaterDate(position) + " /未到");
+                    int skipDay = TimeCalendar.getLaterDay(week)
+                            - TimeCalendar.getLaterDay(TimeCalendar.getTodayWeek());
+                    if (skipDay < 0) {
+                        skipDay = 5 - skipDay;
+                    }
+                    right.tvDate.setText(TimeCalendar.getLaterDate(skipDay) + "  /未到");
                     right.tvDate.setTextColor(getResources().getColor(R.color.shadow));
                     right.tvPercent.setText("0%");
                     right.tvPercent.setTextColor(getResources().getColor(R.color.shadow));
@@ -393,44 +392,47 @@ public class AtyFinish extends Fragment implements View.OnTouchListener {
         ArrayList<String> sorted_list = new ArrayList<>();
         ArrayList<Integer> list1 = new ArrayList<>();
         String week = TimeCalendar.getTodayWeek();
-        if (list.contains(week)){
+        if (list.contains(week)) {
             sorted_list.add(week);
             list.remove(week);
             list1.add(TimeCalendar.getWeekMap().get(week));
-            for (String s : list){
+            for (String s : list) {
                 list1.add(TimeCalendar.getWeekMap().get(s));
             }
             return compareWeek(list1);
-        }else {
+        } else {
             return list;
         }
     }
 
-    private ArrayList<String> compareWeek(ArrayList<Integer> com_list){
-        HashMap<Integer,Integer> hashMap = new HashMap<>();
+    /*
+    *   通过对星期的比较排序完成页面卡片
+    */
+    private ArrayList<String> compareWeek(ArrayList<Integer> com_list) {
+        HashMap<Integer, Integer> hashMap = new HashMap<>();
         ArrayList<String> sorted_list = new ArrayList<>();
         ArrayList<Integer> list1 = new ArrayList<>();
         ArrayList<Integer> list2 = new ArrayList<>();
         int mutil = 0;
         int first = com_list.get(0);
-        hashMap.put(0,first);
-        for (int m : com_list){
+        hashMap.put(0, first);
+        for (int m : com_list) {
             mutil = m - first;
             if (m - first > 0) {
                 list1.add(mutil);
-            }else if (m - first < 0){
+            } else if (m - first < 0) {
                 list2.add(Math.abs(mutil));
             }
         }
-        HashMap<Integer,String>  map = TimeCalendar.getWeekInMap();
+        HashMap<Integer, String> map = TimeCalendar.getWeekInMap();
         Collections.sort(list1);
         Collections.sort(list2);
 
         sorted_list.add(map.get(first));
-        for (int i : list1){
+        for (int i : list1) {
             sorted_list.add(map.get(first + i));
         }
-        for (int j : list2){
+        for (int j : list2) {
             sorted_list.add(map.get(j));
         }
         return sorted_list;

@@ -79,6 +79,10 @@ public class TimeCalendar {
         return weekMap;
     }
 
+    public static int getLaterDay(String week){
+        return getWeekMap().get(week);
+    }
+
     public static HashMap<Integer, String> getWeekInMap(){
         weekMap1.put(1,"周一");
         weekMap1.put(2,"周二");
