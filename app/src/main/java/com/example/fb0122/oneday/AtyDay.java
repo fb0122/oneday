@@ -7,14 +7,13 @@ import android.os.Bundle;
 import android.os.Looper;
 import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,11 +24,17 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.fb0122.oneday.utils.TimeCalendar;
+import com.sleepbot.datetimepicker.time.RadialPickerLayout;
+import com.sleepbot.datetimepicker.time.TimePickerDialog;
 
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 
 import db_oneday.OneDaydb;
 import oneday.Alarm.Config;
+
+import static com.example.fb0122.oneday.AtyEditCustom.TIMEPICKER_TAG;
 
 
 public class AtyDay extends Fragment implements SlideListView.RefreshPlanListener {
@@ -46,6 +51,7 @@ public class AtyDay extends Fragment implements SlideListView.RefreshPlanListene
     public static HashMap<Integer, Object> map = new HashMap<>();
     ChangeHandler handler = new ChangeHandler(Looper.myLooper());
     TimeHandler timeHandler = new TimeHandler(Looper.myLooper());
+
 
     public AtyDay(Context context, HashMap<Integer, Object> map) {
         super();
@@ -75,12 +81,24 @@ public class AtyDay extends Fragment implements SlideListView.RefreshPlanListene
     }
 
 
-    class MyAdapter extends BaseExpandableListAdapter {
+    class MyAdapter extends BaseExpandableListAdapter implements TimePickerDialog.OnTimeSetListener,OnClickListener {
 
         private Context mContext;
         private Cursor c;
+        private boolean flag;
+        private Calendar alacale = Calendar.getInstance();
+        private ChildViewHolder child = new ChildViewHolder();
+        final   TimePickerDialog timePickerDialog = TimePickerDialog.newInstance(this, alacale.get(Calendar.HOUR_OF_DAY), alacale.get(Calendar.MINUTE), false, false);
+        private FragmentManager fragmentManager;
+        private ArrayList<String> changedWeek = new ArrayList<>();
 
-        public MyAdapter(Context context, Cursor c) {
+        public MyAdapter(Context context, Cursor c,FragmentManager fragmentManager) {
+            this.mContext = context;
+            this.c = c;
+            this.fragmentManager = fragmentManager;
+        }
+
+        public MyAdapter(Context context,Cursor c){
             this.mContext = context;
             this.c = c;
         }
@@ -208,16 +226,45 @@ public class AtyDay extends Fragment implements SlideListView.RefreshPlanListene
                 childHolder.expandRelativeLayout = (RelativeLayout) convertView.findViewById(R.id.relative_expand);
                 childHolder.week_select = (RelativeLayout) convertView.findViewById(R.id.week_select);
                 childHolder.fromTimeExpandText = (TextView) convertView.findViewById(R.id.text_expand_from_time);
+                childHolder.fromTimeExpandText.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        flag = true;
+                        timepicker();
+                    }
+                });
                 childHolder.toTimeExpandText = (TextView) convertView.findViewById(R.id.text_expand_to_time);
+                childHolder.toTimeExpandText.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        flag = false;
+                        timepicker();
+                    }
+                });
                 childHolder.reminderExpandImg = (ImageView) convertView.findViewById(R.id.img_expand_reminder);
                 childHolder.tipsSpinner = (Spinner) convertView.findViewById(R.id.spinner_expand_tips);
                 childHolder.cancelExpandBtn = (Button) convertView.findViewById(R.id.btn_expand_cancel);
                 childHolder.sureExpandBtn = (Button) convertView.findViewById(R.id.btn_expand_sure);
+                childHolder.Sun = (TextView) convertView.findViewById(R.id.Sun);
+                childHolder.Mon = (TextView) convertView.findViewById(R.id.Mon);
+                childHolder.Tue = (TextView) convertView.findViewById(R.id.Tue);
+                childHolder.Wed = (TextView) convertView.findViewById(R.id.Wed);
+                childHolder.Thu = (TextView) convertView.findViewById(R.id.Thu);
+                childHolder.Fri = (TextView) convertView.findViewById(R.id.Fri);
+                childHolder.Sat = (TextView) convertView.findViewById(R.id.Sat);
+
+                childHolder.Sun.setOnClickListener(this);
+                childHolder.Mon.setOnClickListener(this);
+                childHolder.Tue.setOnClickListener(this);
+                childHolder.Wed.setOnClickListener(this);
+                childHolder.Thu.setOnClickListener(this);
+                childHolder.Fri.setOnClickListener(this);
+                childHolder.Sat.setOnClickListener(this);
                 convertView.setTag(childHolder);
             } else {
                 childHolder = (ChildViewHolder) convertView.getTag();
             }
-
+            child = childHolder;
             childHolder.expandPlanText.setText(c.getString(1));
             childHolder.fromTimeExpandText.setText(c.getString(2));
             childHolder.toTimeExpandText.setText(c.getString(3));
@@ -228,6 +275,50 @@ public class AtyDay extends Fragment implements SlideListView.RefreshPlanListene
         public boolean isChildSelectable(int i, int i1) {
             return false;
         }
+
+        public void timepicker() {
+            timePickerDialog.show(fragmentManager, TIMEPICKER_TAG);
+        }
+
+        @Override
+        public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute) {
+            if (flag) {
+                if (minute < 10) {
+                    String minute_str = "0" + minute;
+                    child.fromTimeExpandText.setText(hourOfDay + ":" + minute_str);
+                } else {
+                    child.fromTimeExpandText.setText(hourOfDay + ":" + minute + "");
+                }
+                alacale.setTimeInMillis(System.currentTimeMillis());
+                alacale.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                alacale.set(Calendar.MINUTE, minute);
+                alacale.set(Calendar.SECOND, 0);
+                alacale.set(Calendar.MILLISECOND, 0);
+
+            } else {
+                if (minute < 10) {
+                    String minute_str = "0" + minute;
+                    child.toTimeExpandText.setText(hourOfDay + ":" + minute_str);
+                } else {
+                    child.toTimeExpandText.setText(hourOfDay + ":" + minute + "");
+                }
+            }
+        }
+
+        @Override
+        public void onClick(View view) {
+            TextView tv = (TextView) view;
+            if (tv.getTag()!= null && (int)tv.getTag() == 0) {
+                tv.setBackground(mContext.getResources().getDrawable(R.drawable.week_click));
+                changedWeek.remove(tv.getText().toString());
+                tv.setTag(1);
+            } else {
+                tv.setBackground(mContext.getResources().getDrawable(R.drawable.double_click));
+                changedWeek.add(tv.getText().toString());
+                tv.setTag(0);
+            }
+        }
+
 
         //这里使用到了ViewHolder 的复用
         class ViewHolder {
@@ -252,24 +343,11 @@ public class AtyDay extends Fragment implements SlideListView.RefreshPlanListene
             ImageView reminderExpandImg;
             Spinner tipsSpinner;
             Button cancelExpandBtn, sureExpandBtn;
+            private TextView Sun, Mon, Tue, Wed, Thu, Fri, Sat;
         }
 
     }
 
-    public OnItemClickListener listClick = new OnItemClickListener() {
-
-        @Override
-        public void onItemClick(AdapterView<?> arg0, View arg1, int position,
-                                long arg3) {
-
-            addLinePosition = position;
-            Intent i = new Intent();
-            i.setClass(getActivity(), AtyEditCustom.class);
-            startActivity(i);
-        }
-
-
-    };
 
 		/*
          * 删除数据时的回调接口
@@ -291,7 +369,7 @@ public class AtyDay extends Fragment implements SlideListView.RefreshPlanListene
     private void getData() {
         String week = TimeCalendar.getTodayWeek();
         c = db.Query(week);
-        adapter = new MyAdapter(getActivity(), c);
+        adapter = new MyAdapter(getActivity(), c,getFragmentManager());
     }
 
 
@@ -315,24 +393,12 @@ public class AtyDay extends Fragment implements SlideListView.RefreshPlanListene
         //为slidelistview传入当前activity的adapter。让其在滑动的时候动态更新adapter
         lvDay.getAda(adapter);
         lvDay.setAdapter(adapter);
-        lvDay.setOnItemClickListener(listClick);
         /*
          * 调用接口删除数据
 		 */
 
         lvDay.setRemoveListener(removeListener);
         lvDay.setRefreshPlanListener(this);
-        lvDay.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-                lvDay.setDescendantFocusability(ViewGroup.FOCUS_BEFORE_DESCENDANTS);
-            }
-        });
 
         btnAdd.setOnClickListener(new OnClickListener() {
 

@@ -1,7 +1,5 @@
 package com.example.fb0122.oneday;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -59,6 +57,7 @@ public class AtyEditCustom extends AppCompatActivity implements TimePickerDialog
         etCusTime = (TextView) findViewById(R.id.etCusTime);
         etCusToTime = (TextView) findViewById(R.id.etCusToTime);
         etCustom = (EditText) findViewById(R.id.etCustom);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         //清楚list内存储的选择星期的数据
         list.clear();
@@ -145,32 +144,31 @@ public class AtyEditCustom extends AppCompatActivity implements TimePickerDialog
 
 
     public void backTo(View v) {
-
         finish();
     }
 
     @Override
     public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute) {
         if (c) {
-            if (minute < 10) {
-                String minute_str = "0" + minute;
-                etCusTime.setText(hourOfDay + ":" + minute_str);
-            } else {
-                etCusTime.setText(hourOfDay + ":" + minute + "");
-            }
-            alacale.setTimeInMillis(System.currentTimeMillis());
-            alacale.set(Calendar.HOUR_OF_DAY, hourOfDay);
-            alacale.set(Calendar.MINUTE, minute);
-            alacale.set(Calendar.SECOND, 0);
-            alacale.set(Calendar.MILLISECOND, 0);
+                if (minute < 10) {
+                    String minute_str = "0" + minute;
+                    etCusTime.setText(hourOfDay + ":" + minute_str);
+                } else {
+                    etCusTime.setText(hourOfDay + ":" + minute + "");
+                }
+                alacale.setTimeInMillis(System.currentTimeMillis());
+                alacale.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                alacale.set(Calendar.MINUTE, minute);
+                alacale.set(Calendar.SECOND, 0);
+                alacale.set(Calendar.MILLISECOND, 0);
 
-        } else {
-            if (minute < 10) {
-                String minute_str = "0" + minute;
-                etCusToTime.setText(hourOfDay + ":" + minute_str);
             } else {
-                etCusToTime.setText(hourOfDay + ":" + minute + "");
-            }
+                if (minute < 10) {
+                    String minute_str = "0" + minute;
+                    etCusToTime.setText(hourOfDay + ":" + minute_str);
+                } else {
+                    etCusToTime.setText(hourOfDay + ":" + minute + "");
+                }
         }
     }
 
