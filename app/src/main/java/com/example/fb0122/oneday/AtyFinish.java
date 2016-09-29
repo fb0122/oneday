@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -268,7 +269,6 @@ public class AtyFinish extends Fragment implements View.OnTouchListener {
                 if (flag == 2) {
                     flag = 1;
                 }
-
                 if (week.equals(TimeCalendar.getTodayWeek())) {
                     right.tvWeek.setText(week);
                     right.tvDate.setText(TimeCalendar.getLaterDate(0) + " /今天");
@@ -382,7 +382,7 @@ public class AtyFinish extends Fragment implements View.OnTouchListener {
         ArrayList<String> sorted_list = new ArrayList<>();
         ArrayList<Integer> list1 = new ArrayList<>();
         ArrayList<Integer> list2 = new ArrayList<>();
-        int mutil = 0;
+        int mutil;
         int first = com_list.get(0);
         hashMap.put(0, first);
         for (int m : com_list) {

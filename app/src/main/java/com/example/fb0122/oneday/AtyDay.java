@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Looper;
 import android.os.Message;
@@ -33,6 +34,7 @@ import com.sleepbot.datetimepicker.time.TimePickerDialog;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.HashSet;
 
 import db_oneday.OneDaydb;
 import oneday.Alarm.Config;
@@ -316,7 +318,7 @@ public class AtyDay extends Fragment implements SlideListView.RefreshPlanListene
         }
 
 
-        //想一下listview局部刷新吧
+        //想一下listView局部刷新吧
         @Override
         public void onClick(View view) {
             boolean change = false;
@@ -350,6 +352,38 @@ public class AtyDay extends Fragment implements SlideListView.RefreshPlanListene
                     String toTime = viewHolder.tvTo.getText().toString();
                     cv.put(OneDaydb.COLUMN_TO_TIME, to);
                     db.updataData(OneDaydb.TABLE_NAME, cv, OneDaydb.COLUMN_TO_TIME, toTime, plan);
+                    change = true;
+                    cv.clear();
+                }
+                if(changedWeek.size() != 0){
+                    SQLiteDatabase readWeek = db.getReadableDatabase();
+                    Cursor weekCursor = readWeek.rawQuery("select week from " + OneDaydb.TABLE_NAME + " where " +
+                            OneDaydb.COLUMN_PLAN + " = '" + plan + "'",null);
+                    String oriWeek;
+                    int count = weekCursor.getCount();
+                    if (weekCursor.moveToFirst()) {
+                        if (changedWeek.size() < count) {
+                            for (int i = 0; i < changedWeek.size(); i++) {
+                                oriWeek = weekCursor.getString(i);
+                                cv.put(OneDaydb.COLUMN_WEEK, "周" + changedWeek.get(i));
+                                db.updataData(OneDaydb.TABLE_NAME, cv, OneDaydb.COLUMN_WEEK, oriWeek, plan);
+                                cv.clear();
+                            }
+                        } else {
+                            for (int i = 0; i < count; i++) {
+                                oriWeek = weekCursor.getString(i);
+                                cv.put(OneDaydb.COLUMN_WEEK, "周" + changedWeek.get(i));
+                                db.updataData(OneDaydb.TABLE_NAME, cv, OneDaydb.COLUMN_WEEK, oriWeek, plan);
+                                cv.clear();
+                            }
+                            if (changedWeek.size() > count) {
+                                for (int j = count; j < changedWeek.size() + 1 - count; j++) {
+                                    db.insertDta(plan, time, to, "周" + changedWeek.get(j));
+                                }
+                            }
+                        }
+                    }
+                    weekCursor.close();
                     change = true;
                 }
                 if (change) {

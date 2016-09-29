@@ -5,9 +5,12 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
+import android.support.annotation.IntDef;
 
 import com.example.fb0122.oneday.utils.TimeCalendar;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 public class OneDaydb extends SQLiteOpenHelper {
 
@@ -87,6 +90,7 @@ public class OneDaydb extends SQLiteOpenHelper {
         return c;
     }
 
+
     public void delete(int id) {
         if (dbr != null) {
             dbr = getWritableDatabase();
@@ -132,8 +136,18 @@ public class OneDaydb extends SQLiteOpenHelper {
         return new String[]{time, custom};
     }
 
-    /*完成计划时将相应的数据库内 COLUMN_DONE 列的值改为 1。value 的值只能为 0 或 1*/
-    public void planDone(String plan,int weekInYear,int value){
+
+    @IntDef({0,1})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface isFinish{
+
+    }
+
+    /*
+    *   完成计划时将相应的数据库内 COLUMN_DONE 列的值改为 1。value 的值只能为 0 或 1
+    */
+
+    public void planDone(String plan,int weekInYear,@isFinish int value){
         ContentValues cv = new ContentValues();
         cv.put(COLUMN_DONE,value);
         dbr.update(TABLE_NAME,cv,COLUMN_PLAN  + " = ? and " + COLUMN_WEEK_IN_YEAR + " = ? ",
