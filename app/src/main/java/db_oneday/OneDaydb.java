@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.example.fb0122.oneday.utils.TimeCalendar;
 
@@ -53,9 +54,21 @@ public class OneDaydb extends SQLiteOpenHelper {
 
     }
 
-    public void updateData(String table, ContentValues cv, String time_value, String plan) {
+
+    /* 仅根据习惯名称更新习惯 ,如滑动修改 */
+    public void updateData(String table, ContentValues cv, String plan) {
         dbr = getWritableDatabase();
-        dbr.update(table, cv, OneDaydb.COLUMN_PLAN + " =?", new String[]{plan});
+        dbr.update(table, cv, COLUMN_PLAN + " =?", new String[]{plan});
+    }
+
+    /* 根据习惯名称与开始时间更新习惯,如展开修改 */
+    public void updataData(String table, ContentValues cv, String timColumn,String time, String plan){
+        if (dbr != null) {
+            dbr = getWritableDatabase();
+        }
+        if (dbr != null) {
+            dbr.update(table, cv, COLUMN_PLAN + " =? and " + timColumn + " = ?", new String[]{plan,time});
+        }
     }
 
     public Cursor Query() {

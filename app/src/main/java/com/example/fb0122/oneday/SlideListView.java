@@ -32,8 +32,6 @@ import db_oneday.OneDaydb;
  * 该效果的实现是基于在Item的布局中通过设置PaddingLeft和PaddingRight来隐藏左右菜单的，
  * 所以使用此ListView时，请务必在布局Item时使用PaddingLeft和PaddingRight；
  * 或者自己改写此ListView，已达到想要的实现方式
- *
- * @author zhangshuo
  */
 public class SlideListView extends ExpandableListView implements TextView.OnEditorActionListener{
 
@@ -189,7 +187,7 @@ public class SlideListView extends ExpandableListView implements TextView.OnEdit
     }
 
     /**
-     点击空白处隐藏软键盘
+        点击空白处隐藏软键盘
      */
     public void isDisplaykeyBoard(){
         if (im == null){
@@ -203,7 +201,7 @@ public class SlideListView extends ExpandableListView implements TextView.OnEdit
     }
 
     /**
-     隐藏编辑状态
+        隐藏编辑状态
      */
     public void hideEditTextView(){
         editTextContent = changeTextView.getText().toString();
@@ -217,7 +215,7 @@ public class SlideListView extends ExpandableListView implements TextView.OnEdit
         tvSc.setTextColor(Color.BLACK);
         changeTextView.setVisibility(GONE);
         ContentValues contentValues = DataSetUtil.updateData(OneDaydb.COLUMN_PLAN, editTextContent);
-        db.updateData(OneDaydb.TABLE_NAME, contentValues, "", time);
+        db.updateData(OneDaydb.TABLE_NAME, contentValues, time);
         refreshPlanListener.onRefresh();
     }
 
@@ -279,10 +277,7 @@ public class SlideListView extends ExpandableListView implements TextView.OnEdit
                                 | (ev.getActionIndex() << MotionEvent.ACTION_POINTER_INDEX_SHIFT));
                 onTouchEvent(cancelEvent);
                 int offsetX = downX - lastX;
-            /* (Math.abs(ev.getX() - downX) > mTouchSlop && Math.abs(ev
-                .getY() - downY) < mTouchSlop)
-				元语句中有这个判断条件
-			*/
+
                 if (slidePosition != AdapterView.INVALID_POSITION
                         ) {
 
@@ -466,6 +461,7 @@ public class SlideListView extends ExpandableListView implements TextView.OnEdit
             }
             if (isLineVisible != Line.getVisibility()){
                 refreshPlanListener.onPlanFinish(Line.getVisibility(),oriPlan);
+                refreshPlanListener.onScrollChangePlan(slidePosition - getFirstVisiblePosition());
             }
         }
     }
@@ -483,8 +479,9 @@ public class SlideListView extends ExpandableListView implements TextView.OnEdit
 
     public interface RefreshPlanListener{
         void onRefresh();
-
         void onPlanFinish(int visible,String plan);
+        void onScrollChangePlan(int position);
+
     }
 
     public void setRefreshPlanListener(RefreshPlanListener refreshPlanListener) {

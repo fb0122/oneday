@@ -32,37 +32,32 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 
-import circleprogressbar.TasksCompletedView;
 import db_oneday.OneDaydb;
-import oneday.Alarm.DataRefresh;
 
 import static oneday.Alarm.Config.CHANGE_WEEK_VIEW;
 import static oneday.Alarm.Config.DELETE_DATA;
+import static oneday.Alarm.Config.FINISH_CHANGE_ITEM;
 
 public class AtyFinish extends Fragment implements View.OnTouchListener {
 
     public static String TAG = "AtyFinish";
 
-    final int progress = 75;
-    private TasksCompletedView circleprogressbar;
     public static RecyclerView listview;
 
     OneDaydb db;
     public static cursorAdapter adapter;
     static Cursor c, s, ss;
-    private int mCurrentProgress;
-    private int mTotalProgress;
 
     public static ArrayList<String> weekData = new ArrayList<>();
-    static SQLiteDatabase dbreader;
+    static SQLiteDatabase dbReader;
     public LinearLayout finish;
-    public static int mScreenHeight;
-    private LinearLayout downlist;
-    public static boolean isFresh = true;
+    public int mScreenHeight;
+    private LinearLayout downList;
+    public boolean isFresh = true;
     static HashSet hashSet;
     ChangeHandler changeHandler = new ChangeHandler(Looper.myLooper());
     public static int flag = 0;
-    private int laterDay = 0;
+    private int laterDay;
 
     GestureDetector detector = new GestureDetector(getActivity(), new GestureDetector.OnGestureListener() {
         @Override
@@ -82,18 +77,18 @@ public class AtyFinish extends Fragment implements View.OnTouchListener {
 
         @Override
         public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-            if ((Boolean) downlist.getTag() || (e2.getRawY() - e1.getRawY()) > 0) {
-                FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) downlist.getLayoutParams();
+            if ((Boolean) downList.getTag() || (e2.getRawY() - e1.getRawY()) > 0) {
+                FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) downList.getLayoutParams();
                 params.setMargins(0, (int) (e2.getRawY() - e1.getRawY()), 0, 0);
-                downlist.setAlpha(1.0f - (e2.getRawY() - e1.getRawY()) / mScreenHeight);
-                downlist.setLayoutParams(params);
-            } else if (!(Boolean) downlist.getTag() && (e2.getRawY() - e1.getRawY()) < 0) {
-                downlist.setVisibility(View.VISIBLE);
-                FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) downlist.getLayoutParams();
+                downList.setAlpha(1.0f - (e2.getRawY() - e1.getRawY()) / mScreenHeight);
+                downList.setLayoutParams(params);
+            } else if (!(Boolean) downList.getTag() && (e2.getRawY() - e1.getRawY()) < 0) {
+                downList.setVisibility(View.VISIBLE);
+                FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) downList.getLayoutParams();
                 params.setMargins(0, mScreenHeight - (int) (e1.getRawY() - e2.getRawY()), 0, 0);
-                downlist.setAlpha(0.2f + ((e1.getRawY() - e2.getRawY()) / mScreenHeight));
+                downList.setAlpha(0.2f + ((e1.getRawY() - e2.getRawY()) / mScreenHeight));
                 finish.setAlpha(1 - (((e1.getRawY() - e2.getRawY()) / mScreenHeight) + 0.2f));
-                downlist.setLayoutParams(params);
+                downList.setLayoutParams(params);
             }
             return true;
         }
@@ -105,27 +100,27 @@ public class AtyFinish extends Fragment implements View.OnTouchListener {
 
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) downlist.getLayoutParams();
+            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) downList.getLayoutParams();
             params.setMargins(0, 0, 0, 0);
-            downlist.setLayoutParams(params);
+            downList.setLayoutParams(params);
 
             FrameLayout.LayoutParams params1 = (FrameLayout.LayoutParams) finish.getLayoutParams();
             params1.setMargins(0, 0, 0, 0);
             finish.setLayoutParams(params1);
 
-            if (e2.getRawY() - e1.getRawY() > (0.3 * mScreenHeight) && (Boolean) downlist.getTag() && e1.getRawY() < 0.4 * mScreenHeight) {
+            if (e2.getRawY() - e1.getRawY() > (0.3 * mScreenHeight) && (Boolean) downList.getTag() && e1.getRawY() < 0.4 * mScreenHeight) {
                 finish.setAlpha(1.0f);
-                downlist.setVisibility(View.GONE);
-                downlist.setAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.scoredetail_out));
-                downlist.setTag(false);
+                downList.setVisibility(View.GONE);
+                downList.setAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.scoredetail_out));
+                downList.setTag(false);
                 return true;
             }
 
-            if (e1.getRawY() - e2.getRawY() > (0.3 * mScreenHeight) && !(Boolean) downlist.getTag()) {
-                downlist.setAlpha(1.0f);
-                downlist.setVisibility(View.VISIBLE);
-                downlist.setAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.scoredetail_in));
-                downlist.setTag(true);
+            if (e1.getRawY() - e2.getRawY() > (0.3 * mScreenHeight) && !(Boolean) downList.getTag()) {
+                downList.setAlpha(1.0f);
+                downList.setVisibility(View.VISIBLE);
+                downList.setAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.scoredetail_in));
+                downList.setTag(true);
                 return true;
             }
             return false;
@@ -141,11 +136,8 @@ public class AtyFinish extends Fragment implements View.OnTouchListener {
         WindowManager wm = (WindowManager) getActivity().getSystemService(Context.WINDOW_SERVICE);
         mScreenHeight = wm.getDefaultDisplay().getHeight();
 
-        circleprogressbar = (TasksCompletedView) view.findViewById(R.id.circleProgressbar);
-        initProgress();
-
-        downlist = (LinearLayout) view.findViewById(R.id.downlist);
-        downlist.setTag(false);
+        downList = (LinearLayout) view.findViewById(R.id.downlist);
+        downList.setTag(false);
 
         finish = (LinearLayout) view.findViewById(R.id.finish);
         finish.setOnTouchListener(this);
@@ -157,35 +149,28 @@ public class AtyFinish extends Fragment implements View.OnTouchListener {
         listview.setHasFixedSize(true);
         //去除list中重复元素， 使用hashset
         weekData = getCursor();
-        adapter = refreshWeekView(getActivity(), weekData, listview);
+        adapter = refreshWeekView(getActivity());
         listview.setAdapter(adapter);
         return view;
     }
-
-    public void initProgress() {
-        mTotalProgress = 100;
-        mCurrentProgress = 0;
-
-    }
-
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         if (isFresh) {
             if (event.getAction() == MotionEvent.ACTION_UP) {
-                if ((Boolean) downlist.getTag()) {
-                    FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) downlist.getLayoutParams();
-                    downlist.setAlpha(1.0f);
+                if ((Boolean) downList.getTag()) {
+                    FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) downList.getLayoutParams();
+                    downList.setAlpha(1.0f);
                     params.setMargins(0, 0, 0, 0);
-                    downlist.setLayoutParams(params);
-                } else if (!(Boolean) downlist.getTag()) {
-                    downlist.setVisibility(View.GONE);
+                    downList.setLayoutParams(params);
+                } else if (!(Boolean) downList.getTag()) {
+                    downList.setVisibility(View.GONE);
                     FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) finish.getLayoutParams();
                     params.setMargins(0, 0, 0, 0);
                     finish.setAlpha(1.0f);
                     finish.setLayoutParams(params);
                 }
-            } else if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            } else if(event.getAction() == MotionEvent.ACTION_DOWN){
             }
             return detector.onTouchEvent(event);
         } else {
@@ -194,30 +179,14 @@ public class AtyFinish extends Fragment implements View.OnTouchListener {
     }
 
 
-    class cursorAdapter extends RecyclerView.Adapter<cursorAdapter.ViewHolder> implements DataRefresh {
+    class cursorAdapter extends RecyclerView.Adapter<cursorAdapter.ViewHolder>{
 
         private Context context;
-        private ArrayList<String> list = new ArrayList<>();
-        LayoutInflater layoutinflate;
-        public DataRefresh dataRefresh;
-        private boolean isRefresh;
+        LayoutInflater layoutInflate;
 
-        public cursorAdapter(Context context, ArrayList<String> list) {       //启动时执行
+        public cursorAdapter(Context context) {       //启动时执行
             this.context = context;
-            this.list = list;
-            layoutinflate = LayoutInflater.from(context);
-            this.setDataRefresh(this);
-        }
-
-        public void setDataRefresh(DataRefresh dataRefresh) {
-            this.dataRefresh = dataRefresh;
-        }
-
-        @Override
-        public void refreshView(int position) {
-            if (isRefresh) {
-                notifyItemRemoved(position);
-            }
+            layoutInflate = LayoutInflater.from(context);
         }
 
         class ViewHolder extends RecyclerView.ViewHolder {                    //第四步执行
@@ -284,7 +253,7 @@ public class AtyFinish extends Fragment implements View.OnTouchListener {
             //需要去除数据库冗余问题，以及当计划重复时，在统计界面只显示某一天的问题。
             //只能通过检查item是否重复去除冗余
             String week = weekData.get(position);
-            s = dbreader.rawQuery(" select * from oneday where week=" + "'" + week + "'", null);
+            s = dbReader.rawQuery(" select * from oneday where week=" + "'" + week + "'", null);
             if (s.getCount() == 0) {
                 weekData.remove(position);
                 isFresh = false;
@@ -370,8 +339,8 @@ public class AtyFinish extends Fragment implements View.OnTouchListener {
     public ArrayList<String> getCursor() {
         db = new OneDaydb(getActivity(), "oneday");
         c = db.Query();
-        dbreader = db.getReadableDatabase();
-        ss = dbreader.rawQuery(" select week from oneday", null);
+        dbReader = db.getReadableDatabase();
+        ss = dbReader.rawQuery(" select week from oneday", null);
         if (ss.moveToFirst()) {
             do {
                 weekData.add(ss.getString(ss.getColumnIndex(OneDaydb.COLUMN_WEEK)));
@@ -438,8 +407,8 @@ public class AtyFinish extends Fragment implements View.OnTouchListener {
         return sorted_list;
     }
 
-    public cursorAdapter refreshWeekView(Context context, ArrayList<String> listdata, RecyclerView listview) {
-        cursorAdapter cAdapter = new cursorAdapter(context, listdata);
+    public cursorAdapter refreshWeekView(Context context) {
+        cursorAdapter cAdapter = new cursorAdapter(context);
         cAdapter.notifyDataSetChanged();
         return cAdapter;
     }
@@ -464,32 +433,38 @@ public class AtyFinish extends Fragment implements View.OnTouchListener {
         super.onDestroy();
     }
 
-}
 
+    //响应AtyDay页面删除item的Handler
+    static class ChangeHandler extends android.os.Handler {
 
-//响应AtyDay页面删除item的Handler
-class ChangeHandler extends android.os.Handler {
-    public static String TAG = "ChangeHandler";
-
-    public ChangeHandler(Looper looper) {
-        super(looper);
-    }
-
-    @Override
-    public void handleMessage(Message msg) {
-        switch (msg.what) {
-            case CHANGE_WEEK_VIEW:
-                AtyFinish.adapter.notifyDataSetChanged();
-                AtyFinish.listview.postInvalidate();
-                break;
-            case DELETE_DATA:
-                //对finish的view进行刷新，即没有内容的卡片会被删除
-                //使flag=0，防止完成界面item重复读取
-                AtyFinish.flag = 0;
-                AtyFinish.adapter.notifyItemRemoved(msg.getData().getInt("position"));
-                break;
+        public ChangeHandler(Looper looper) {
+            super(looper);
         }
-        super.handleMessage(msg);
+
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case CHANGE_WEEK_VIEW:
+                    adapter.notifyDataSetChanged();
+                    listview.postInvalidate();
+                    break;
+                case DELETE_DATA:
+                    //对finish的view进行刷新，即没有内容的卡片会被删除
+                    //使flag=0，防止完成界面item重复读取
+                    flag = 0;
+                    adapter.notifyItemRemoved(msg.getData().getInt("position"));
+                    break;
+                case FINISH_CHANGE_ITEM:
+                    break;
+            }
+            super.handleMessage(msg);
+        }
     }
+
+
 }
+
+
+
+
 

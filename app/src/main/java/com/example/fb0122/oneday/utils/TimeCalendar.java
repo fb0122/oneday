@@ -64,7 +64,6 @@ public class TimeCalendar {
         date = calendar.getTime();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         String date_str = formatter.format(date);
-        Log.d("Time",date_str.substring(4,date_str.length()));
         return date_str.substring(5,date_str.length());
     }
 

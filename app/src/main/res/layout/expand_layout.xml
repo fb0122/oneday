@@ -8,11 +8,12 @@
     android:background="@drawable/expand" 
     >
 
-    <TextView
+    <EditText
         android:id="@+id/text_expand_plan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/day_background"
+        android:background="@drawable/expand_edit_time_border"
+        android:textSize="20dp"
         android:text="WWWW" />
 
     <RelativeLayout

@@ -10,4 +10,5 @@ public class Config {
     public static final int CREATE_GESDETECTOR = 3;
     public static final int DELETE_DATA = 4;
     public static final int ADD_NOTIFY = 5;
+    public static final int FINISH_CHANGE_ITEM = 6;
 }

@@ -95,6 +95,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         views.setTextViewText(R.id.text_notify_custom,str[1]);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(mContext);
         builder .setContent(views)
+                .setStyle(new NotificationCompat.BigTextStyle())
                 .setWhen(System.currentTimeMillis())
                 .setTicker("oneday tips")
                 .setPriority(Notification.PRIORITY_DEFAULT)
