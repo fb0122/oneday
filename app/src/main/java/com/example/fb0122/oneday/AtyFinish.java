@@ -3,6 +3,7 @@ package com.example.fb0122.oneday;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Looper;
 import android.os.Message;
@@ -10,16 +11,12 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.animation.AnimationUtils;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -27,6 +24,7 @@ import android.widget.TextView;
 
 import com.example.fb0122.oneday.utils.DimenTranslate;
 import com.example.fb0122.oneday.utils.TimeCalendar;
+import com.example.fb0122.oneday.widget.GestureLayout;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -39,94 +37,24 @@ import static oneday.Alarm.Config.CHANGE_WEEK_VIEW;
 import static oneday.Alarm.Config.DELETE_DATA;
 import static oneday.Alarm.Config.FINISH_CHANGE_ITEM;
 
-public class AtyFinish extends Fragment implements View.OnTouchListener {
-
-    public static String TAG = "AtyFinish";
+public class AtyFinish extends Fragment implements GestureLayout.OnPullListener,GestureLayout.OnPageChangedListener {
 
     public static RecyclerView listview;
 
     OneDaydb db;
-    public static cursorAdapter adapter;
+    public static CursorAdapter adapter;
     static Cursor c, s, ss;
 
     public static ArrayList<String> weekData = new ArrayList<>();
     static SQLiteDatabase dbReader;
-    public LinearLayout finish;
+    public LinearLayout mHeader;
     public int mScreenHeight;
-    private LinearLayout downList;
     public boolean isFresh = true;
     static HashSet hashSet;
     ChangeHandler changeHandler = new ChangeHandler(Looper.myLooper());
     public static int flag = 0;
-    private int laterDay;
-
-    GestureDetector detector = new GestureDetector(getActivity(), new GestureDetector.OnGestureListener() {
-        @Override
-        public boolean onDown(MotionEvent e) {
-            return true;
-        }
-
-        @Override
-        public void onShowPress(MotionEvent e) {
-
-        }
-
-        @Override
-        public boolean onSingleTapUp(MotionEvent e) {
-            return false;
-        }
-
-        @Override
-        public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-            if ((Boolean) downList.getTag() || (e2.getRawY() - e1.getRawY()) > 0) {
-                FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) downList.getLayoutParams();
-                params.setMargins(0, (int) (e2.getRawY() - e1.getRawY()), 0, 0);
-                downList.setAlpha(1.0f - (e2.getRawY() - e1.getRawY()) / mScreenHeight);
-                downList.setLayoutParams(params);
-            } else if (!(Boolean) downList.getTag() && (e2.getRawY() - e1.getRawY()) < 0) {
-                downList.setVisibility(View.VISIBLE);
-                FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) downList.getLayoutParams();
-                params.setMargins(0, mScreenHeight - (int) (e1.getRawY() - e2.getRawY()), 0, 0);
-                downList.setAlpha(0.2f + ((e1.getRawY() - e2.getRawY()) / mScreenHeight));
-                finish.setAlpha(1 - (((e1.getRawY() - e2.getRawY()) / mScreenHeight) + 0.2f));
-                downList.setLayoutParams(params);
-            }
-            return true;
-        }
-
-        @Override
-        public void onLongPress(MotionEvent e) {
-
-        }
-
-        @Override
-        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) downList.getLayoutParams();
-            params.setMargins(0, 0, 0, 0);
-            downList.setLayoutParams(params);
-
-            FrameLayout.LayoutParams params1 = (FrameLayout.LayoutParams) finish.getLayoutParams();
-            params1.setMargins(0, 0, 0, 0);
-            finish.setLayoutParams(params1);
-
-            if (e2.getRawY() - e1.getRawY() > (0.3 * mScreenHeight) && (Boolean) downList.getTag() && e1.getRawY() < 0.4 * mScreenHeight) {
-                finish.setAlpha(1.0f);
-                downList.setVisibility(View.GONE);
-                downList.setAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.scoredetail_out));
-                downList.setTag(false);
-                return true;
-            }
-
-            if (e1.getRawY() - e2.getRawY() > (0.3 * mScreenHeight) && !(Boolean) downList.getTag()) {
-                downList.setAlpha(1.0f);
-                downList.setVisibility(View.VISIBLE);
-                downList.setAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.scoredetail_in));
-                downList.setTag(true);
-                return true;
-            }
-            return false;
-        }
-    });
+    private GestureLayout finishGestureLayout;
+    private LinearLayout mFooter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -137,13 +65,14 @@ public class AtyFinish extends Fragment implements View.OnTouchListener {
         WindowManager wm = (WindowManager) getActivity().getSystemService(Context.WINDOW_SERVICE);
         mScreenHeight = wm.getDefaultDisplay().getHeight();
 
-        downList = (LinearLayout) view.findViewById(R.id.downlist);
-        downList.setTag(false);
 
-        finish = (LinearLayout) view.findViewById(R.id.finish);
-        finish.setOnTouchListener(this);
-        LinearLayout dragLayout = (LinearLayout) view.findViewById(R.id.dragLayout);
-        dragLayout.setOnTouchListener(this);
+        finishGestureLayout = (GestureLayout)view.findViewById(R.id.finish_percent_gesturelayout);
+        finishGestureLayout.setOnPullListener(this);
+        finishGestureLayout.setOnContentChangeListener(this);
+
+        mHeader = (LinearLayout) view.findViewById(R.id.header);
+        mFooter = (LinearLayout)view.findViewById(R.id.footer);
+
         listview = (RecyclerView) view.findViewById(R.id.lvWeek);
         listview.setLayoutManager(new LinearLayoutManager(getContext()));
         listview.setItemAnimator(new DefaultItemAnimator());
@@ -156,36 +85,50 @@ public class AtyFinish extends Fragment implements View.OnTouchListener {
     }
 
     @Override
-    public boolean onTouch(View v, MotionEvent event) {
-        if (isFresh) {
-            if (event.getAction() == MotionEvent.ACTION_UP) {
-                if ((Boolean) downList.getTag()) {
-                    FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) downList.getLayoutParams();
-                    downList.setAlpha(1.0f);
-                    params.setMargins(0, 0, 0, 0);
-                    downList.setLayoutParams(params);
-                } else if (!(Boolean) downList.getTag()) {
-                    downList.setVisibility(View.GONE);
-                    FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) finish.getLayoutParams();
-                    params.setMargins(0, 0, 0, 0);
-                    finish.setAlpha(1.0f);
-                    finish.setLayoutParams(params);
-                }
-            } else if(event.getAction() == MotionEvent.ACTION_DOWN){
-            }
-            return detector.onTouchEvent(event);
-        } else {
-            return true;
+    public void onPageChanged(int stub) {
+        switch (stub) {
+            case GestureLayout.SCREEN_HEADER:
+                break;
+            case GestureLayout.SCREEN_FOOTER:
+                break;
         }
     }
 
+    @Override
+    public boolean headerFootReached(MotionEvent event) {
+        if (mHeader.getScrollY() >= mHeader.getHeight() * 0.4){
+            return true;
+        }
+        return false;
+    }
 
-    class cursorAdapter extends RecyclerView.Adapter<cursorAdapter.ViewHolder>{
+    @Override
+    public boolean footerHeadReached(MotionEvent event) {
+        RecyclerView.LayoutManager layoutManager = listview.getLayoutManager();
+        CursorAdapter adapter = (CursorAdapter) listview.getAdapter();
+        if (null == adapter || adapter.getItemCount() == 0) {
+            return true;
+        }
+        LinearLayoutManager linearLayoutManager = null;
+        if (layoutManager instanceof  LinearLayoutManager){
+            linearLayoutManager = (LinearLayoutManager)layoutManager;
+        }
+        if (linearLayoutManager != null) {
+            int firstVisibleItemPosition = linearLayoutManager.findFirstVisibleItemPosition();
+            if (firstVisibleItemPosition == 0){
+                return listview.getChildAt(0).getTop() >= 0;
+            }
+        }
+        return false;
+    }
+
+
+    class CursorAdapter extends RecyclerView.Adapter<CursorAdapter.ViewHolder>{
 
         private Context context;
         LayoutInflater layoutInflate;
 
-        public cursorAdapter(Context context) {       //启动时执行
+        public CursorAdapter(Context context) {       //启动时执行
             this.context = context;
             layoutInflate = LayoutInflater.from(context);
         }
@@ -271,6 +214,7 @@ public class AtyFinish extends Fragment implements View.OnTouchListener {
                 }
                 if (week.equals(TimeCalendar.getTodayWeek())) {
                     right.tvWeek.setText(week);
+                    right.tvWeek.setTextColor(Color.BLACK);
                     right.tvDate.setText(TimeCalendar.getLaterDate(0) + " /今天");
                     right.tvPercent.setText(String.valueOf(db.finishPercent(week)) + "%");
                     right.tvDate.setTextColor(getResources().getColor(R.color.blue));
@@ -321,7 +265,6 @@ public class AtyFinish extends Fragment implements View.OnTouchListener {
                     tv.setLayoutParams(textViewParams1);
                     rl.addView(tv);
                     right.rlWeek.addView(rl);
-                    laterDay += 1;
                 }
 
             }
@@ -407,8 +350,8 @@ public class AtyFinish extends Fragment implements View.OnTouchListener {
         return sorted_list;
     }
 
-    public cursorAdapter refreshWeekView(Context context) {
-        cursorAdapter cAdapter = new cursorAdapter(context);
+    public CursorAdapter refreshWeekView(Context context) {
+        CursorAdapter cAdapter = new CursorAdapter(context);
         cAdapter.notifyDataSetChanged();
         return cAdapter;
     }
@@ -423,7 +366,6 @@ public class AtyFinish extends Fragment implements View.OnTouchListener {
     public void onResume() {
         super.onResume();
         //以这种方式刷新完成界面数据。。。。效率不是很高   后期需要重新考虑方法。
-        laterDay = 0;
         weekData = getCursor();
         adapter.notifyDataSetChanged();
     }

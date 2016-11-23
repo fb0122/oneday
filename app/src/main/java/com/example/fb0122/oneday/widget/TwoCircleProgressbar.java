@@ -1,4 +1,4 @@
-package com.example.fb0122.oneday;
+package com.example.fb0122.oneday.widget;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -9,6 +9,8 @@ import android.graphics.Paint.FontMetricsInt;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.View;
+
+import com.example.fb0122.oneday.R;
 
 public class TwoCircleProgressbar extends View{
 	private Paint paint = new Paint();

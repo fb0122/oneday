@@ -44,8 +44,6 @@ import static com.example.fb0122.oneday.AtyEditCustom.TIMEPICKER_TAG;
 
 public class AtyDay extends Fragment implements SlideListView.RefreshPlanListener {
 
-    public static String TAG = "AtyDay";
-
     public SlideListView lvDay;
     OneDaydb db;   // dedb供删除使用的数据库
     public Context mContext;
@@ -83,6 +81,8 @@ public class AtyDay extends Fragment implements SlideListView.RefreshPlanListene
                 break;
         }
     }
+
+
 
     class MyAdapter extends BaseExpandableListAdapter implements TimePickerDialog.OnTimeSetListener, OnClickListener {
 
@@ -197,7 +197,7 @@ public class AtyDay extends Fragment implements SlideListView.RefreshPlanListene
             }
 
             c.moveToPosition(groupPosition);
-            setData(holder,null);
+            setData(holder, null);
 
             return convertView;
         }
@@ -248,24 +248,38 @@ public class AtyDay extends Fragment implements SlideListView.RefreshPlanListene
 
                 childHolder.cancelExpandBtn.setOnClickListener(this);
                 childHolder.sureExpandBtn.setOnClickListener(this);
+
                 childHolder.Sun.setOnClickListener(this);
+                setWeekChangeColor(childHolder.Sun);
                 childHolder.Mon.setOnClickListener(this);
+                setWeekChangeColor(childHolder.Mon);
                 childHolder.Tue.setOnClickListener(this);
+                setWeekChangeColor(childHolder.Tue);
                 childHolder.Wed.setOnClickListener(this);
+                setWeekChangeColor(childHolder.Wed);
                 childHolder.Thu.setOnClickListener(this);
+                setWeekChangeColor(childHolder.Thu);
                 childHolder.Fri.setOnClickListener(this);
+                setWeekChangeColor(childHolder.Fri);
                 childHolder.Sat.setOnClickListener(this);
+                setWeekChangeColor(childHolder.Sat);
                 convertView.setTag(childHolder);
             } else {
                 childHolder = (ChildViewHolder) convertView.getTag();
             }
             child = childHolder;
-            setData(null,childHolder);
+            setData(null, childHolder);
             return convertView;
         }
 
-        private void setData(ViewHolder holder,ChildViewHolder childViewHolder){
-            if (holder != null){
+        private void setWeekChangeColor(TextView weekText) {
+            if (c.getString(4) != null) {
+                weekText.setTag(1);
+            }
+        }
+
+        private void setData(ViewHolder holder, ChildViewHolder childViewHolder) {
+            if (holder != null) {
                 holder.tvSc.setText(c.getString(1));            // 计划名称
                 holder.tvTime.setText(c.getString(2));          //开始时间
                 holder.tvTo.setText(c.getString(3));            //结束时间
@@ -276,11 +290,61 @@ public class AtyDay extends Fragment implements SlideListView.RefreshPlanListene
                     holder.addLine.setVisibility(View.GONE);
                     holder.tvSc.setTextColor(getResources().getColor(R.color.black));
                 }
-            }else{
+            } else {
                 childViewHolder.expandPlanText.setText(c.getString(1));
                 childViewHolder.fromTimeExpandText.setText(c.getString(2));
                 childViewHolder.toTimeExpandText.setText(c.getString(3));
+                checkedWeek(childViewHolder, c.getString(1));
             }
+        }
+
+        //查询当前计划的重复星期
+        private void checkedWeek(ChildViewHolder childViewHolder,String plan){
+            resetWeekState(childViewHolder);
+            SQLiteDatabase readWeek = db.getReadableDatabase();
+            Cursor weekCursor = readWeek.rawQuery("select week from " + OneDaydb.TABLE_NAME + " where " +
+                    OneDaydb.COLUMN_PLAN + " = '" + plan + "'", null);
+            if (weekCursor != null && weekCursor.moveToFirst()){
+                String week;
+                do {
+                    week = weekCursor.getString(0);
+                    switch (week) {
+                        case "周一":
+                            childViewHolder.Mon.setBackground(mContext.getResources().getDrawable(R.drawable.double_click));
+                            break;
+                        case "周二":
+                            childViewHolder.Tue.setBackground(mContext.getResources().getDrawable(R.drawable.double_click));
+                            break;
+                        case "周三":
+                            childViewHolder.Wed.setBackground(mContext.getResources().getDrawable(R.drawable.double_click));
+                            break;
+                        case "周四":
+                            childViewHolder.Thu.setBackground(mContext.getResources().getDrawable(R.drawable.double_click));
+                            break;
+                        case "周五":
+                            childViewHolder.Fri.setBackground(mContext.getResources().getDrawable(R.drawable.double_click));
+                            break;
+                        case "周六":
+                            childViewHolder.Sat.setBackground(mContext.getResources().getDrawable(R.drawable.double_click));
+                            break;
+                        case "周日":
+                            childViewHolder.Sun.setBackground(mContext.getResources().getDrawable(R.drawable.double_click));
+                            break;
+                    }
+                }while ((weekCursor.moveToNext()));
+            }
+            weekCursor.close();
+        }
+
+        //重置展开星期状态
+        private void resetWeekState(ChildViewHolder childHolder){
+            childHolder.Sun.setBackground(mContext.getResources().getDrawable(R.drawable.week_click));
+            childHolder.Mon.setBackground(mContext.getResources().getDrawable(R.drawable.week_click));;
+            childHolder.Tue.setBackground(mContext.getResources().getDrawable(R.drawable.week_click));
+            childHolder.Wed.setBackground(mContext.getResources().getDrawable(R.drawable.week_click));
+            childHolder.Thu.setBackground(mContext.getResources().getDrawable(R.drawable.week_click));
+            childHolder.Fri.setBackground(mContext.getResources().getDrawable(R.drawable.week_click));
+            childHolder.Sat.setBackground(mContext.getResources().getDrawable(R.drawable.week_click));
         }
 
         @Override
@@ -355,32 +419,32 @@ public class AtyDay extends Fragment implements SlideListView.RefreshPlanListene
                     change = true;
                     cv.clear();
                 }
-                if(changedWeek.size() != 0){
+                if (changedWeek.size() != 0) {
                     SQLiteDatabase readWeek = db.getReadableDatabase();
                     Cursor weekCursor = readWeek.rawQuery("select week from " + OneDaydb.TABLE_NAME + " where " +
-                            OneDaydb.COLUMN_PLAN + " = '" + plan + "'",null);
+                            OneDaydb.COLUMN_PLAN + " = '" + plan + "'", null);
                     String oriWeek;
                     int count = weekCursor.getCount();
                     if (weekCursor.moveToFirst()) {
-                        if (changedWeek.size() < count) {
-                            for (int i = 0; i < changedWeek.size(); i++) {
+                        int i = 0;
+                        while (weekCursor.moveToNext()) {
+                            if (changedWeek.size() < count) {
                                 oriWeek = weekCursor.getString(i);
                                 cv.put(OneDaydb.COLUMN_WEEK, "周" + changedWeek.get(i));
                                 db.updataData(OneDaydb.TABLE_NAME, cv, OneDaydb.COLUMN_WEEK, oriWeek, plan);
                                 cv.clear();
-                            }
-                        } else {
-                            for (int i = 0; i < count; i++) {
+                            } else {
                                 oriWeek = weekCursor.getString(i);
                                 cv.put(OneDaydb.COLUMN_WEEK, "周" + changedWeek.get(i));
                                 db.updataData(OneDaydb.TABLE_NAME, cv, OneDaydb.COLUMN_WEEK, oriWeek, plan);
                                 cv.clear();
-                            }
-                            if (changedWeek.size() > count) {
-                                for (int j = count; j < changedWeek.size() + 1 - count; j++) {
-                                    db.insertDta(plan, time, to, "周" + changedWeek.get(j));
+                                if (changedWeek.size() > count) {
+                                    for (int j = count; j < changedWeek.size() + 1 - count; j++) {
+                                        db.insertDta(plan, time, to, "周" + changedWeek.get(j));
+                                    }
                                 }
                             }
+                            i++;
                         }
                     }
                     weekCursor.close();
@@ -484,7 +548,7 @@ public class AtyDay extends Fragment implements SlideListView.RefreshPlanListene
             @Override
             public boolean onGroupClick(ExpandableListView expandableListView, View view, int i, long l) {
                 viewHolder = (MyAdapter.ViewHolder) view.getTag();
-                clickButtonPosition  = i;
+                clickButtonPosition = i;
                 return false;
             }
         });
@@ -547,7 +611,7 @@ public class AtyDay extends Fragment implements SlideListView.RefreshPlanListene
         timeHandler.sendMessage(msg);
     }
 
-    public void notifyOnFinishRefresh(){
+    public void notifyOnFinishRefresh() {
         Message msg = handler.obtainMessage();
         msg.what = Config.CHANGE_WEEK_VIEW;
         handler.sendMessage(msg);

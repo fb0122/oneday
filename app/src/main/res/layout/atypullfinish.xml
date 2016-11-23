@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<com.example.fb0122.oneday.widget.GestureLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" 
     android:background="#f4f4f4"
-    android:id="@+id/framefinish"
+    android:id="@+id/finish_percent_gesturelayout"
     >
 
 
@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:id="@+id/finish"
+        android:id="@+id/header"
         android:background="#f4f4f4"
         android:visibility="visible"
         >
@@ -95,52 +95,12 @@
     </LinearLayout>
     
     <LinearLayout
-        android:id="@+id/downlist"
+        android:id="@+id/footer"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:gravity="center_horizontal"
-        android:visibility="gone"
         android:orientation="vertical"
         >
-
-        <LinearLayout
-            android:id="@+id/dragLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="3dp"
-            android:layout_marginLeft="3dp"
-            android:layout_marginRight="3dp"
-            android:padding="3dp"
-            >
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="2dp"
-                android:layout_weight="1"
-                android:background="@drawable/textview_border"
-                android:text=""
-                android:layout_gravity="center_vertical"
-                />
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="拖动此处返回统计页面"
-                android:textSize="12dp"
-                android:gravity="center_horizontal"
-                />
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="2dp"
-                android:layout_weight="1"
-                android:background="@drawable/textview_border"
-                android:text=""
-                android:layout_gravity="center_vertical"
-                />
-
-
-        </LinearLayout>
-
     <android.support.v7.widget.RecyclerView
 		android:id="@+id/lvWeek"
 		android:layout_width="wrap_content"
@@ -157,4 +117,4 @@
         />
 </LinearLayout>
 
-</FrameLayout>
+</com.example.fb0122.oneday.widget.GestureLayout>

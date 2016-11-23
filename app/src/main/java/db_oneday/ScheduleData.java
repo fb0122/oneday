@@ -30,11 +30,11 @@ public class ScheduleData{
 		db.close();
 		System.out.println("totalNum --->" + totalNum);
 		*/
-		Cursor cursor = db.rawQuery("select last_insert_rowid() from "+ OneDaydb.TABLE_NAME,null);  
-		Log.i(tag, " Cursor = " + cursor);
-		if(cursor.moveToFirst())  
+		Cursor cursor = db.rawQuery("select last_insert_rowid() from "+ OneDaydb.TABLE_NAME,null);
+
+		if(cursor.moveToFirst())
 			totalNum = cursor.getInt(0);
-		Log.i(tag, " totalNum = " + totalNum);
+		db.close();
 		return totalNum;		
 	}
 	

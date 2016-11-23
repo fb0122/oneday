@@ -133,6 +133,7 @@ public class OneDaydb extends SQLiteOpenHelper {
             time = c.getString(c.getColumnIndex(OneDaydb.COLUMN_TO_TIME));
             custom = c.getString(c.getColumnIndex(OneDaydb.COLUMN_PLAN));
         }
+        c.close();
         return new String[]{time, custom};
     }
 

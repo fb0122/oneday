@@ -204,39 +204,3 @@ public class MainActivity extends AppCompatActivity {
 		}
 	}
 }
-
- class TimeHandler extends Handler{
-
-	private OneDaydb db = new OneDaydb(MainActivity.mContext,OneDaydb.TABLE_NAME) ;
-	Cursor c;
-	private SQLiteDatabase dbreader;
-	private String time;
-
-	public TimeHandler(Looper looper){
-		super(looper);
-	}
-
-	@Override
-	public void handleMessage(Message msg) {
-		super.handleMessage(msg);
-		switch (msg.what){
-			case Config.ADD_NOTIFY:
-				dbreader = db.getReadableDatabase();
-				c = db.Query();
-				if (c.moveToFirst()){
-					do {
-
-						time = c.getString(c.getColumnIndex(OneDaydb.COLUMN_FROM_TIME));
-						MainActivity.notiifyList.add(time);
-					}while (c.moveToNext());
-				}
-				Intent i = new Intent(MainActivity.mContext, NotifyService.class);
-				i.setAction("NotifyService.Intent" + "");
-				Bundle bundle = new Bundle();
-				bundle.putStringArrayList("time",MainActivity.notiifyList);
-				i.putExtras(bundle);
-				MainActivity.mContext.startService(i);
-				break;
-		}
-	}
-}
