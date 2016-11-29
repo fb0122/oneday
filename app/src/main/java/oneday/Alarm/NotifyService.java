@@ -8,16 +8,10 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.os.SystemClock;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import java.util.ArrayList;
 
-/**
- * Created by fb0122 on 2016/5/4.
- */
 public class NotifyService extends Service{
-
-    private static final String TAG = "NotifyService";
 
     ArrayList<String> list = new ArrayList<>();
     String action = "NotifyService.Intent";

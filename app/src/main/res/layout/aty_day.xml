@@ -14,6 +14,7 @@
             android:layout_height="match_parent"
             android:dividerHeight="1dp"
             android:divider="@color/shadow"
+            android:childDivider="@android:color/transparent"
             android:headerDividersEnabled="true"
             android:listSelector="@android:color/transparent"
             android:layout_marginTop="19dp"

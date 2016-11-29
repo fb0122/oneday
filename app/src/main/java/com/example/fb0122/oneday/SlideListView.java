@@ -32,8 +32,6 @@ import db_oneday.OneDaydb;
  */
 public class SlideListView extends ExpandableListView implements TextView.OnEditorActionListener{
 
-    public static String TAG = "SlideListView";
-
     /**
      * 禁止侧滑模式
      */
@@ -381,11 +379,6 @@ public class SlideListView extends ExpandableListView implements TextView.OnEdit
             scrollBack();
         }
 
-    }
-
-    @Override
-    protected void dispatchDraw(Canvas canvas) {
-        super.dispatchDraw(canvas);
     }
 
     @Override

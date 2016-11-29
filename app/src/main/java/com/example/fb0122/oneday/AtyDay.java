@@ -605,7 +605,6 @@ public class AtyDay extends Fragment implements SlideListView.RefreshPlanListene
         adapter.notifyDataSetChanged();
         lvDay.setAdapter(adapter);
         notifyOnFinishRefresh();
-        MainActivity.notiifyList.clear();
         Message msg = timeHandler.obtainMessage();
         msg.what = Config.ADD_NOTIFY;
         timeHandler.sendMessage(msg);

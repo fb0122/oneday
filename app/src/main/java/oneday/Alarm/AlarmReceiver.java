@@ -20,18 +20,14 @@ import java.util.Calendar;
 
 import db_oneday.OneDaydb;
 
-/**
- * Created by fb0122 on 2016/5/4.
- */
+
 public class AlarmReceiver extends BroadcastReceiver {
 
-    private static final String TAG = "AlarmReceiver";
-
-    Context mContext;
-    int notifyId = 10;
-    String nowTime;
-    private static Bundle bundle = new Bundle();
-    private static OneDaydb oneDaydb;
+    private Context mContext;
+    private int notifyId = 10;
+    private String nowTime;
+    private Bundle bundle = new Bundle();
+    private OneDaydb oneDaydb;
 
     private static String week;
     private static String hour;
@@ -76,6 +72,7 @@ public class AlarmReceiver extends BroadcastReceiver {
             for (int i = 0;i<timeList.size();i++){
                 if (nowTime.equals(timeList.get(i))){
                     createNotify(nowTime);
+                    timeList.remove(nowTime);
                 }
             }
             intent.setClass(mContext,NotifyService.class);
@@ -97,9 +94,10 @@ public class AlarmReceiver extends BroadcastReceiver {
         builder .setContent(views)
                 .setStyle(new NotificationCompat.BigTextStyle())
                 .setWhen(System.currentTimeMillis())
-                .setTicker("oneday tips")
+                .setTicker("Tips")
                 .setPriority(Notification.PRIORITY_DEFAULT)
                 .setOngoing(false)
+                .setAutoCancel(true)
                 .setSmallIcon(R.drawable.onedaylogo1);
 
         Notification notify = builder.build();

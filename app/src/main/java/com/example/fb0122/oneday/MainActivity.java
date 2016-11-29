@@ -2,14 +2,8 @@ package com.example.fb0122.oneday;
 
 import android.annotation.TargetApi;
 import android.content.Context;
-import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -24,183 +18,177 @@ import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.example.fb0122.oneday.utils.TimeCalendar;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import db_oneday.OneDaydb;
-import oneday.Alarm.Config;
-import oneday.Alarm.NotifyService;
-
 
 public class MainActivity extends AppCompatActivity {
 
-	public static String TAG = "MainActivity";
+    public static String TAG = "MainActivity";
 
-	private List<Fragment> list = new ArrayList<Fragment>();
-	public MyViewPager viewpager;
-	private FragmentAdapter fg;
-	private static  int selectedpage = 0;
-	private boolean scrollble = true;
-	public static String title = "oneday";
-	public static int screenWidth;
-	Toolbar toolbar;
-	
-	public ImageView tv1;
-	public ImageView tv2;
-	public ImageView tv3;
-	AtyDay day;
-	HashMap<Integer,Object> listdata = new HashMap<>();
-	public static ArrayList<String> notiifyList = new ArrayList<String>();
-	static Context mContext;
-	private LinearLayout dayLayout,weekLayout;
+    private List<Fragment> list = new ArrayList<Fragment>();
+    public MyViewPager viewpager;
+    private FragmentAdapter fg;
+    private static int selectedpage = 0;
+    private boolean scrollble = true;
+    public static String title = "oneday";
+    public static int screenWidth;
+    Toolbar toolbar;
 
-	@TargetApi(Build.VERSION_CODES.LOLLIPOP)
-	@SuppressWarnings("deprecation")
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+    public ImageView tv1;
+    public ImageView tv2;
+    public ImageView tv3;
+    AtyDay day;
+    HashMap<Integer, Object> listdata = new HashMap<>();
+    static Context mContext;
+    private LinearLayout dayLayout, weekLayout;
 
-		mContext = getApplicationContext();
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    @SuppressWarnings("deprecation")
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
-		DisplayMetrics outMetrics = new DisplayMetrics();
-		getWindow().getWindowManager().getDefaultDisplay().getMetrics(outMetrics);
-		screenWidth = outMetrics.widthPixels;
-		toolbar = (Toolbar)findViewById(R.id.toolbar);
-		toolbar.setTitle("");
-		setSupportActionBar(toolbar);
-		listdata = day.map;
-		day = new AtyDay(this,listdata);
-		AtyFinish finish = new AtyFinish();
-		list.add(day);
+        mContext = getApplicationContext();
+
+        DisplayMetrics outMetrics = new DisplayMetrics();
+        getWindow().getWindowManager().getDefaultDisplay().getMetrics(outMetrics);
+        screenWidth = outMetrics.widthPixels;
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("");
+        setSupportActionBar(toolbar);
+        listdata = day.map;
+        day = new AtyDay(this, listdata);
+        AtyFinish finish = new AtyFinish();
+        list.add(day);
 //		list.add(month);
-		list.add(finish);
-		viewpager = (MyViewPager)findViewById(R.id.viewpager);
-		tv1 = (ImageView)findViewById(R.id.tv1);
-		tv2 = (ImageView)findViewById(R.id.tv2);
-		tv3 = (ImageView)findViewById(R.id.tv3);
-		dayLayout = (LinearLayout)findViewById(R.id.layoutDay);
-		weekLayout = (LinearLayout)findViewById(R.id.layoutWeek);
+        list.add(finish);
+        viewpager = (MyViewPager) findViewById(R.id.viewpager);
+        tv1 = (ImageView) findViewById(R.id.tv1);
+        tv2 = (ImageView) findViewById(R.id.tv2);
+        tv3 = (ImageView) findViewById(R.id.tv3);
+        dayLayout = (LinearLayout) findViewById(R.id.layoutDay);
+        weekLayout = (LinearLayout) findViewById(R.id.layoutWeek);
 
-		dayLayout.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				if (selectedpage == 1) {
-					viewpager.setCurrentItem(0, true);
+        dayLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (selectedpage == 1) {
+                    viewpager.setCurrentItem(0, true);
 //				overridePendingTransition(R.anim.zoom_out, R.anim.zoom_in);
-					tv1.setVisibility(View.VISIBLE);
-					tv2.setVisibility(View.GONE);
-				}
-			}
-		});
+                    tv1.setVisibility(View.VISIBLE);
+                    tv2.setVisibility(View.GONE);
+                }
+            }
+        });
 
-		weekLayout.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-					if (selectedpage == 0) {
-						viewpager.setCurrentItem(1, true);
-						tv1.setVisibility(View.GONE);
-						tv2.setVisibility(View.VISIBLE);
-					}
-				}
-		});
+        weekLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (selectedpage == 0) {
+                    viewpager.setCurrentItem(1, true);
+                    tv1.setVisibility(View.GONE);
+                    tv2.setVisibility(View.VISIBLE);
+                }
+            }
+        });
 
-		fg = new FragmentAdapter(getSupportFragmentManager());
-		viewpager.setAdapter(fg);
+        fg = new FragmentAdapter(getSupportFragmentManager());
+        viewpager.setAdapter(fg);
 
-		viewpager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        viewpager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
-			@Override
-			public void onPageSelected(int arg0) {
+            @Override
+            public void onPageSelected(int arg0) {
 
-				selectedpage = arg0;
-				switch (selectedpage) {
-					case 0:
-						break;
-					case 1:
-						break;
-				}
-			}
+                selectedpage = arg0;
+                switch (selectedpage) {
+                    case 0:
+                        break;
+                    case 1:
+                        break;
+                }
+            }
 
-			@Override
-			public void onPageScrolled(int arg0, float arg1, int arg2) {
-				setScrollble(false);
-			}
-			@Override
-			public void onPageScrollStateChanged(int arg0) {
+            @Override
+            public void onPageScrolled(int arg0, float arg1, int arg2) {
+                setScrollble(false);
+            }
 
-				setScrollble(true);
+            @Override
+            public void onPageScrollStateChanged(int arg0) {
 
-			}
-		});
-		
+                setScrollble(true);
 
-	}
+            }
+        });
 
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-		Log.e(TAG, "listdata is onDestory() " + day.map);
-	}
 
-	@Override
-	public boolean onTouchEvent(MotionEvent event) {
-		if (!scrollble) {
-			return false;
-		}
-		// TODO Auto-generated method stub
-		return super.onTouchEvent(event);
-	}
-	
-	
-	public void setScrollble(boolean scrollble){
-		this.scrollble = scrollble;
-	}
-	
-	public class FragmentAdapter extends FragmentPagerAdapter {
+    }
 
-		public FragmentAdapter(FragmentManager fm) {
-			super(fm);
-			// TODO Auto-generated constructor stub
-		}
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.e(TAG, "listdata is onDestory() " + day.map);
+    }
 
-		@Override
-		public Fragment getItem(int position) {
-			// TODO Auto-generated method stub
-			return list.get(position);
-		}
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if (!scrollble) {
+            return false;
+        }
+        // TODO Auto-generated method stub
+        return super.onTouchEvent(event);
+    }
 
-		@Override
-		public int getCount() {
-			// TODO Auto-generated method stub
-			return list.size();
-		}
-		
-	}
-	
-	public  void pageBack(View v){
-		if (v.getId() == R.id.layoutDay) {
-			if (selectedpage == 1) {
-				viewpager.setCurrentItem(0, true);
+
+    public void setScrollble(boolean scrollble) {
+        this.scrollble = scrollble;
+    }
+
+    public class FragmentAdapter extends FragmentPagerAdapter {
+
+        public FragmentAdapter(FragmentManager fm) {
+            super(fm);
+            // TODO Auto-generated constructor stub
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            // TODO Auto-generated method stub
+            return list.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            // TODO Auto-generated method stub
+            return list.size();
+        }
+
+    }
+
+    public void pageBack(View v) {
+        if (v.getId() == R.id.layoutDay) {
+            if (selectedpage == 1) {
+                viewpager.setCurrentItem(0, true);
 //				overridePendingTransition(R.anim.zoom_out, R.anim.zoom_in);
-				tv1.setVisibility(View.VISIBLE);
-				tv2.setVisibility(View.GONE);
-			}
-		}
-	}
-	
-	
-	public  void pageSwitch(View v){
-		if (v.getId() == R.id.layoutWeek) {
-			if (selectedpage == 0) {
-				viewpager.setCurrentItem(1, true);
-				tv1.setVisibility(View.GONE);
-				tv2.setVisibility(View.VISIBLE);
-			}
-		}
-	}
+                tv1.setVisibility(View.VISIBLE);
+                tv2.setVisibility(View.GONE);
+            }
+        }
+    }
+
+
+    public void pageSwitch(View v) {
+        if (v.getId() == R.id.layoutWeek) {
+            if (selectedpage == 0) {
+                viewpager.setCurrentItem(1, true);
+                tv1.setVisibility(View.GONE);
+                tv2.setVisibility(View.VISIBLE);
+            }
+        }
+    }
 }
