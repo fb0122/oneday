@@ -14,8 +14,6 @@ import java.lang.annotation.RetentionPolicy;
 
 public class OneDaydb extends SQLiteOpenHelper {
 
-    private static final String TAG = "OneDayDb";
-
     public static final String TABLE_NAME = "oneday";
     public static final String COLUMN_FROM_TIME = "from_time";
     public static final String COLUMN_PLAN = "plan";
@@ -28,7 +26,7 @@ public class OneDaydb extends SQLiteOpenHelper {
     public String name;
 
 
-    public static SQLiteDatabase dbr;
+    public SQLiteDatabase dbr;
 
     public OneDaydb(Context context, String name) {
         this(context, name, 1);
@@ -163,7 +161,6 @@ public class OneDaydb extends SQLiteOpenHelper {
             dbr = getReadableDatabase();
         }
         Cursor c = dbr.rawQuery(" select " + COLUMN_DONE + " from " + TABLE_NAME + " where "
-                + COLUMN_WEEK_IN_YEAR + " = " + TimeCalendar.getWeekInYear() + " and "
                 + COLUMN_WEEK + " = '" + week + "'",null);
         if (c == null){
             return 0;

@@ -41,7 +41,7 @@ public class AtyFinish extends Fragment implements GestureLayout.OnPullListener,
 
     public static RecyclerView listview;
 
-    OneDaydb db;
+    private OneDaydb db;
     public static CursorAdapter adapter;
     static Cursor c, s, ss;
 
@@ -51,7 +51,7 @@ public class AtyFinish extends Fragment implements GestureLayout.OnPullListener,
     public int mScreenHeight;
     public boolean isFresh = true;
     static HashSet hashSet;
-    ChangeHandler changeHandler = new ChangeHandler(Looper.myLooper());
+    private ChangeHandler changeHandler = new ChangeHandler(Looper.myLooper());
     public static int flag = 0;
     private GestureLayout finishGestureLayout;
     private LinearLayout mFooter;
@@ -142,7 +142,6 @@ public class AtyFinish extends Fragment implements GestureLayout.OnPullListener,
                 rlWeek = (LinearLayout) itemView.findViewById(R.id.rlWeek);
                 lnCard = (RelativeLayout) itemView.findViewById(R.id.ll1);
                 moreImageView = (ImageView) itemView.findViewById(R.id.week_card_more);
-                // TODO Auto-generated constructor stub
             }
 
             TextView tvWeek, tvDate, tvPercent;

@@ -25,8 +25,6 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static String TAG = "MainActivity";
-
     private List<Fragment> list = new ArrayList<Fragment>();
     public MyViewPager viewpager;
     private FragmentAdapter fg;
@@ -34,14 +32,12 @@ public class MainActivity extends AppCompatActivity {
     private boolean scrollble = true;
     public static String title = "oneday";
     public static int screenWidth;
-    Toolbar toolbar;
 
     public ImageView tv1;
     public ImageView tv2;
     public ImageView tv3;
-    AtyDay day;
-    HashMap<Integer, Object> listdata = new HashMap<>();
-    static Context mContext;
+    private AtyDay day;
+    private HashMap<Integer, Object> listdata = new HashMap<>();
     private LinearLayout dayLayout, weekLayout;
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -52,12 +48,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mContext = getApplicationContext();
-
         DisplayMetrics outMetrics = new DisplayMetrics();
         getWindow().getWindowManager().getDefaultDisplay().getMetrics(outMetrics);
         screenWidth = outMetrics.widthPixels;
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
         listdata = day.map;
@@ -132,7 +126,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.e(TAG, "listdata is onDestory() " + day.map);
     }
 
     @Override
