@@ -51,7 +51,7 @@ public class AtyDay extends Fragment implements SlideListView.RefreshPlanListene
     public MyAdapter adapter;
     public static HashMap<Integer, Object> map = new HashMap<>();
     AtyFinish.ChangeHandler handler = new AtyFinish.ChangeHandler(Looper.myLooper());
-    TimeHandler timeHandler = new TimeHandler(Looper.myLooper());
+    TimeHandler timeHandler ;
     private static int clickButtonPosition;
     private MyAdapter.ViewHolder viewHolder;
 
@@ -59,6 +59,7 @@ public class AtyDay extends Fragment implements SlideListView.RefreshPlanListene
         super();
         this.mContext = context;
         this.map = map;
+        timeHandler = new TimeHandler(Looper.getMainLooper(),mContext);
     }
 
     public AtyDay() {

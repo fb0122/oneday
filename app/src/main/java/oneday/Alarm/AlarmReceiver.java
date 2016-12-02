@@ -13,10 +13,8 @@ import android.widget.RemoteViews;
 
 import com.example.fb0122.oneday.MainActivity;
 import com.example.fb0122.oneday.R;
-import com.example.fb0122.oneday.utils.TimeCalendar;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
 import db_oneday.OneDaydb;
 
@@ -25,58 +23,20 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     private Context mContext;
     private int notifyId = 10;
-    private String nowTime;
     private Bundle bundle = new Bundle();
     private OneDaydb oneDaydb;
 
-    private static String week;
-    private static String hour;
-    private static String minute;
-    private ArrayList<String> timeList = new ArrayList<String>();
-
-    public static void setWeek(String week) {
-        AlarmReceiver.week = week;
-    }
-
-    public static String getWeek() {
-        return week;
-    }
-
-    public static void setHour(String hour) {
-        AlarmReceiver.hour = hour;
-    }
-
-    public static String getHour() {
-        return hour;
-    }
-
-    public static void setMinute(String minute) {
-        AlarmReceiver.minute = minute;
-    }
-
-    public static String getMinute() {
-        return minute;
-    }
+    private ArrayList<String> timeList = new ArrayList<>();
 
     @Override
     public void onReceive(Context context, Intent intent) {
         this.mContext = context;
-        if (intent != null && intent.getAction().equals("NotifyService.Intent")) {
-            timeList = intent.getStringArrayListExtra("data");
-            getTime();
-            if (Integer.parseInt(getMinute()) < 10){
-                nowTime = getHour() + ":0" + getMinute();
-            }else {
-                nowTime = getHour() + ":" + getMinute();
-            }
-            for (int i = 0;i<timeList.size();i++){
-                if (nowTime.equals(timeList.get(i))){
-                    createNotify(nowTime);
-                    timeList.remove(nowTime);
-                }
-            }
+        if (intent != null && intent.getAction().equals(NotifyService.NOTIFY_ACTION)) {
+            createNotify(intent.getStringExtra("nowTime"));
+        }
+        if (intent != null && intent.getAction().equals(NotifyService.SERVICE_DESTROY_ACTION)){
             intent.setClass(mContext,NotifyService.class);
-            bundle.putStringArrayList("time",timeList);
+            bundle.putStringArrayList("time", intent.getStringArrayListExtra("timeList"));
             intent.putExtras(bundle);
             mContext.startService(intent);
         }
@@ -112,12 +72,5 @@ public class AlarmReceiver extends BroadcastReceiver {
         return  pendingIntent;
     }
 
-    public static void getTime(){
-        Calendar c = Calendar.getInstance();
-        hour = String.valueOf(c.get(Calendar.HOUR_OF_DAY));
-        minute = String.valueOf(c.get(Calendar.MINUTE));
-        setWeek(TimeCalendar.getTodayWeek());
-        setHour(hour);
-        setMinute(minute);
-    }
+
 }

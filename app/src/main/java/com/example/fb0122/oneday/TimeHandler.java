@@ -1,5 +1,6 @@
 package com.example.fb0122.oneday;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -19,16 +20,19 @@ import oneday.Alarm.NotifyService;
 
 public class TimeHandler extends Handler {
 
-    private OneDaydb db = new OneDaydb(MainActivity.mContext, OneDaydb.TABLE_NAME);
     Cursor c;
     private SQLiteDatabase dbreader;
     private String time;
     private ArrayList<String> notifyList = new ArrayList<>();
     private String today;
+    private Context mContext;
+    private OneDaydb db;
 
-    public TimeHandler(Looper looper) {
+    public TimeHandler(Looper looper,Context context) {
         super(looper);
         today = TimeCalendar.getTodayWeek();
+        mContext = context;
+        db = new OneDaydb(context, OneDaydb.TABLE_NAME);
     }
 
     @Override
@@ -40,17 +44,17 @@ public class TimeHandler extends Handler {
                 c = dbreader.rawQuery("select " + OneDaydb.COLUMN_FROM_TIME + " from " + OneDaydb.TABLE_NAME
                         + " where " + OneDaydb.COLUMN_WEEK + "=" + "'" + today + "'",null);
                 if (c.moveToFirst()) {
+                    notifyList.clear();
                     do {
                         time = c.getString(c.getColumnIndex(OneDaydb.COLUMN_FROM_TIME));
                         notifyList.add(time);
                     } while (c.moveToNext());
                 }
-                Intent i = new Intent(MainActivity.mContext, NotifyService.class);
-                i.setAction("NotifyService.Intent" + "");
+                Intent i = new Intent(mContext, NotifyService.class);
                 Bundle bundle = new Bundle();
                 bundle.putStringArrayList("time", notifyList);
                 i.putExtras(bundle);
-                MainActivity.mContext.startService(i);
+                mContext.startService(i);
                 break;
         }
     }

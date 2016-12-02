@@ -1,21 +1,60 @@
 package oneday.Alarm;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.os.SystemClock;
 import android.support.annotation.Nullable;
+import android.util.Log;
+
+import com.example.fb0122.oneday.utils.TimeCalendar;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
-public class NotifyService extends Service{
+public class NotifyService extends Service {
 
-    ArrayList<String> list = new ArrayList<>();
-    String action = "NotifyService.Intent";
-    private static int iFlag = 0;
+    private ArrayList<String> list = new ArrayList<>();
+    public static final String NOTIFY_ACTION = "NotifyService.Intent";
+    public static final String SERVICE_DESTROY_ACTION = "ServiceDestroy.Intent";
+    private boolean quit = false;
+    private String nowTime;
+
+    private String week;
+    private String hour;
+    private String minute;
+    private FilterCustomAsync filterCustomAsync;
+
+    public void setWeek(String week) {
+        this.week = week;
+    }
+
+    public String getWeek() {
+        return week;
+    }
+
+    public void setHour(String hour) {
+        this.hour = hour;
+    }
+
+    public String getHour() {
+        return hour;
+    }
+
+    public void setMinute(String minute) {
+        this.minute = minute;
+    }
+
+    public String getMinute() {
+        return minute;
+    }
+
+    @Override
+    public void onCreate() {
+        filterCustomAsync = new FilterCustomAsync();
+        super.onCreate();
+    }
 
     @Nullable
     @Override
@@ -24,29 +63,71 @@ public class NotifyService extends Service{
     }
 
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-
-        if(iFlag == 0 ? (intent != null ) : (intent.getAction().equals("NotifyService.Intent")) ){
+    public int onStartCommand(final Intent intent, int flags, int startId) {
+        if (intent != null || (intent.getAction().equals(SERVICE_DESTROY_ACTION))) {
+            list.clear();
             list = intent.getStringArrayListExtra("time");
-            AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
-            long tigGerAtTime = SystemClock.elapsedRealtime();
-
-            Intent i = new Intent(getApplicationContext(),AlarmReceiver.class);
-            Bundle bundle = new Bundle();
-            bundle.putStringArrayList("data",list);
-            i.putExtras(bundle);
-            i.setAction(action);
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(),0,i,PendingIntent.FLAG_UPDATE_CURRENT);
-            alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,tigGerAtTime,pendingIntent);
-
-            iFlag += 1;
+        }
+        if (!(filterCustomAsync.getStatus() == AsyncTask.Status.RUNNING)) {
+            filterCustomAsync.execute(0);
         }
         return super.onStartCommand(intent, flags, startId);
     }
 
+    public void getTime() {
+        Calendar c = Calendar.getInstance();
+        hour = String.valueOf(c.get(Calendar.HOUR_OF_DAY));
+        minute = String.valueOf(c.get(Calendar.MINUTE));
+        setWeek(TimeCalendar.getTodayWeek());
+        setHour(hour);
+        setMinute(minute);
+    }
+
     @Override
     public void onDestroy() {
+        this.quit = true;
+        Intent i = new Intent(SERVICE_DESTROY_ACTION);
+        Bundle bundle = new Bundle();
+        bundle.putStringArrayList("timeList", list);
+        i.putExtras(bundle);
+        sendBroadcast(i);
         super.onDestroy();
+    }
+
+    class FilterCustomAsync extends AsyncTask<Integer,Integer,String>{
+
+        @Override
+        protected String doInBackground(Integer... values) {
+            String finalTime = "";
+            while (!quit) {
+                getTime();
+                if (Integer.parseInt(getMinute()) < 10) {
+                    nowTime = getHour() + ":0" + getMinute();
+                } else {
+                    nowTime = getHour() + ":" + getMinute();
+                }
+                for (int i = 0; i < list.size(); i++) {
+                    if (nowTime.equals(list.get(i))) {
+                        Intent notifyIntent = new Intent(NOTIFY_ACTION);
+                        notifyIntent.putExtra("nowTime", list.get(i));
+                        finalTime = list.get(i);
+                        list.remove(nowTime);
+                        sendBroadcast(notifyIntent);
+                    }
+                }
+                try {
+                    Thread.sleep(10000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            return finalTime;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+        }
     }
 
 }
