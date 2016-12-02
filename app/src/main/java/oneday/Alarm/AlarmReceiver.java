@@ -2,6 +2,7 @@ package oneday.Alarm;
 
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -10,6 +11,7 @@ import android.support.v4.app.NotificationCompat;
 import android.view.View;
 import android.widget.RemoteViews;
 
+import com.example.fb0122.oneday.MainActivity;
 import com.example.fb0122.oneday.R;
 
 import db_oneday.OneDaydb;
@@ -41,6 +43,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         OneDaydb oneDaydb = new OneDaydb(mContext, OneDaydb.TABLE_NAME);
         NotificationManager manager = (NotificationManager)mContext.getSystemService(Context.NOTIFICATION_SERVICE);
         RemoteViews views = new RemoteViews(mContext.getPackageName(), R.layout.notifycation);
+
         if (totalNotifies == 1) {
             String[] str = oneDaydb.getNotifyInfo(fromTime);
             views.setViewVisibility(R.id.text_notify_number_tips, View.GONE);
@@ -52,10 +55,13 @@ public class AlarmReceiver extends BroadcastReceiver {
             views.setViewVisibility(R.id.text_notify_number_tips, View.VISIBLE);
             views.setViewVisibility(R.id.text_notify_time, View.GONE);
             views.setViewVisibility(R.id.text_notify_custom, View.GONE);
-            views.setTextViewText(R.id.text_notify_number_tips,"您当前有" + totalNotifies + "个计划未完成");
+            views.setTextViewText(R.id.text_notify_number_tips,"您今天有" + totalNotifies + "个计划未完成");
         }
         NotificationCompat.Builder builder = new NotificationCompat.Builder(mContext);
+        Intent intent = new Intent(mContext, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(mContext,0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
         builder .setContent(views)
+                .setContentIntent(pendingIntent)
                 .setStyle(new NotificationCompat.BigTextStyle())
                 .setWhen(System.currentTimeMillis())
                 .setTicker("Tips")
