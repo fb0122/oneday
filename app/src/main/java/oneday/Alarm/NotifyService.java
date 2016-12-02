@@ -6,7 +6,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import com.example.fb0122.oneday.utils.TimeCalendar;
 
@@ -19,12 +18,13 @@ public class NotifyService extends Service {
     public static final String NOTIFY_ACTION = "NotifyService.Intent";
     public static final String SERVICE_DESTROY_ACTION = "ServiceDestroy.Intent";
     private boolean quit = false;
-    private String nowTime;
 
     private String week;
     private String hour;
     private String minute;
     private FilterCustomAsync filterCustomAsync;
+
+    private int totalNotifies = 0;
 
     public void setWeek(String week) {
         this.week = week;
@@ -67,6 +67,9 @@ public class NotifyService extends Service {
         if (intent != null || (intent.getAction().equals(SERVICE_DESTROY_ACTION))) {
             list.clear();
             list = intent.getStringArrayListExtra("time");
+            if (!intent.getStringExtra(Config.NOTIFY_TODAY).equals(TimeCalendar.getTodayWeek())){
+                totalNotifies = 0;
+            }
         }
         if (!(filterCustomAsync.getStatus() == AsyncTask.Status.RUNNING)) {
             filterCustomAsync.execute(0);
@@ -90,6 +93,7 @@ public class NotifyService extends Service {
         Bundle bundle = new Bundle();
         bundle.putStringArrayList("timeList", list);
         i.putExtras(bundle);
+        i.putExtra(Config.NOTIFY_NUMBER,totalNotifies);
         sendBroadcast(i);
         super.onDestroy();
     }
@@ -101,6 +105,7 @@ public class NotifyService extends Service {
             String finalTime = "";
             while (!quit) {
                 getTime();
+                String nowTime;
                 if (Integer.parseInt(getMinute()) < 10) {
                     nowTime = getHour() + ":0" + getMinute();
                 } else {
@@ -112,6 +117,8 @@ public class NotifyService extends Service {
                         notifyIntent.putExtra("nowTime", list.get(i));
                         finalTime = list.get(i);
                         list.remove(nowTime);
+                        totalNotifies++;
+                        notifyIntent.putExtra(Config.NOTIFY_NUMBER,totalNotifies);
                         sendBroadcast(notifyIntent);
                     }
                 }

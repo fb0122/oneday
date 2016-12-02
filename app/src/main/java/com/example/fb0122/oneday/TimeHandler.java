@@ -53,6 +53,7 @@ public class TimeHandler extends Handler {
                 Intent i = new Intent(mContext, NotifyService.class);
                 Bundle bundle = new Bundle();
                 bundle.putStringArrayList("time", notifyList);
+                i.putExtra(Config.NOTIFY_TODAY,today);
                 i.putExtras(bundle);
                 mContext.startService(i);
                 break;

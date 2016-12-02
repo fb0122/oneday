@@ -6,46 +6,53 @@
     android:orientation="horizontal">
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
             android:layout_gravity="center_vertical"
+            android:layout_marginLeft="20dp"
             android:background="@drawable/logo" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:gravity="bottom"
-            android:orientation="vertical">
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/text_notify_time"
+                android:id="@+id/text_notify_number_tips"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="19:30 - 20:40"
-                android:textSize="13dp"
+                android:text="您当前有3个计划未完成"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="20dp"
+                android:visibility="gone"
                 android:textColor="@android:color/tab_indicator_text"
-                />
+                android:textSize="14dp"/>
 
-            <TextView
-                android:id="@+id/text_notify_custom"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="运动健身"
-                android:textSize="13dp"
-                android:layout_gravity="bottom"
-                android:layout_marginTop="3dp"
-                android:textColor="@android:color/tab_indicator_text"
-                />
+                android:layout_marginLeft="20dp"
+                android:gravity="bottom"
+                android:orientation="vertical"
+                android:visibility="visible">
 
+                <TextView
+                    android:id="@+id/text_notify_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="19:30 - 20:40"
+                    android:textColor="@android:color/tab_indicator_text"
+                    android:textSize="13dp" />
 
-        </LinearLayout>
-    </LinearLayout>
-
+                <TextView
+                    android:id="@+id/text_notify_custom"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginTop="3dp"
+                    android:text="运动健身"
+                    android:textColor="@android:color/tab_indicator_text"
+                    android:textSize="13dp" />
+            </LinearLayout>
+        </FrameLayout>
 </LinearLayout>
