@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.fb0122.oneday.utils.TimeCalendar;
 import com.sleepbot.datetimepicker.time.RadialPickerLayout;
@@ -125,6 +126,10 @@ public class AtyEditCustom extends AppCompatActivity implements TimePickerDialog
 
 
     public void Done(View v) {
+        if (etCustom.getText().toString().equals("")){
+            Toast.makeText(getBaseContext(),"您还没有输入习惯",Toast.LENGTH_SHORT).show();
+            return;
+        }
         if (saveWeek.size() > 0) {
             for (int j = 0; j < saveWeek.size(); j++) {
                 Log.e(TAG,"insert");
@@ -135,8 +140,9 @@ public class AtyEditCustom extends AppCompatActivity implements TimePickerDialog
             db.insertDta(etCustom.getText().toString(),etCusTime.getText().toString(),
                     etCusToTime.getText().toString(),TimeCalendar.getTodayWeek());
         }
-            setResult(Config.CHANGE_DATA);
-            finish();
+        setResult(Config.CHANGE_DATA);
+        finish();
+        this.overridePendingTransition(R.anim.scoredetail_in,R.anim.scoredetail_out);
     }
 
     public void timepicker() {
@@ -146,6 +152,7 @@ public class AtyEditCustom extends AppCompatActivity implements TimePickerDialog
 
     public void backTo(View v) {
         finish();
+        this.overridePendingTransition(R.anim.scoredetail_in,R.anim.scoredetail_out);
     }
 
     @Override
