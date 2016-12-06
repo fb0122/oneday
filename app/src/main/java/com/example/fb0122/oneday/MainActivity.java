@@ -37,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
     public ImageView tv2;
     public ImageView tv3;
     private AtyDay day;
-    private HashMap<Integer, Object> listdata = new HashMap<>();
     private LinearLayout dayLayout, weekLayout;
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -54,8 +53,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
-        listdata = day.map;
-        day = new AtyDay(this, listdata);
+        day = new AtyDay(this);
         AtyFinish finish = new AtyFinish();
         list.add(day);
 //		list.add(month);

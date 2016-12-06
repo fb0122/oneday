@@ -64,7 +64,7 @@ public class NotifyService extends Service {
 
     @Override
     public int onStartCommand(final Intent intent, int flags, int startId) {
-        if (intent != null || (intent.getAction().equals(SERVICE_DESTROY_ACTION))) {
+        if (intent != null) {
             list.clear();
             list = intent.getStringArrayListExtra("time");
             if (!intent.getStringExtra(Config.NOTIFY_TODAY).equals(TimeCalendar.getTodayWeek())){

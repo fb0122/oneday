@@ -8,8 +8,6 @@ import android.os.Bundle;
 import android.os.Looper;
 import android.os.Message;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -24,6 +22,7 @@ import android.widget.TextView;
 
 import com.example.fb0122.oneday.utils.DimenTranslate;
 import com.example.fb0122.oneday.utils.TimeCalendar;
+import com.example.fb0122.oneday.widget.FixLinearLayoutManager;
 import com.example.fb0122.oneday.widget.GestureLayout;
 
 import java.util.ArrayList;
@@ -74,8 +73,8 @@ public class AtyFinish extends Fragment implements GestureLayout.OnPullListener,
         mFooter = (LinearLayout)view.findViewById(R.id.footer);
 
         listview = (RecyclerView) view.findViewById(R.id.lvWeek);
-        listview.setLayoutManager(new LinearLayoutManager(getContext()));
-        listview.setItemAnimator(new DefaultItemAnimator());
+        listview.setLayoutManager(new FixLinearLayoutManager(getContext()));
+//        listview.setItemAnimator(new DefaultItemAnimator());
         listview.setHasFixedSize(true);
         //去除list中重复元素， 使用hashset
         weekData = getCursor();
@@ -109,12 +108,12 @@ public class AtyFinish extends Fragment implements GestureLayout.OnPullListener,
         if (null == adapter || adapter.getItemCount() == 0) {
             return true;
         }
-        LinearLayoutManager linearLayoutManager = null;
-        if (layoutManager instanceof  LinearLayoutManager){
-            linearLayoutManager = (LinearLayoutManager)layoutManager;
+        FixLinearLayoutManager fixLinearLayoutManager = null;
+        if (layoutManager instanceof  FixLinearLayoutManager){
+            fixLinearLayoutManager = (FixLinearLayoutManager) layoutManager;
         }
-        if (linearLayoutManager != null) {
-            int firstVisibleItemPosition = linearLayoutManager.findFirstVisibleItemPosition();
+        if (fixLinearLayoutManager != null) {
+            int firstVisibleItemPosition = fixLinearLayoutManager.findFirstVisibleItemPosition();
             if (firstVisibleItemPosition == 0){
                 return listview.getChildAt(0).getTop() >= 0;
             }
@@ -267,7 +266,6 @@ public class AtyFinish extends Fragment implements GestureLayout.OnPullListener,
                 }
 
             }
-
         }
 
         @Override
@@ -275,7 +273,6 @@ public class AtyFinish extends Fragment implements GestureLayout.OnPullListener,
             View v = LayoutInflater.from(arg0.getContext()).inflate(R.layout.item_layout, arg0, false);
             return new ViewHolder(v);
         }
-
     }
 
     public ArrayList<String> getCursor() {
@@ -367,7 +364,7 @@ public class AtyFinish extends Fragment implements GestureLayout.OnPullListener,
         //以这种方式刷新完成界面数据。。。。效率不是很高   后期需要重新考虑方法。
         weekData = getCursor();
         adapter.notifyDataSetChanged();
-    }
+}
 
     @Override
     public void onDestroy() {

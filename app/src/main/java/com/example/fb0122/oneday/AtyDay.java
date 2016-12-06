@@ -11,7 +11,6 @@ import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -33,8 +32,6 @@ import com.sleepbot.datetimepicker.time.TimePickerDialog;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.HashSet;
 
 import db_oneday.OneDaydb;
 import oneday.Alarm.Config;
@@ -45,20 +42,18 @@ import static com.example.fb0122.oneday.AtyEditCustom.TIMEPICKER_TAG;
 public class AtyDay extends Fragment implements SlideListView.RefreshPlanListener {
 
     public SlideListView lvDay;
-    OneDaydb db;   // dedb供删除使用的数据库
+    private OneDaydb db;   // dedb供删除使用的数据库
     public Context mContext;
     public Cursor c; //dec供删除使用的Cursor
     public MyAdapter adapter;
-    public static HashMap<Integer, Object> map = new HashMap<>();
-    AtyFinish.ChangeHandler handler = new AtyFinish.ChangeHandler(Looper.myLooper());
-    TimeHandler timeHandler ;
+    private AtyFinish.ChangeHandler handler = new AtyFinish.ChangeHandler(Looper.myLooper());
+    private TimeHandler timeHandler ;
     private static int clickButtonPosition;
     private MyAdapter.ViewHolder viewHolder;
 
-    public AtyDay(Context context, HashMap<Integer, Object> map) {
+    public AtyDay(Context context) {
         super();
         this.mContext = context;
-        this.map = map;
         timeHandler = new TimeHandler(Looper.getMainLooper(),mContext);
     }
 
@@ -76,9 +71,11 @@ public class AtyDay extends Fragment implements SlideListView.RefreshPlanListene
         switch (visible) {
             case View.VISIBLE:
                 db.planDone(plan, TimeCalendar.getWeekInYear(), 1);
+                adapter.refresh();
                 break;
             case View.GONE:
                 db.planDone(plan, TimeCalendar.getWeekInYear(), 0);
+                adapter.refresh();
                 break;
         }
     }
@@ -107,11 +104,11 @@ public class AtyDay extends Fragment implements SlideListView.RefreshPlanListene
             this.c = c;
         }
 
-        public void removeItem(int position) {
+        private void removeSelectedItem(int position) {
             c.moveToPosition(position);
             int itemId = c.getInt(c.getColumnIndex("_id"));
             db.delete(itemId);
-            notifyDataSetChanged();
+            refresh();
         }
 
 
@@ -168,7 +165,6 @@ public class AtyDay extends Fragment implements SlideListView.RefreshPlanListene
         @Override
         public View getGroupView(int groupPosition, boolean b, View convertView, ViewGroup parent) {
             final ViewHolder holder;
-
             if (convertView == null) {
                 convertView = LayoutInflater.from(mContext).inflate(R.layout.listview_item, parent, false);
                 convertView.setOnTouchListener(new View.OnTouchListener() {
@@ -199,7 +195,6 @@ public class AtyDay extends Fragment implements SlideListView.RefreshPlanListene
 
             c.moveToPosition(groupPosition);
             setData(holder, null);
-
             return convertView;
         }
 
@@ -270,6 +265,7 @@ public class AtyDay extends Fragment implements SlideListView.RefreshPlanListene
             }
             child = childHolder;
             setData(null, childHolder);
+
             return convertView;
         }
 
@@ -334,7 +330,9 @@ public class AtyDay extends Fragment implements SlideListView.RefreshPlanListene
                     }
                 }while ((weekCursor.moveToNext()));
             }
-            weekCursor.close();
+            if (weekCursor != null) {
+                weekCursor.close();
+            }
         }
 
         //重置展开星期状态
@@ -493,6 +491,13 @@ public class AtyDay extends Fragment implements SlideListView.RefreshPlanListene
             private TextView Sun, Mon, Tue, Wed, Thu, Fri, Sat;
         }
 
+        private void refresh(){
+            String week = TimeCalendar.getTodayWeek();
+            c = null;
+            c = db.Query(week);
+            notifyDataSetChanged();
+        }
+
     }
     /*
      * 删除数据时的回调接口
@@ -502,12 +507,8 @@ public class AtyDay extends Fragment implements SlideListView.RefreshPlanListene
 
         @Override
         public void removeItem(SlideListView.RemoveDirection reDirection, int position, View itemView) {
-            adapter.removeItem(position);
-            adapter.notifyDataSetChanged();
-            map.remove(position);
-            getData();
-            lvDay.setAdapter(adapter);
-//            new Thread(new ChangeData()).start();
+            adapter.removeSelectedItem(position);
+            lvDay.setAdapter(adapter);       //不加会报错
             notifyOnFinishRefresh();
         }
     };
@@ -515,7 +516,6 @@ public class AtyDay extends Fragment implements SlideListView.RefreshPlanListene
     private void getData() {
         String week = TimeCalendar.getTodayWeek();
         c = db.Query(week);
-        adapter = new MyAdapter(getActivity(), c, getFragmentManager());
     }
 
 
@@ -535,6 +535,7 @@ public class AtyDay extends Fragment implements SlideListView.RefreshPlanListene
         db = new OneDaydb(getActivity(), "oneday");
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
         getData();
+        adapter = new MyAdapter(getActivity(), c, getFragmentManager());
 
         //为slidelistview传入当前activity的adapter。让其在滑动的时候动态更新adapter
         lvDay.getAda(adapter);
@@ -560,7 +561,7 @@ public class AtyDay extends Fragment implements SlideListView.RefreshPlanListene
                 Intent i = new Intent();
                 i.setClass(getActivity(), AtyEditCustom.class);
                 startActivityForResult(i, 0);
-                getActivity().overridePendingTransition(R.anim.zoom_in, R.anim.zoom_out);
+                getActivity().overridePendingTransition(R.anim.zoom_in,R.anim.zoom_out);
             }
         });
         return view;
@@ -602,9 +603,7 @@ public class AtyDay extends Fragment implements SlideListView.RefreshPlanListene
     }
 
     public void totalRefresh() {
-        getData();
-        adapter.notifyDataSetChanged();
-        lvDay.setAdapter(adapter);
+        adapter.refresh();
         notifyOnFinishRefresh();
         Message msg = timeHandler.obtainMessage();
         msg.what = Config.ADD_NOTIFY;
