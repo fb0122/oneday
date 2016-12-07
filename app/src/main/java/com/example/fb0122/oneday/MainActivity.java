@@ -76,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
         weekLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

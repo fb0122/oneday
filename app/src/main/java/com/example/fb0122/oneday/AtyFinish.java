@@ -8,7 +8,9 @@ import android.os.Bundle;
 import android.os.Looper;
 import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -40,7 +42,7 @@ public class AtyFinish extends Fragment implements GestureLayout.OnPullListener,
 
     public static RecyclerView listview;
 
-    private OneDaydb db;
+    OneDaydb db;
     public static CursorAdapter adapter;
     static Cursor c, s, ss;
 
@@ -50,7 +52,7 @@ public class AtyFinish extends Fragment implements GestureLayout.OnPullListener,
     public int mScreenHeight;
     public boolean isFresh = true;
     static HashSet hashSet;
-    private ChangeHandler changeHandler = new ChangeHandler(Looper.myLooper());
+    ChangeHandler changeHandler = new ChangeHandler(Looper.myLooper());
     public static int flag = 0;
     private GestureLayout finishGestureLayout;
     private LinearLayout mFooter;
@@ -73,7 +75,7 @@ public class AtyFinish extends Fragment implements GestureLayout.OnPullListener,
         mFooter = (LinearLayout)view.findViewById(R.id.footer);
 
         listview = (RecyclerView) view.findViewById(R.id.lvWeek);
-        listview.setLayoutManager(new FixLinearLayoutManager(getContext()));
+        listview.setLayoutManager(new LinearLayoutManager(getContext()));
 //        listview.setItemAnimator(new DefaultItemAnimator());
         listview.setHasFixedSize(true);
         //去除list中重复元素， 使用hashset
@@ -108,9 +110,9 @@ public class AtyFinish extends Fragment implements GestureLayout.OnPullListener,
         if (null == adapter || adapter.getItemCount() == 0) {
             return true;
         }
-        FixLinearLayoutManager fixLinearLayoutManager = null;
-        if (layoutManager instanceof  FixLinearLayoutManager){
-            fixLinearLayoutManager = (FixLinearLayoutManager) layoutManager;
+        LinearLayoutManager fixLinearLayoutManager = null;
+        if (layoutManager instanceof  LinearLayoutManager){
+            fixLinearLayoutManager = (LinearLayoutManager) layoutManager;
         }
         if (fixLinearLayoutManager != null) {
             int firstVisibleItemPosition = fixLinearLayoutManager.findFirstVisibleItemPosition();
@@ -141,6 +143,7 @@ public class AtyFinish extends Fragment implements GestureLayout.OnPullListener,
                 rlWeek = (LinearLayout) itemView.findViewById(R.id.rlWeek);
                 lnCard = (RelativeLayout) itemView.findViewById(R.id.ll1);
                 moreImageView = (ImageView) itemView.findViewById(R.id.week_card_more);
+                // TODO Auto-generated constructor stub
             }
 
             TextView tvWeek, tvDate, tvPercent;
@@ -163,7 +166,6 @@ public class AtyFinish extends Fragment implements GestureLayout.OnPullListener,
         @Override
         public int getItemCount() {                //第二步执行
 
-            // TODO Auto-generated method stub
             //如果删除之后就会少一个item，而读取的时候会按顺序读取星期。
             if (flag == 1 || flag == 2) {
                 return weekData.size() + 1;
@@ -326,9 +328,9 @@ public class AtyFinish extends Fragment implements GestureLayout.OnPullListener,
         hashMap.put(0, first);
         for (int m : com_list) {
             mutil = m - first;
-            if (m - first > 0) {
+            if (mutil > 0) {
                 list1.add(mutil);
-            } else if (m - first < 0) {
+            } else if (mutil < 0) {
                 list2.add(Math.abs(mutil));
             }
         }
@@ -341,7 +343,12 @@ public class AtyFinish extends Fragment implements GestureLayout.OnPullListener,
             sorted_list.add(map.get(first + i));
         }
         for (int j : list2) {
-            sorted_list.add(map.get(j));
+            //异常处理防止first-j
+            try {
+                sorted_list.add(map.get(first - j));
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
         return sorted_list;
     }
@@ -363,6 +370,7 @@ public class AtyFinish extends Fragment implements GestureLayout.OnPullListener,
         super.onResume();
         //以这种方式刷新完成界面数据。。。。效率不是很高   后期需要重新考虑方法。
         weekData = getCursor();
+        Log.i("---fb---","onResume(): " + weekData);
         adapter.notifyDataSetChanged();
 }
 

@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:background="@color/day_background"
     android:orientation="vertical"
+    android:transitionName="buttonChangeEdit"
     >
 
     <include layout="@layout/edit_toolbar" />

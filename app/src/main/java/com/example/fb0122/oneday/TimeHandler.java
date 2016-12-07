@@ -20,7 +20,7 @@ import oneday.Alarm.NotifyService;
 
 public class TimeHandler extends Handler {
 
-    Cursor c;
+    private Cursor c;
     private SQLiteDatabase dbreader;
     private String time;
     private ArrayList<String> notifyList = new ArrayList<>();
