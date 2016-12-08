@@ -90,6 +90,7 @@
                         android:textColor="@color/black"
                         android:layout_gravity="center_vertical"
                         android:textSize="21dp"
+                        android:singleLine="true"
                         tools:text="rrr" />
 
                     <EditText

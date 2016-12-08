@@ -17,6 +17,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginTop="30dp"
         android:background="@drawable/expand_edit_time_border"
+        android:singleLine="true"
         android:textCursorDrawable="@color/blue"
         android:textSize="30dp" />
 

@@ -283,9 +283,15 @@ public class AtyDay extends Fragment implements SlideListView.RefreshPlanListene
                 if (c.getInt(6) == 1) {                         //计划是否被标记为完成
                     holder.addLine.setVisibility(View.VISIBLE);
                     holder.tvSc.setTextColor(getResources().getColor(R.color.shadow));
+                    holder.tvTime.setTextColor(getResources().getColor(R.color.shadow));
+                    holder.tvTo.setTextColor(getResources().getColor(R.color.shadow));
+                    holder.line.setTextColor(getResources().getColor(R.color.shadow));
                 } else {
                     holder.addLine.setVisibility(View.GONE);
-                    holder.tvSc.setTextColor(getResources().getColor(R.color.black));
+                    holder.tvSc.setTextColor(getResources().getColor(R.color.text_color));
+                    holder.tvTime.setTextColor(getResources().getColor(R.color.text_color));
+                    holder.tvTo.setTextColor(getResources().getColor(R.color.text_color));
+                    holder.line.setTextColor(getResources().getColor(R.color.text_color));
                 }
             } else {
                 childViewHolder.expandPlanText.setText(c.getString(1));
