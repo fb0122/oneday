@@ -79,7 +79,7 @@ public class AtyFinish extends Fragment implements GestureLayout.OnPullListener,
 
         tasksCompletedView = (TasksCompletedView) view.findViewById(R.id.circleProgressbar);
         tasksCompletedView.setFilledPercent(75);
-        TaskCompletedItem taskCompletedItem = new TaskCompletedItem(3.0f,getResources().getColor(R.color.blue));
+        TaskCompletedItem taskCompletedItem = new TaskCompletedItem(15.0f,getResources().getColor(R.color.blue));
         tasksCompletedView.addTaskCompletedItem(taskCompletedItem);
         tasksCompletedView.startItemsAnimation();
 

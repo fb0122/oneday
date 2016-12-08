@@ -101,7 +101,7 @@
                         android:imeOptions="actionDone"
                         android:singleLine="true"
                         android:textColor="@color/black"
-                        android:textCursorDrawable="@color/blue"
+                        android:textCursorDrawable="@drawable/cursor_style"
                         android:layout_gravity="center_vertical"
                         android:textSize="21dp" />
 
