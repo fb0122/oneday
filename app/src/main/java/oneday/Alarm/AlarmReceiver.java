@@ -68,7 +68,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                 .setPriority(Notification.PRIORITY_DEFAULT)
                 .setOngoing(false)
                 .setAutoCancel(true)
-                .setSmallIcon(R.drawable.onedaylogo1);
+                .setSmallIcon(R.drawable.logohdpi);
 
         Notification notify = builder.build();
         notify.contentView = views;

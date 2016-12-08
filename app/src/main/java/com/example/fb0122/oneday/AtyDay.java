@@ -22,6 +22,7 @@ import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -212,7 +213,7 @@ public class AtyDay extends Fragment implements SlideListView.RefreshPlanListene
                 });
                 childHolder = new ChildViewHolder();
                 childHolder.expandPlanText = (EditText) convertView.findViewById(R.id.text_expand_plan);
-                childHolder.expandRelativeLayout = (RelativeLayout) convertView.findViewById(R.id.relative_expand);
+                childHolder.expandRelativeLayout = (LinearLayout) convertView.findViewById(R.id.relative_expand);
                 childHolder.week_select = (RelativeLayout) convertView.findViewById(R.id.week_select);
                 childHolder.fromTimeExpandText = (TextView) convertView.findViewById(R.id.text_expand_from_time);
                 childHolder.fromTimeExpandText.setOnClickListener(new OnClickListener() {
@@ -489,7 +490,8 @@ public class AtyDay extends Fragment implements SlideListView.RefreshPlanListene
 
         class ChildViewHolder {
             EditText expandPlanText;
-            RelativeLayout expandRelativeLayout, week_select;
+            LinearLayout expandRelativeLayout;
+            RelativeLayout week_select;
             TextView fromTimeExpandText, toTimeExpandText;
             ImageView reminderExpandImg;
             Spinner tipsSpinner;

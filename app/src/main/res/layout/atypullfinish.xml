@@ -52,11 +52,11 @@
 
             <circleprogressbar.TasksCompletedView
                 android:id="@+id/circleProgressbar"
-                android:layout_width="266dp"
-                android:layout_height="233dp"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
                 android:layout_marginTop="30dp"
                 android:layout_marginBottom="40dp"
-                android:background="#f4f4f4"
+                android:background="#f4f4f4f4"
                 />
 
         </LinearLayout>

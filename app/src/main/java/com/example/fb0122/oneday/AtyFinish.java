@@ -32,6 +32,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import circleprogressbar.TaskCompletedItem;
+import circleprogressbar.TasksCompletedView;
 import db_oneday.OneDaydb;
 
 import static oneday.Alarm.Config.CHANGE_WEEK_VIEW;
@@ -52,10 +54,11 @@ public class AtyFinish extends Fragment implements GestureLayout.OnPullListener,
     public int mScreenHeight;
     public boolean isFresh = true;
     static HashSet hashSet;
-    ChangeHandler changeHandler = new ChangeHandler(Looper.myLooper());
+    private ChangeHandler changeHandler = new ChangeHandler(Looper.myLooper());
     public static int flag = 0;
     private GestureLayout finishGestureLayout;
     private LinearLayout mFooter;
+    private TasksCompletedView tasksCompletedView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -73,6 +76,12 @@ public class AtyFinish extends Fragment implements GestureLayout.OnPullListener,
 
         mHeader = (LinearLayout) view.findViewById(R.id.header);
         mFooter = (LinearLayout)view.findViewById(R.id.footer);
+
+        tasksCompletedView = (TasksCompletedView) view.findViewById(R.id.circleProgressbar);
+        tasksCompletedView.setFilledPercent(75);
+        TaskCompletedItem taskCompletedItem = new TaskCompletedItem(3.0f,getResources().getColor(R.color.blue));
+        tasksCompletedView.addTaskCompletedItem(taskCompletedItem);
+        tasksCompletedView.startItemsAnimation();
 
         listview = (RecyclerView) view.findViewById(R.id.lvWeek);
         listview.setLayoutManager(new LinearLayoutManager(getContext()));

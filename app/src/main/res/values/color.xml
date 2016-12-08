@@ -1,32 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="corsor_color">#bab9b8</color>
     <color name="text_color">#646464</color>
     <color name="textview_background">#f5f5f5</color>
     <color name="border_color">#7ccef3</color>
     <color name="white">#FFFFFF</color>
-    <color name="top_border">#dceef2</color>
-    <color name="cendler_border">#9a9796</color>
-    <color name="imgBtn1_color">#1ffcdb</color>
-    <color name="imgBtn2_color">#f2fc1f</color>
-    <color name="imgBtn3_color">#fc691f</color>
     <color name="divider_color">#f4f4f4</color>
     <color name="shadow">#CABBBBBB</color>
     <color name="edit_color">#f5f5f5</color>
-    <color name="sliding1">#75b8ae</color>
-    <color name="sliding2">#41f2e8</color>
-    <color name="sliding3">#ff954f</color>
     <color name="black">#030303</color>
     <color name="expand_vertical">#c1c1c1</color>
     <color name="expand_line">#e5e5e5</color>
     <color name="button_click">#4fbbec</color>
     <color name="blue">#008fea</color>
-    <color name="low_blue">#4ebbec</color>
-    <color name="circle_color">#323a45</color>
-    <color name="ring_color">#14b9d6</color>
-    <color name="listview_color">#fff4f7f9</color>
     <color name="slide_right_red">#e86a6a</color>
     <color name="day_background">#f4f4f4</color>
     <color name="slide_left_green">#7ec68a</color>
-    <color name="primary_dark">#0389d2</color>
+    <color name="weekSelect_background">#dedede</color>
 </resources>

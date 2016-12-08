@@ -3,10 +3,10 @@
     android:id="@+id/week_select"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_below="@+id/etTime"
-    android:layout_marginTop="12dp"
-    android:paddingLeft="10dp"
-    android:paddingRight="10dp"
+    android:layout_marginTop="24dp"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:gravity="center_horizontal"
     >
 
     <TextView
@@ -18,7 +18,7 @@
         android:textSize="12dp" />
 
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="284dp"
         android:layout_height="2dp"
         android:layout_marginLeft="12dp"
         android:layout_marginTop="5dp"
@@ -27,18 +27,19 @@
 
     <LinearLayout
         android:id="@+id/lyA"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="18dp"
+        android:layout_marginTop="15dp"
+        android:paddingTop="3dp"
         android:orientation="horizontal"
         android:gravity="center_horizontal"
         >
 
         <TextView
             android:id="@+id/Sun"
-            android:layout_width="37dp"
-            android:layout_height="37dp"
-            android:layout_alignParentLeft="true"
+            android:layout_width="33dp"
+            android:layout_height="33dp"
+            android:layout_gravity="left|center_vertical"
             android:background="@drawable/week_click"
             android:clickable="true"
             android:gravity="center"
@@ -49,9 +50,9 @@
 
         <TextView
             android:id="@+id/Mon"
-            android:layout_width="37dp"
-            android:layout_height="37dp"
-            android:layout_marginLeft="14dp"
+            android:layout_width="33dp"
+            android:layout_height="33dp"
+            android:layout_marginLeft="15dp"
             android:layout_toRightOf="@+id/Sun"
             android:background="@drawable/week_click"
             android:clickable="true"
@@ -63,9 +64,9 @@
 
         <TextView
             android:id="@+id/Tue"
-            android:layout_width="37dp"
-            android:layout_height="37dp"
-            android:layout_marginLeft="14dp"
+            android:layout_width="33dp"
+            android:layout_height="33dp"
+            android:layout_marginLeft="15dp"
             android:layout_toRightOf="@+id/Mon"
             android:background="@drawable/week_click"
             android:clickable="true"
@@ -77,9 +78,9 @@
 
         <TextView
             android:id="@+id/Wed"
-            android:layout_width="37dp"
-            android:layout_height="37dp"
-            android:layout_marginLeft="14dp"
+            android:layout_width="33dp"
+            android:layout_height="33dp"
+            android:layout_marginLeft="15dp"
             android:layout_toRightOf="@+id/Tue"
             android:background="@drawable/week_click"
             android:clickable="true"
@@ -87,13 +88,13 @@
             android:padding="0dp"
             android:text="三"
             android:textColor="@color/white"
-            android:textSize="12sp" />
+            android:textSize="12dp" />
 
         <TextView
             android:id="@+id/Thu"
-            android:layout_width="37dp"
-            android:layout_height="37dp"
-            android:layout_marginLeft="14dp"
+            android:layout_width="33dp"
+            android:layout_height="33dp"
+            android:layout_marginLeft="15dp"
             android:layout_toRightOf="@+id/Wed"
             android:background="@drawable/week_click"
             android:clickable="true"
@@ -101,13 +102,13 @@
             android:padding="0dp"
             android:text="四"
             android:textColor="@color/white"
-            android:textSize="12sp" />
+            android:textSize="12dp" />
 
         <TextView
             android:id="@+id/Fri"
-            android:layout_width="37dp"
-            android:layout_height="37dp"
-            android:layout_marginLeft="14dp"
+            android:layout_width="33dp"
+            android:layout_height="33dp"
+            android:layout_marginLeft="15dp"
             android:layout_toRightOf="@+id/Thu"
             android:background="@drawable/week_click"
             android:clickable="true"
@@ -115,30 +116,28 @@
             android:padding="0dp"
             android:text="五"
             android:textColor="@color/white"
-            android:textSize="12sp" />
+            android:textSize="12dp" />
 
         <TextView
             android:id="@+id/Sat"
-            android:layout_width="37dp"
-            android:layout_height="37dp"
-            android:layout_marginLeft="14dp"
+            android:layout_width="33dp"
+            android:layout_height="33dp"
+            android:layout_marginLeft="15dp"
             android:layout_toRightOf="@+id/Fri"
             android:background="@drawable/week_click"
             android:clickable="true"
             android:gravity="center"
-            android:padding="0dp"
             android:text="六"
             android:textColor="@color/white"
-            android:textSize="10dp" />
+            android:textSize="12dp" />
     </LinearLayout>
 
     <TextView
         android:id="@+id/expandline2"
-        android:layout_width="match_parent"
+        android:layout_width="320dp"
         android:layout_height="2dp"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/lyA"
-        android:layout_marginLeft="5dp"
         android:layout_marginTop="10dp"
         android:background="@drawable/expand_line" />
 </RelativeLayout>

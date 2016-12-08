@@ -1,35 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/relative_expand"
-    android:layout_width="fill_parent"
-    android:layout_height="match_parent"
-    android:layout_marginLeft="7dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="@drawable/expand" 
-    >
+    android:background="@color/white">
 
     <EditText
         android:id="@+id/text_expand_plan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/expand_edit_time_border"
-        android:textSize="20dp"
-        android:text="WWWW" />
+        android:textSize="30dp"
+        android:padding="10dp"
+        android:layout_marginLeft="10dp"
+        android:textCursorDrawable="@drawable/cursor_style"
+        android:background="@drawable/expand_edit_layout"
+        tools:text="一切因果" />
 
     <RelativeLayout
         android:id="@+id/relativeLayout1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/text_expand_plan"
-        android:layout_marginTop="10dp"
-        android:background="@color/day_background"
+        android:layout_marginTop="17dp"
+        android:layout_marginLeft="20dp"
+        android:background="@color/white"
          >
 
         <TextView
             android:id="@+id/text_expand_from_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/expand_edit_time_border"
+            android:background="@drawable/expand_white_background_time"
             android:text="0:00"
             android:textColor="#5a5a5a"
             android:textSize="30dp" />
@@ -47,7 +50,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/tvExline"
-            android:background="@drawable/expand_edit_time_border"
+            android:background="@drawable/expand_white_background_time"
             android:text="0:00"
             android:textColor="#5a5a5a"
             android:textSize="30dp" />
@@ -55,11 +58,13 @@
 
     <RelativeLayout
         android:id="@+id/rlA"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/relativeLayout1"
-        android:layout_marginTop="45dp" >
+        android:layout_marginLeft="20dp"
+        android:paddingRight="20dp"
+        android:layout_marginTop="24dp" >
 
         <TextView
             android:id="@+id/textView1"
@@ -69,8 +74,8 @@
 
         <ImageView
             android:id="@+id/img_expand_reminder"
-            android:layout_width="22dp"
-            android:layout_height="27dp"
+            android:layout_width="27dp"
+            android:layout_height="30dp"
             android:layout_alignParentTop="true"
             android:layout_marginBottom="2dp"
             android:layout_marginLeft="3dp"
@@ -81,20 +86,15 @@
             android:id="@+id/spinner_expand_tips"
             android:layout_width="300dp"
             android:layout_height="30dp"
-            android:layout_marginLeft="5dp"
+            android:layout_marginLeft="3dp"
             android:layout_toRightOf="@+id/img_expand_reminder"
-            android:background="@drawable/spinner_border"
+            android:background="@drawable/expand_spinner_white_background"
             android:entries="@array/repece_times"
             android:prompt="@string/spRemind_first" />
     </RelativeLayout>
 
     <include
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        layout="@layout/week_select_widget"
-        android:layout_below="@+id/rlA"
-        android:layout_marginTop="12dp"
-        />
+        layout="@layout/week_select_widget"/>
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -102,7 +102,7 @@
         android:layout_below="@+id/week_select"
         android:layout_marginTop="15dp"
         android:layout_marginBottom="15dp"
-        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
         >
 
     <Button
@@ -123,7 +123,7 @@
         android:layout_marginTop="10dp"
         android:layout_toRightOf="@+id/btn_expand_cancel"
         android:text="确定" />
-        
+
     </RelativeLayout>
 
-</RelativeLayout>
+</LinearLayout>

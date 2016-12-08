@@ -2,23 +2,26 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/day_background"
     android:orientation="vertical"
-    android:transitionName="buttonChangeEdit"
-    >
+    android:transitionName="buttonChangeEdit">
 
     <include layout="@layout/edit_toolbar" />
 
     <EditText
         android:id="@+id/etCustom"
-        android:layout_width="330dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="30dp"
-        android:background="@drawable/expand_edit_time_border"
+        android:layout_marginTop="25dp"
+        android:layout_marginLeft="15dp"
         android:singleLine="true"
-        android:textCursorDrawable="@color/blue"
+        tools:text = "一切因果"
+        android:textCursorDrawable="@drawable/cursor_style"
+        android:cursorVisible="true"
+        android:background="@drawable/edit_layout_edit_background"
+        android:padding="5dp"
         android:textSize="30dp" />
 
     <RelativeLayout
@@ -27,7 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/etCustom"
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="22dp"
         android:background="@color/divider_color">
 
         <TextView
@@ -61,12 +64,12 @@
 
     <RelativeLayout
         android:id="@+id/etTime"
-        android:layout_width="302dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/relative"
-        android:layout_marginTop="50dp"
-        android:layout_marginLeft="20dp"
-        >
+        android:layout_marginTop="24dp"
+        android:paddingRight="20dp"
+        android:layout_marginLeft="20dp">
 
         <TextView
             android:id="@+id/tv1"
@@ -76,8 +79,8 @@
 
         <ImageView
             android:id="@+id/imgEtRemind"
-            android:layout_width="22dp"
-            android:layout_height="27dp"
+            android:layout_width="27dp"
+            android:layout_height="30dp"
             android:layout_alignParentTop="true"
             android:layout_marginBottom="2dp"
             android:layout_marginLeft="3dp"
@@ -88,14 +91,16 @@
             android:id="@+id/etExRemind"
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:layout_marginLeft="5dp"
+            android:layout_marginLeft="3dp"
             android:layout_toRightOf="@+id/imgEtRemind"
             android:background="@drawable/spinner_border"
             android:entries="@array/repece_times"
             android:prompt="@string/spRemind_first" />
     </RelativeLayout>
 
-   <include layout="@layout/week_select_widget"/>
+   <include
+       layout="@layout/week_select_widget"
+       />
 
 
 </LinearLayout>
