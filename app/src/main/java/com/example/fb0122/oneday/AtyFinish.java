@@ -104,6 +104,8 @@ public class AtyFinish extends Fragment implements GestureLayout.OnPullListener,
         }
     }
 
+
+
     @Override
     public boolean headerFootReached(MotionEvent event) {
         if (mHeader.getScrollY() >= mHeader.getHeight() * 0.4){

@@ -100,7 +100,7 @@ public class OneDaydb extends SQLiteOpenHelper {
     /**
      * 插入数据
      */
-    public void insertDta(String plan,String from,String to,String week){
+    public void insertData(String plan,String from,String to,String week){
         ContentValues contentValues = new ContentValues();
         try {
             contentValues.put(COLUMN_PLAN, plan);

@@ -4,8 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="24dp"
-    android:paddingLeft="20dp"
-    android:paddingRight="20dp"
     android:gravity="center_horizontal"
     >
 
@@ -18,7 +16,7 @@
         android:textSize="12dp" />
 
     <TextView
-        android:layout_width="284dp"
+        android:layout_width="304dp"
         android:layout_height="2dp"
         android:layout_marginLeft="12dp"
         android:layout_marginTop="5dp"
@@ -37,8 +35,8 @@
 
         <TextView
             android:id="@+id/Sun"
-            android:layout_width="33dp"
-            android:layout_height="33dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:layout_gravity="left|center_vertical"
             android:background="@drawable/week_click"
             android:clickable="true"
@@ -50,9 +48,9 @@
 
         <TextView
             android:id="@+id/Mon"
-            android:layout_width="33dp"
-            android:layout_height="33dp"
-            android:layout_marginLeft="15dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginLeft="16dp"
             android:layout_toRightOf="@+id/Sun"
             android:background="@drawable/week_click"
             android:clickable="true"
@@ -64,9 +62,9 @@
 
         <TextView
             android:id="@+id/Tue"
-            android:layout_width="33dp"
-            android:layout_height="33dp"
-            android:layout_marginLeft="15dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginLeft="16dp"
             android:layout_toRightOf="@+id/Mon"
             android:background="@drawable/week_click"
             android:clickable="true"
@@ -78,9 +76,9 @@
 
         <TextView
             android:id="@+id/Wed"
-            android:layout_width="33dp"
-            android:layout_height="33dp"
-            android:layout_marginLeft="15dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginLeft="16dp"
             android:layout_toRightOf="@+id/Tue"
             android:background="@drawable/week_click"
             android:clickable="true"
@@ -92,9 +90,9 @@
 
         <TextView
             android:id="@+id/Thu"
-            android:layout_width="33dp"
-            android:layout_height="33dp"
-            android:layout_marginLeft="15dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginLeft="16dp"
             android:layout_toRightOf="@+id/Wed"
             android:background="@drawable/week_click"
             android:clickable="true"
@@ -106,9 +104,9 @@
 
         <TextView
             android:id="@+id/Fri"
-            android:layout_width="33dp"
-            android:layout_height="33dp"
-            android:layout_marginLeft="15dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginLeft="16dp"
             android:layout_toRightOf="@+id/Thu"
             android:background="@drawable/week_click"
             android:clickable="true"
@@ -120,9 +118,9 @@
 
         <TextView
             android:id="@+id/Sat"
-            android:layout_width="33dp"
-            android:layout_height="33dp"
-            android:layout_marginLeft="15dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginLeft="16dp"
             android:layout_toRightOf="@+id/Fri"
             android:background="@drawable/week_click"
             android:clickable="true"
@@ -134,7 +132,7 @@
 
     <TextView
         android:id="@+id/expandline2"
-        android:layout_width="320dp"
+        android:layout_width="340dp"
         android:layout_height="2dp"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/lyA"

@@ -42,7 +42,7 @@ public class TasksCompletedView extends View {
 
     private final static int ANGLE_INIT_OFFSET = -90;
     private final static int DEFAULT_FILLED_PERCENT = 100;
-    private final static int DEFAULT_ITEM_LINE_WIDTH = 30;
+    private final static int DEFAULT_ITEM_LINE_WIDTH = 20;
     public static final int ANIMATION_DURATION = 1200;
     public static final int INNER_BACKGROUND_CIRCLE_COLOR = Color.argb(255, 220, 220, 220); // Color for
 

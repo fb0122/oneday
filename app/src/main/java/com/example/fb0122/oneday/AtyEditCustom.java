@@ -133,11 +133,11 @@ public class AtyEditCustom extends AppCompatActivity implements TimePickerDialog
         if (saveWeek.size() > 0) {
             for (int j = 0; j < saveWeek.size(); j++) {
                 Log.e(TAG,"insert");
-                db.insertDta(etCustom.getText().toString(),etCusTime.getText().toString(),
+                db.insertData(etCustom.getText().toString(),etCusTime.getText().toString(),
                         etCusToTime.getText().toString(),"周" + saveWeek.get(j));
             }
         }else {
-            db.insertDta(etCustom.getText().toString(),etCusTime.getText().toString(),
+            db.insertData(etCustom.getText().toString(),etCusTime.getText().toString(),
                     etCusToTime.getText().toString(),TimeCalendar.getTodayWeek());
         }
         setResult(Config.CHANGE_DATA);

@@ -11,6 +11,7 @@ import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -41,6 +42,9 @@ import static com.example.fb0122.oneday.AtyEditCustom.TIMEPICKER_TAG;
 
 
 public class AtyDay extends Fragment implements SlideListView.RefreshPlanListener {
+
+    private static final int SELECTED_WEEK = 1;
+    private static final int UNSELECTED_WEEK = 0;
 
     public SlideListView lvDay;
     private OneDaydb db;   // dedb供删除使用的数据库
@@ -247,19 +251,12 @@ public class AtyDay extends Fragment implements SlideListView.RefreshPlanListene
                 childHolder.sureExpandBtn.setOnClickListener(this);
 
                 childHolder.Sun.setOnClickListener(this);
-                setWeekChangeColor(childHolder.Sun);
                 childHolder.Mon.setOnClickListener(this);
-                setWeekChangeColor(childHolder.Mon);
                 childHolder.Tue.setOnClickListener(this);
-                setWeekChangeColor(childHolder.Tue);
                 childHolder.Wed.setOnClickListener(this);
-                setWeekChangeColor(childHolder.Wed);
                 childHolder.Thu.setOnClickListener(this);
-                setWeekChangeColor(childHolder.Thu);
                 childHolder.Fri.setOnClickListener(this);
-                setWeekChangeColor(childHolder.Fri);
                 childHolder.Sat.setOnClickListener(this);
-                setWeekChangeColor(childHolder.Sat);
                 convertView.setTag(childHolder);
             } else {
                 childHolder = (ChildViewHolder) convertView.getTag();
@@ -268,12 +265,6 @@ public class AtyDay extends Fragment implements SlideListView.RefreshPlanListene
             setData(null, childHolder);
 
             return convertView;
-        }
-
-        private void setWeekChangeColor(TextView weekText) {
-            if (c.getString(4) != null) {
-                weekText.setTag(1);
-            }
         }
 
         private void setData(ViewHolder holder, ChildViewHolder childViewHolder) {
@@ -315,25 +306,40 @@ public class AtyDay extends Fragment implements SlideListView.RefreshPlanListene
                     switch (week) {
                         case "周一":
                             childViewHolder.Mon.setBackground(mContext.getResources().getDrawable(R.drawable.double_click));
+                            childViewHolder.Mon.setTag(SELECTED_WEEK);
+                            changedWeek.add("一");
                             break;
                         case "周二":
                             childViewHolder.Tue.setBackground(mContext.getResources().getDrawable(R.drawable.double_click));
+                            childViewHolder.Tue.setTag(SELECTED_WEEK);
+                            changedWeek.add("二");
                             break;
                         case "周三":
                             childViewHolder.Wed.setBackground(mContext.getResources().getDrawable(R.drawable.double_click));
+                            childViewHolder.Wed.setTag(SELECTED_WEEK);
+                            changedWeek.add("三");
                             break;
                         case "周四":
                             childViewHolder.Thu.setBackground(mContext.getResources().getDrawable(R.drawable.double_click));
+                            childViewHolder.Thu.setTag(SELECTED_WEEK);
+                            changedWeek.add("四");
                             break;
                         case "周五":
                             childViewHolder.Fri.setBackground(mContext.getResources().getDrawable(R.drawable.double_click));
+                            childViewHolder.Fri.setTag(SELECTED_WEEK);
+                            changedWeek.add("五");
                             break;
                         case "周六":
                             childViewHolder.Sat.setBackground(mContext.getResources().getDrawable(R.drawable.double_click));
+                            childViewHolder.Sat.setTag(SELECTED_WEEK);
+                            changedWeek.add("六");
                             break;
                         case "周日":
                             childViewHolder.Sun.setBackground(mContext.getResources().getDrawable(R.drawable.double_click));
+                            childViewHolder.Sun.setTag(SELECTED_WEEK);
+                            changedWeek.add("日");
                             break;
+
                     }
                 }while ((weekCursor.moveToNext()));
             }
@@ -425,6 +431,7 @@ public class AtyDay extends Fragment implements SlideListView.RefreshPlanListene
                     change = true;
                     cv.clear();
                 }
+
                 if (changedWeek.size() != 0) {
                     SQLiteDatabase readWeek = db.getReadableDatabase();
                     Cursor weekCursor = readWeek.rawQuery("select week from " + OneDaydb.TABLE_NAME + " where " +
@@ -433,28 +440,28 @@ public class AtyDay extends Fragment implements SlideListView.RefreshPlanListene
                     int count = weekCursor.getCount();
                     if (weekCursor.moveToFirst()) {
                         int i = 0;
-                        while (weekCursor.moveToNext()) {
-                            if (changedWeek.size() < count) {
-                                oriWeek = weekCursor.getString(i);
+                        int j = 0;
+                        do {
+                            oriWeek = weekCursor.getString(0);
+                            if (changedWeek.size() < count && i < changedWeek.size()){
                                 cv.put(OneDaydb.COLUMN_WEEK, "周" + changedWeek.get(i));
                                 db.updataData(OneDaydb.TABLE_NAME, cv, OneDaydb.COLUMN_WEEK, oriWeek, plan);
                                 cv.clear();
-                            } else {
-                                oriWeek = weekCursor.getString(i);
-                                cv.put(OneDaydb.COLUMN_WEEK, "周" + changedWeek.get(i));
-                                db.updataData(OneDaydb.TABLE_NAME, cv, OneDaydb.COLUMN_WEEK, oriWeek, plan);
-                                cv.clear();
-                                if (changedWeek.size() > count) {
-                                    for (int j = count; j < changedWeek.size() + 1 - count; j++) {
-                                        db.insertDta(plan, time, to, "周" + changedWeek.get(j));
-                                    }
+                            } else if (changedWeek.size() > count && j < count) {
+                                for (j = count; j < changedWeek.size(); j++) {
+                                    db.insertData(plan, time, to, "周" + changedWeek.get(j));
                                 }
+                            }else if (i < changedWeek.size()){
+                                cv.put(OneDaydb.COLUMN_WEEK, "周" + changedWeek.get(i));
+                                db.updataData(OneDaydb.TABLE_NAME, cv, OneDaydb.COLUMN_WEEK, oriWeek, plan);
+                                cv.clear();
                             }
                             i++;
-                        }
+                        }while (weekCursor.moveToNext());
                     }
                     weekCursor.close();
                     change = true;
+                    changedWeek.clear();
                 }
                 if (change) {
                     totalRefresh();
@@ -464,14 +471,14 @@ public class AtyDay extends Fragment implements SlideListView.RefreshPlanListene
 
             }
             TextView tv = (TextView) view;
-            if (tv.getTag() != null && (int) tv.getTag() == 0) {
+            if (tv.getTag() != null && (int) tv.getTag() == SELECTED_WEEK) {
                 tv.setBackground(mContext.getResources().getDrawable(R.drawable.week_click));
                 changedWeek.remove(tv.getText().toString());
-                tv.setTag(1);
+                tv.setTag(UNSELECTED_WEEK);
             } else {
                 tv.setBackground(mContext.getResources().getDrawable(R.drawable.double_click));
                 changedWeek.add(tv.getText().toString());
-                tv.setTag(0);
+                tv.setTag(SELECTED_WEEK);
             }
         }
 
