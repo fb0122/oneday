@@ -202,16 +202,6 @@ public class AtyDay extends Fragment implements SlideListView.RefreshPlanListene
     lvDay.setRemoveListener(removeListener);
     lvDay.setRefreshPlanListener(this);
 
-    lvDay.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
-      @Override public void onGroupExpand(int i) {
-        lvDay.setSlideMode(SlideListView.MOD_FORBID);
-      }
-    });
-    lvDay.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
-      @Override public void onGroupCollapse(int i) {
-        lvDay.setSlideMode(SlideListView.MOD_BOTH);
-      }
-    });
     btnAdd.setOnClickListener(new OnClickListener() {
 
       @Override public void onClick(View v) {

@@ -379,7 +379,6 @@ public class AtyFinish extends Fragment implements GestureLayout.OnPullListener,
         super.onResume();
         //以这种方式刷新完成界面数据。。。。效率不是很高   后期需要重新考虑方法。
         weekData = getCursor();
-        Log.i("---fb---","onResume(): " + weekData);
         adapter.notifyDataSetChanged();
 }
 

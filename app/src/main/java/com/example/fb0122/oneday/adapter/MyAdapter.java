@@ -336,6 +336,7 @@ public class MyAdapter extends BaseExpandableListAdapter
       if (listener != null){
         listener.onSure((int)view.getTag(), child, holder);
       }
+      return;
     }
     TextView tv = (TextView) view;
     if (tv.getTag() != null && (int) tv.getTag() == SELECTED_WEEK) {
