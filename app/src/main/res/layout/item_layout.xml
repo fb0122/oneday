@@ -4,12 +4,16 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cardView"
-    android:layout_width="336.5dp"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center_horizontal"
     card_view:cardCornerRadius="2dp"
     card_view:theme="@style/CardView.Light"
     android:layout_marginBottom="19dp"
+    android:layout_marginLeft="15dp"
+    android:layout_marginRight="15dp"
+    card_view:contentPaddingLeft="10dp"
+    card_view:contentPaddingRight="10dp"
     >
 
     <LinearLayout
@@ -32,7 +36,6 @@
                 android:id="@+id/tvWeek"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="9dp"
                 android:textColor="#030303"
                 android:textSize="18dp"
                 tools:text="Fri." />
@@ -55,7 +58,6 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_gravity="right"
-                android:layout_marginRight="9dp"
                 android:layout_toRightOf="@+id/tvDate"
                 android:gravity="end"
                 android:textColor="@color/blue"
@@ -69,8 +71,6 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginLeft="9dp"
-            android:layout_marginRight="9dp"
             android:layout_marginTop="9dp"
             android:background="@drawable/week_item_line" />
 
@@ -84,7 +84,6 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="9dp"
                 >
 
                 <TextView
@@ -92,7 +91,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="9dp"
                     android:textSize="13sp"
                     tools:text="仰卧起坐 + 跳远" />
 
@@ -109,15 +107,13 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="9dp">
+                android:layout_height="wrap_content">
 
                 <TextView
                     android:id="@+id/second_item"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="9dp"
                     android:textSize="13dp"
                     tools:text="看书" />
 
@@ -133,15 +129,13 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="9dp">
+                android:layout_height="wrap_content">
 
                 <TextView
                     android:id="@+id/third_item"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="9dp"
                     android:textSize="13dp"
                     tools:text="复习" />
 
@@ -154,52 +148,6 @@
                     android:gravity="right"
                     tools:text="18:30-19:30" />
             </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="9dp">
-
-                <TextView
-                    android:id="@+id/fourth_item"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="9dp"
-                    android:textSize="13dp"
-                    tools:text="做作业" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_toRightOf="@+id/fourth_item"
-                    android:gravity="right" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="9dp">
-
-                <TextView
-                    android:id="@+id/fifth_item"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="9dp"
-                    android:textSize="13dp"
-                    tools:text="练习听力" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_toRightOf="@+id/fifth_item"
-                    android:gravity="right" />
-            </RelativeLayout>
         </LinearLayout>
 
         <ImageView
@@ -207,7 +155,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:layout_marginRight="9dp"
             android:layout_marginTop="15dp"
             android:background="@drawable/week_card_more" />
 

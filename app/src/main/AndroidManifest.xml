@@ -24,7 +24,7 @@
             <action android:name="NotifyService.Intent" />
 
         </activity>
-        <activity android:name=".AtyEditCustom" />
+        <activity android:name=".view.AtyEditCustom" />
 
         <receiver android:name="oneday.Alarm.AlarmReceiver">
             <intent-filter>

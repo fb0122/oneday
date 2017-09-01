@@ -1,4 +1,4 @@
-package com.example.fb0122.oneday;
+package com.example.fb0122.oneday.view;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -22,6 +22,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.fb0122.oneday.R;
 import com.example.fb0122.oneday.utils.DimenTranslate;
 import com.example.fb0122.oneday.utils.TimeCalendar;
 import com.example.fb0122.oneday.widget.FixLinearLayoutManager;
@@ -233,7 +234,6 @@ public class AtyFinish extends Fragment implements GestureLayout.OnPullListener,
                     for (s.moveToFirst(); !s.isAfterLast(); s.moveToNext()) {
                         RelativeLayout rl = new RelativeLayout(context);
                         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                        params.setMargins(DimenTranslate.dp2px(context, 9), 0, DimenTranslate.dp2px(context, 9), 0);
                         rl.setLayoutParams(params);
                         TextView tv = new TextView(context);
                         TextView tv1 = new TextView(context);
@@ -241,8 +241,6 @@ public class AtyFinish extends Fragment implements GestureLayout.OnPullListener,
                         tv1.setText(s.getString(c.getColumnIndex(OneDaydb.COLUMN_FROM_TIME)) + "-" + s.getString(c.getColumnIndex(OneDaydb.COLUMN_TO_TIME)));
                         RelativeLayout.LayoutParams textViewParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                         RelativeLayout.LayoutParams textViewParams1 = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                        textViewParams1.leftMargin = DimenTranslate.dp2px(context, 9);
-                        textViewParams.rightMargin = DimenTranslate.dp2px(context, 9);
                         textViewParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
                         tv.setLayoutParams(textViewParams1);
                         tv1.setGravity(Gravity.END);

@@ -3,7 +3,6 @@ package com.example.fb0122.oneday;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.graphics.Canvas;
 import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
@@ -21,6 +20,7 @@ import android.widget.TextView;
 
 import com.example.fb0122.oneday.utils.DataSetUtil;
 
+import com.example.fb0122.oneday.view.AtyDay;
 import db_oneday.OneDaydb;
 
 /**
@@ -161,6 +161,10 @@ public class SlideListView extends ExpandableListView implements TextView.OnEdit
         this.context = context;
     }
 
+    public void setSlideMode(int mode){
+        this.mode = mode;
+    }
+
     //得到当前滑动item的line
     public void saddLine(TextView textview, EditText changeTextView, TextView tvSc, OneDaydb db, String time) {
         this.Line = textview;
@@ -223,14 +227,14 @@ public class SlideListView extends ExpandableListView implements TextView.OnEdit
         int lastX = (int) ev.getX();
         switch (action) {
             case MotionEvent.ACTION_DOWN:
+                if (this.mode == MOD_FORBID) {
+                    return super.onTouchEvent(ev);
+                }
                 if (changeTextView!= null && changeTextView.getVisibility() == VISIBLE) {
                     isDisplaykeyBoard();
                     hideEditTextView();
                 }
             /*当前模式不允许滑动，则直接返回，交给ListView自身去处理*/
-                if (this.mode == MOD_FORBID) {
-                    return super.onTouchEvent(ev);
-                }
 
                 // 如果处于侧滑完成状态，侧滑回去，并直接返回
                 if (isSlided) {

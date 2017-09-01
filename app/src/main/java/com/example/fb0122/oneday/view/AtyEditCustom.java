@@ -1,4 +1,4 @@
-package com.example.fb0122.oneday;
+package com.example.fb0122.oneday.view;
 
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
@@ -15,6 +15,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.fb0122.oneday.R;
 import com.example.fb0122.oneday.utils.TimeCalendar;
 import com.sleepbot.datetimepicker.time.RadialPickerLayout;
 import com.sleepbot.datetimepicker.time.TimePickerDialog;

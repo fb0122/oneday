@@ -1,4 +1,4 @@
-package com.example.fb0122.oneday;
+package com.example.fb0122.oneday.view;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -11,7 +11,6 @@ import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -28,6 +27,10 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.example.fb0122.oneday.R;
+import com.example.fb0122.oneday.SlideListView;
+import com.example.fb0122.oneday.TimeHandler;
+import com.example.fb0122.oneday.utils.LogUtil;
 import com.example.fb0122.oneday.utils.TimeCalendar;
 import com.sleepbot.datetimepicker.time.RadialPickerLayout;
 import com.sleepbot.datetimepicker.time.TimePickerDialog;
@@ -38,7 +41,7 @@ import java.util.Calendar;
 import db_oneday.OneDaydb;
 import oneday.Alarm.Config;
 
-import static com.example.fb0122.oneday.AtyEditCustom.TIMEPICKER_TAG;
+import static com.example.fb0122.oneday.view.AtyEditCustom.TIMEPICKER_TAG;
 
 
 public class AtyDay extends Fragment implements SlideListView.RefreshPlanListener {
@@ -87,7 +90,7 @@ public class AtyDay extends Fragment implements SlideListView.RefreshPlanListene
 
 
 
-    class MyAdapter extends BaseExpandableListAdapter implements TimePickerDialog.OnTimeSetListener, OnClickListener {
+    public class MyAdapter extends BaseExpandableListAdapter implements TimePickerDialog.OnTimeSetListener, OnClickListener {
 
         private Context mContext;
         private Cursor c;
@@ -172,13 +175,6 @@ public class AtyDay extends Fragment implements SlideListView.RefreshPlanListene
             final ViewHolder holder;
             if (convertView == null) {
                 convertView = LayoutInflater.from(mContext).inflate(R.layout.listview_item, parent, false);
-                convertView.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View view, MotionEvent motionEvent) {
-                        lvDay.initSlideMode(SlideListView.MOD_BOTH, mContext);
-                        return false;
-                    }
-                });
                 holder = new ViewHolder();
                 holder.hSView = (RelativeLayout) convertView.findViewById(R.id.hsv);
                 holder.ll_intent = (RelativeLayout) convertView.findViewById(R.id.ll_intent);
@@ -208,13 +204,6 @@ public class AtyDay extends Fragment implements SlideListView.RefreshPlanListene
             ChildViewHolder childHolder;
             if (convertView == null) {
                 convertView = LayoutInflater.from(mContext).inflate(R.layout.expand_layout, null);
-                convertView.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View view, MotionEvent motionEvent) {
-                        lvDay.initSlideMode(SlideListView.MOD_FORBID, mContext);
-                        return true;
-                    }
-                });
                 childHolder = new ChildViewHolder();
                 childHolder.expandPlanText = (EditText) convertView.findViewById(R.id.text_expand_plan);
                 childHolder.expandRelativeLayout = (LinearLayout) convertView.findViewById(R.id.relative_expand);
@@ -567,6 +556,18 @@ public class AtyDay extends Fragment implements SlideListView.RefreshPlanListene
                 viewHolder = (MyAdapter.ViewHolder) view.getTag();
                 clickButtonPosition = i;
                 return false;
+            }
+        });
+        lvDay.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+            @Override public void onGroupExpand(int i) {
+                lvDay.setSlideMode(SlideListView.MOD_FORBID);
+                LogUtil.d("ExpandListView", "onExpand: " + i);
+            }
+        });
+        lvDay.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
+            @Override public void onGroupCollapse(int i) {
+                lvDay.setSlideMode(SlideListView.MOD_BOTH);
+                LogUtil.d("ExpandListView", "onCollapse: " + i);
             }
         });
         btnAdd.setOnClickListener(new OnClickListener() {
