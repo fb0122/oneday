@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -18,8 +19,10 @@ import android.widget.ExpandableListView;
 import android.widget.Scroller;
 import android.widget.TextView;
 
+import com.example.fb0122.oneday.adapter.MyAdapter;
 import com.example.fb0122.oneday.utils.DataSetUtil;
 
+import com.example.fb0122.oneday.utils.LogUtil;
 import com.example.fb0122.oneday.view.AtyDay;
 import db_oneday.OneDaydb;
 
@@ -103,7 +106,7 @@ public class SlideListView extends ExpandableListView implements TextView.OnEdit
     private TextView Line, tvSc;
     private EditText changeTextView;
 
-    AtyDay.MyAdapter adapter;
+    MyAdapter adapter;
     public int screenWidth;
 
     private RemoveListener mRemoveListener;
@@ -181,7 +184,7 @@ public class SlideListView extends ExpandableListView implements TextView.OnEdit
     }
 
     //得到adapter
-    public void getAda(AtyDay.MyAdapter LineAdapter) {
+    public void getAda(MyAdapter LineAdapter) {
         this.adapter = LineAdapter;
     }
 
@@ -225,8 +228,10 @@ public class SlideListView extends ExpandableListView implements TextView.OnEdit
     public boolean onTouchEvent(MotionEvent ev) {
         final int action = ev.getAction();
         int lastX = (int) ev.getX();
+        float distance;
         switch (action) {
             case MotionEvent.ACTION_DOWN:
+                LogUtil.d("onTouchEvent", "onActionDown");
                 if (this.mode == MOD_FORBID) {
                     return super.onTouchEvent(ev);
                 }
@@ -249,7 +254,9 @@ public class SlideListView extends ExpandableListView implements TextView.OnEdit
                 downY = (int) ev.getY();
 
                 slidePosition = pointToPosition(downX, downY);
-                adapter.getLinePosition(slidePosition);
+                if (refreshPlanListener != null) {
+                    refreshPlanListener.addLine(slidePosition);
+                }
                 // 无效的position, 不做任何处理
                 if (slidePosition == AdapterView.INVALID_POSITION) {
                     return super.onTouchEvent(ev);
@@ -269,7 +276,9 @@ public class SlideListView extends ExpandableListView implements TextView.OnEdit
 
                 break;
             case MotionEvent.ACTION_MOVE:
-
+                LogUtil.d("onTouchEvent", "onActionMove");
+                if (slidePosition > 0)
+                    collapseGroup(slidePosition - 1);
                 MotionEvent cancelEvent = MotionEvent.obtain(ev);
                 cancelEvent
                         .setAction(MotionEvent.ACTION_CANCEL
@@ -290,7 +299,6 @@ public class SlideListView extends ExpandableListView implements TextView.OnEdit
 					/*从右向左滑*/
                         canMove = true;
                     } else if (offsetX < 0 && (this.mode == MOD_BOTH || this.mode == MOD_LEFT)) {
-
                         isDelete = false;
                         itemView.scrollTo(offsetX, 0);
                         //滑动出现横线
@@ -348,7 +356,20 @@ public class SlideListView extends ExpandableListView implements TextView.OnEdit
                     }
                     return true; // 拖动的时候ListView不滚动
                 }
+                break;
             case MotionEvent.ACTION_UP:
+                distance = ev.getRawX() - lastX;
+                LogUtil.d("onTouchEvent", "onActionUp" + distance);
+                if (!canMove && distance  == 0 && slidePosition > 0){
+                    this.mode = MOD_FORBID;
+                    if (isGroupExpanded(slidePosition - 1)) {
+                        collapseGroup(slidePosition - 1);
+                    }else{
+                        expandGroup(slidePosition - 1);
+                    }
+                }else if (distance > 0){
+                    mode = MOD_BOTH;
+                }
                 if (canMove) {
                     canMove = false;
                     scrollByDistanceX();
@@ -475,7 +496,7 @@ public class SlideListView extends ExpandableListView implements TextView.OnEdit
         void onRefresh();
         void onPlanFinish(int visible,String plan);
         void onScrollChangePlan(int position);
-
+        void addLine(int position);
     }
 
     public void setRefreshPlanListener(RefreshPlanListener refreshPlanListener) {

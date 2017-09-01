@@ -30,10 +30,10 @@ import oneday.Alarm.Config;
 public class AtyEditCustom extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener, OnClickListener {
 
     private final static String TAG = "AtyEditCustom";
+    public static final String TIMEPICKER_TAG = "timepickerdialog";
 
     Toolbar toolbar;
 
-    protected static final String TIMEPICKER_TAG = "timepickerdialog";
     private TextView etCusTime, etCusToTime;
     final Calendar calendar = Calendar.getInstance();
     final TimePickerDialog timePickerDialog = TimePickerDialog.newInstance(this, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), false, false);

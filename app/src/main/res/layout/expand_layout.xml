@@ -94,7 +94,13 @@
     </RelativeLayout>
 
     <include
-        layout="@layout/week_select_widget"/>
+        android:id="@+id/week_layout"
+        layout="@layout/week_select_widget"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"/>
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -111,17 +117,19 @@
         android:layout_height="40dp"
         android:layout_marginTop="10dp"
         android:background="@drawable/button_click"
-        android:clickable="true"
+        android:textColor="@color/white"
         android:text="取消" />
+
     <Button
         android:id="@+id/btn_expand_sure"
         android:layout_width="80dp"
         android:layout_height="40dp"
-        android:layout_marginLeft="26dp"
+        android:layout_marginLeft="15dp"
         android:background="@drawable/button_click"
-        android:clickable="true"
         android:layout_marginTop="10dp"
         android:layout_toRightOf="@+id/btn_expand_cancel"
+        android:gravity="center"
+        android:textColor="@color/white"
         android:text="确定" />
 
     </RelativeLayout>
